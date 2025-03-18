@@ -17,10 +17,14 @@ local function showCommandList()
     print(YELLOW_CHAT_LUA .. "/ww N -CLASS MESSAGE" .. "|r" .. ": " .. "|r" .. "Sends the MESSAGE to the first N count of players who are not of the specified CLASS in a currently open /who instance." .. "|r")
     print(YELLOW_CHAT_LUA .. "/wl N MESSAGE" .. "|r" .. ": " .. "|r" .. "Sends the MESSAGE to the last N players who whispered you." .. "|r")
     
-    print(YELLOW_CHAT_LUA .. "/wa MESSAGE" .. "|r" .. ": " .. "|r" .. "Sends the MESSAGE to all unique sellers in current auction house search results." .. "|r")
-    print(YELLOW_CHAT_LUA .. "/wa N MESSAGE" .. "|r" .. ": " .. "|r" .. "Sends the MESSAGE to the first N unique sellers in current auction house search results." .. "|r")
+    print(YELLOW_CHAT_LUA .. "/wah MESSAGE" .. "|r" .. ": " .. "|r" .. "Sends the MESSAGE to all unique sellers in current auction house search results." .. "|r")
+    print(YELLOW_CHAT_LUA .. "/wah N MESSAGE" .. "|r" .. ": " .. "|r" .. "Sends the MESSAGE to the first N unique sellers in current auction house search results." .. "|r")
     
     print(YELLOW_CHAT_LUA .. "/c" .. "|r" .. ": " .. "|r" .. "Closes all whisper tabs." .. "|r")
+    
+    print(YELLOW_CHAT_LUA .. "/fm TARGET" .. "|r" .. ": " .. "|r" .. "Creates or updates a macro to target the specified TARGET." .. "|r")
+    print(YELLOW_CHAT_LUA .. "/fm+" .. "|r" .. ": " .. "|r" .. "Adds the current target or specified TARGET to the existing target macro." .. "|r")
+    print(YELLOW_CHAT_LUA .. "/am" .. "|r" .. ": " .. "|r" .. "Creates or updates a macro to assist the specified TARGET." .. "|r")
     
     print(YELLOW_CHAT_LUA .. "/rc" .. "|r" .. ": " .. "|r" .. "Performs a ready check." .. "|r")
     print(YELLOW_CHAT_LUA .. "/q" .. "|r" .. ": " .. "|r" .. "Leaves the current party or raid." .. "|r")

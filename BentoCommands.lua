@@ -33,7 +33,7 @@ local function showCommandList()
     
     print(YELLOW_CHAT_LUA .. "/ui" .. "|r" .. ": " .. "|r" .. "Reloads the user interface." .. "|r")
     print(YELLOW_CHAT_LUA .. "/gx" .. "|r" .. ": " .. "|r" .. "Restarts the graphics engine." .. "|r")
-    print(YELLOW_CHAT_LUA .. "/lua" .. "|r" .. ": " .. "|r" .. "Toggles the display of LUA errors." .. "|r")
+    print(YELLOW_CHAT_LUA .. "/errors" .. "|r" .. ": " .. "|r" .. "Toggles the display of LUA errors." .. "|r")
     print(YELLOW_CHAT_LUA .. "/rl" .. "|r" .. ": " .. "|r" .. "Reloads the UI, restarts the graphics engine, and clears the game cache." .. "|r")
 end
 
@@ -491,7 +491,7 @@ local function toggleLUAErrors()
     end
 end
 
-SLASH_TOGGLELUA1 = "/lua"
+SLASH_TOGGLELUA1 = "/errors"
 SlashCmdList["TOGGLELUA"] = toggleLUAErrors
 
 

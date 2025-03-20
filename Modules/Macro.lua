@@ -19,7 +19,7 @@ SlashCmdList["TARGETMACRO"] = function(msg)
         end
     end
 
-    macroBody = macroBody .. "\n/run if UnitExists(\"target\") and not GetRaidTargetIndex(\"target\") then SetRaidTarget(\"target\",8) end"
+    macroBody = macroBody .. "\n/run if UnitExists(\"target\") and not UnitIsDead(\"target\") and not GetRaidTargetIndex(\"target\") then SetRaidTarget(\"target\",8) end"
 
     local macroIndex = GetMacroIndexByName(macroName)
     if macroIndex > 0 then
@@ -71,7 +71,7 @@ SlashCmdList["TARGETMACROADD"] = function(msg)
         macroBody = macroBody:gsub("\n/run .+", "") .. "\n/target " .. targetName
     end
 
-    macroBody = macroBody .. "\n/run if UnitExists(\"target\") and not GetRaidTargetIndex(\"target\") then SetRaidTarget(\"target\",8) end"
+    macroBody = macroBody .. "\n/run if UnitExists(\"target\") and not UnitIsDead(\"target\") and not GetRaidTargetIndex(\"target\") then SetRaidTarget(\"target\",8) end"
 
     if macroIndex > 0 then
         EditMacro(macroIndex, macroName, "Ability_Hunter_SniperShot", macroBody)

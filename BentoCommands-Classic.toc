@@ -7,6 +7,7 @@
 Modules/Filter.lua
 Modules/Intro.lua
 Modules/Invite.lua
+Modules/LFG.lua
 Modules/Macro.lua
 Modules/Reply.lua
 Modules/Seller.lua

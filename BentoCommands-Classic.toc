@@ -4,11 +4,11 @@
 ## Version: 1.0
 ## Author: MIYANKO
 
-Modules/ChatFilter.lua
+Modules/Filter.lua
 Modules/Intro.lua
+Modules/Invite.lua
 Modules/Macro.lua
+Modules/Reply.lua
+Modules/Seller.lua
 Modules/Utility.lua
-Modules/WhisperInvite.lua
-Modules/WhisperRecent.lua
-Modules/WhisperSellers.lua
-Modules/WhisperWho.lua
+Modules/Who.lua

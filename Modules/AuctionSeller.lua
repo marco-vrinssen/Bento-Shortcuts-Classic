@@ -1,8 +1,6 @@
 -- WHISPER ALL AUCTION HOUSE SELLERS
 
-SLASH_WAUCTION1 = "/wah"
-
-function SendAuctionMessages(msg)
+local function sendAuctionMessages(msg)
     if not msg or msg == "" then
         print("Usage: /wah <message>")
         return
@@ -19,4 +17,5 @@ function SendAuctionMessages(msg)
     end
 end
 
-SlashCmdList["WAUCTION"] = SendAuctionMessages
+SLASH_WSELLER1 = "/ws"
+SlashCmdList["WSELLER"] = sendAuctionMessages

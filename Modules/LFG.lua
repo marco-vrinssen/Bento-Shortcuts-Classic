@@ -1,17 +1,21 @@
-local function JoinChannels()
+-- DEFINE COMMAND TO BROADCAST MESSAGE ACROSS LFG CHANNELS
+
+local function joinChannels()
     JoinChannelByName("World")
     JoinChannelByName("LookingForGroup")
 end
 
-local function BroadcastMessage(message)
+local function broadcastMessage(message)
     SendChatMessage(message, "CHANNEL", nil, GetChannelName("World"))
     SendChatMessage(message, "CHANNEL", nil, GetChannelName("LookingForGroup"))
 end
 
-SLASH_LFG1 = "/lfg"
-SlashCmdList["LFG"] = function(msg)
+local function handleLfgCommand(msg)
     if msg and msg ~= "" then
-        JoinChannels()
-        BroadcastMessage(msg)
+        joinChannels()
+        broadcastMessage(msg)
     end
 end
+
+SLASH_LFG1 = "/lfg"
+SlashCmdList["LFG"] = handleLfgCommand

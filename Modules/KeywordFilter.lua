@@ -1,8 +1,9 @@
--- KEYWORD FILTERING
+-- INITIALIZE VARIABLES
 
 local keywordTable = {}
 local playerName = UnitName("player")
 
+-- NOTIFICATION FUNCTIONS
 
 local function keywordMatch(msg, senderName)
     local playerLink = "|Hplayer:" .. senderName .. "|h" .. YELLOW_CHAT_LUA .. "[" .. senderName .. "]: " .. "|r" .. "|h"
@@ -10,6 +11,7 @@ local function keywordMatch(msg, senderName)
     PlaySound(3175, "Master", true)
 end
 
+-- KEYWORD MATCHING LOGIC
 
 local function keywordFilter(msg)
     for _, keywordSet in ipairs(keywordTable) do
@@ -35,6 +37,7 @@ local function keywordFilter(msg)
     return false
 end
 
+-- EVENT HANDLING
 
 local function keywordValidation(self, event, msg, senderName, languageName, channelName, ...)
     if next(keywordTable) and strmatch(channelName, "%d+") then
@@ -45,13 +48,14 @@ local function keywordValidation(self, event, msg, senderName, languageName, cha
     end
 end
 
+-- FRAME SETUP
 
 local filterCommandEvents = CreateFrame("Frame")
 filterCommandEvents:SetScript("OnEvent", keywordValidation)
 
+-- SLASH COMMAND HANDLER
 
-SLASH_FILTER1 = "/f"
-SlashCmdList["FILTER"] = function(msg)
+local function handleFilterCommand(msg)
     if msg == "" then
         wipe(keywordTable)
         print(YELLOW_CHAT_LUA .. "Filter:" .. "|r" .. " Cleared.")
@@ -93,3 +97,8 @@ SlashCmdList["FILTER"] = function(msg)
         print(YELLOW_CHAT_LUA .. "Filtering:" .. "|r" .. " " .. newKeywordsStr:gsub('"', '') .. ".")
     end
 end
+
+-- REGISTER SLASH COMMAND
+
+SLASH_FILTER1 = "/f"
+SlashCmdList["FILTER"] = handleFilterCommand

@@ -4,12 +4,13 @@
 ## Version: 1.0
 ## Author: MIYANKO
 
-Modules/Filter.lua
+Modules/AuctionSeller.lua
+Modules/FindPort.lua
 Modules/Intro.lua
-Modules/Invite.lua
+Modules/KeywordFilter.lua
 Modules/LFG.lua
-Modules/Macro.lua
-Modules/Reply.lua
-Modules/Seller.lua
+Modules/MultiInvite.lua
+Modules/MultiReply.lua
+Modules/TargetMacro.lua
 Modules/Utility.lua
-Modules/Who.lua
+Modules/WhisperWho.lua

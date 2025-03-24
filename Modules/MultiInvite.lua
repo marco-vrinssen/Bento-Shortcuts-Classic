@@ -1,7 +1,6 @@
 -- INVITE ALL PLAYERS IN /WHO COMMAND
 
-SLASH_INVITEWHO1 = "/wi"
-SlashCmdList["INVITEWHO"] = function(msg)
+local function inviteWhoPlayers(msg)
     local message = msg ~= "" and msg or nil
     local numWhos = C_FriendList.GetNumWhoResults()
     local invitedCount = 0
@@ -25,11 +24,12 @@ SlashCmdList["INVITEWHO"] = function(msg)
     end
 end
 
+SLASH_INVITEWHO1 = "/wi"
+SlashCmdList["INVITEWHO"] = inviteWhoPlayers
 
 -- INVITE ALL PLAYERS IN /WHO COMMAND TO GUILD
 
-SLASH_INVITEGUILDWHO1 = "/wgi"
-SlashCmdList["INVITEGUILDWHO"] = function(msg)
+local function inviteWhoPlayersToGuild(msg)
     local message = msg ~= "" and msg or nil
     local numWhos = C_FriendList.GetNumWhoResults()
 
@@ -46,3 +46,6 @@ SlashCmdList["INVITEGUILDWHO"] = function(msg)
         end
     end
 end
+
+SLASH_INVITEGUILDWHO1 = "/wgi"
+SlashCmdList["INVITEGUILDWHO"] = inviteWhoPlayersToGuild

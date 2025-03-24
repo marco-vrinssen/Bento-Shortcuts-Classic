@@ -1,7 +1,6 @@
 -- WHISPER ALL PLAYERS IN /WHO COMMAND
 
-SLASH_WHISPERWHO1 = "/ww"
-SlashCmdList["WHISPERWHO"] = function(msg)
+local function whisperWhoPlayers(msg)
     local limit, classExclusion, message
 
     limit, classExclusion, message = msg:match("^(%d+)%s*-%s*(%w+)%s+(.+)$")
@@ -46,3 +45,9 @@ SlashCmdList["WHISPERWHO"] = function(msg)
         end
     end
 end
+
+
+-- REGISTER SLASH COMMANDS
+
+SLASH_WHISPERWHO1 = "/ww"
+SlashCmdList["WHISPERWHO"] = whisperWhoPlayers

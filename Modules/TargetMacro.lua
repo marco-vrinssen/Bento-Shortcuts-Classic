@@ -1,7 +1,6 @@
--- REGISTER SLASH COMMANDS
+-- DEFINE NAME OR TARGET FOR FIND MACRO
 
-SLASH_TARGETMACRO1 = "/fm"
-SlashCmdList["TARGETMACRO"] = function(msg)
+local function createTargetMacro(msg)
     local macroName = "FIND"
     local macroBody
     local targetName
@@ -31,8 +30,12 @@ SlashCmdList["TARGETMACRO"] = function(msg)
     print(YELLOW_CHAT_LUA .. "FIND:" .. "|r" .. " " .. targetName .. ".")
 end
 
-SLASH_TARGETMACROADD1 = "/fm+"
-SlashCmdList["TARGETMACROADD"] = function(msg)
+SLASH_TARGETMACRO1 = "/fm"
+SlashCmdList["TARGETMACRO"] = createTargetMacro
+
+-- ADD NAME OR TARGET TO FIND MACRO
+
+local function addToTargetMacro(msg)
     local macroName = "FIND"
     local macroIndex = GetMacroIndexByName(macroName)
     local macroBody = macroIndex > 0 and GetMacroBody(macroName) or ""
@@ -83,10 +86,12 @@ SlashCmdList["TARGETMACROADD"] = function(msg)
     print(YELLOW_CHAT_LUA .. "FIND:" .. "|r" .. " " .. newTargetsStr .. ".")
 end
 
--- REGISTER ASSIST MACRO COMMAND
+SLASH_TARGETMACROADD1 = "/fm+"
+SlashCmdList["TARGETMACROADD"] = addToTargetMacro
 
-SLASH_ASSISTMACRO1 = "/am"
-SlashCmdList["ASSISTMACRO"] = function(msg)
+-- ASSIST MACRO FUNCTION
+
+local function createAssistMacro(msg)
     local macroName = "ASSIST"
     local macroBody
     local targetName
@@ -113,3 +118,6 @@ SlashCmdList["ASSISTMACRO"] = function(msg)
 
     print(YELLOW_CHAT_LUA .. "ASSIST:" .. "|r" .. " " .. targetName .. ".")
 end
+
+SLASH_ASSISTMACRO1 = "/am"
+SlashCmdList["ASSISTMACRO"] = createAssistMacro

@@ -3,8 +3,7 @@
 local recentWhispers = {}
 local whisperedPlayers = {}
 
-SLASH_WHISPERLASTN1 = "/wl"
-SlashCmdList["WHISPERLASTN"] = function(msg)
+local function handleWhisperLastN(msg)
     local num, message = msg:match("^(%d+)%s+(.+)$")
 
     if not message then
@@ -33,6 +32,11 @@ SlashCmdList["WHISPERLASTN"] = function(msg)
         print("Usage: /wl MESSAGE or /wl N MESSAGE")
     end
 end
+
+SLASH_WHISPERLASTN1 = "/wl"
+SlashCmdList["WHISPERLASTN"] = handleWhisperLastN
+
+-- TRACK RECENT WHISPERS
 
 local function trackWhispers(_, _, msg, playerName)
     if not recentWhispers[playerName] then

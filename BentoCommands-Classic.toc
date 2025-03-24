@@ -5,6 +5,7 @@
 ## Author: MIYANKO
 
 Modules/AuctionSeller.lua
+Modules/Filter.lua
 Modules/FindPort.lua
 Modules/Intro.lua
 Modules/KeywordFilter.lua

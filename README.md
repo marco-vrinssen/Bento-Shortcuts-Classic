@@ -4,6 +4,8 @@ Addon for World of Warcraft Classic with chat commands enhancing communication, 
 
 Type `/bentocmd` for available commands.
 
+## Chat Commands
+
 ### Chat Filtering
 `/f KEYWORD` - Filter all active channels for KEYWORD and repost matching messages.
 `/f KEYWORD1+KEYWORD2` - Filter all active channels for the combination of KEYWORD1 and KEYWORD2 and repost matching messages.
@@ -51,3 +53,6 @@ Type `/bentocmd` for available commands.
 `/gx` - Restart the graphics engine.
 `/le` - Toggle the display of LUA errors.
 `/rl` - Reload the UI, restart the graphics engine, and clear the game cache.
+
+## Right Click Menu Entries
+Simply right-click on the player frame or name and copy the corresponding link.

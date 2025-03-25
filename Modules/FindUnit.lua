@@ -88,36 +88,3 @@ end
 
 SLASH_TARGETMACROADD1 = "/fm+"
 SlashCmdList["TARGETMACROADD"] = addToTargetMacro
-
--- ASSIST MACRO FUNCTION
-
-local function createAssistMacro(msg)
-    local macroName = "ASSIST"
-    local macroBody
-    local targetName
-
-    if msg and msg ~= "" then
-        targetName = msg
-        macroBody = "/assist " .. msg
-    else
-        targetName = UnitName("target")
-        if targetName then
-            macroBody = "/assist " .. targetName
-        else
-            print("No target selected and no name provided.")
-            return
-        end
-    end
-
-    local macroIndex = GetMacroIndexByName(macroName)
-    if macroIndex > 0 then
-        EditMacro(macroIndex, macroName, "Ability_DualWield", macroBody)
-    else
-        CreateMacro(macroName, "Ability_DualWield", macroBody, nil)
-    end
-
-    print(YELLOW_CHAT_LUA .. "ASSIST:" .. "|r" .. " " .. targetName .. ".")
-end
-
-SLASH_ASSISTMACRO1 = "/am"
-SlashCmdList["ASSISTMACRO"] = createAssistMacro

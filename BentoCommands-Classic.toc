@@ -1,17 +1,18 @@
 ## Interface: 11500
-## Title: Bento Commands Classic
+## Title: Bento Shortcuts Classic
 ## Notes: Chat commands enhancing communication, featuring chat filtering and multi-communication functionalities.
 ## Version: 1.0
 ## Author: MIYANKO
 
-Modules/AuctionSeller.lua
-Modules/Filter.lua
-Modules/FindPort.lua
+Modules/_Tokens.lua
+Modules/AssistPlayer.lua
+Modules/ChatScan.lua
+Modules/FindUnit.lua
+Modules/Game.lua
+Modules/GroupUtility.lua
 Modules/Intro.lua
-Modules/KeywordFilter.lua
 Modules/LFG.lua
 Modules/MultiInvite.lua
-Modules/MultiReply.lua
-Modules/TargetMacro.lua
-Modules/Utility.lua
-Modules/WhisperWho.lua
+Modules/MultiWhisper.lua
+Modules/PlayerLink.lua
+Modules/TravelWho.lua

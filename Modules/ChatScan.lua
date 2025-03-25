@@ -58,7 +58,7 @@ filterCommandEvents:SetScript("OnEvent", keywordValidation)
 local function handleFilterCommand(msg)
     if msg == "" then
         wipe(keywordTable)
-        print(YELLOW_CHAT_LUA .. "Filter:" .. "|r" .. " Cleared.")
+        print(YELLOW_CHAT_LUA .. "Scanning stopped.")
         filterCommandEvents:UnregisterEvent("CHAT_MSG_CHANNEL")
     else
         if not filterCommandEvents:IsEventRegistered("CHAT_MSG_CHANNEL") then
@@ -94,11 +94,11 @@ local function handleFilterCommand(msg)
                 newKeywordsStr = newKeywordsStr .. ", "
             end
         end
-        print(YELLOW_CHAT_LUA .. "Filtering:" .. "|r" .. " " .. newKeywordsStr:gsub('"', '') .. ".")
+        print(YELLOW_CHAT_LUA .. "Scanning all channels for" .. "|r" .. " " .. newKeywordsStr:gsub('"', '') .. ".")
     end
 end
 
 -- REGISTER SLASH COMMAND
 
-SLASH_FILTER1 = "/f"
-SlashCmdList["FILTER"] = handleFilterCommand
+SLASH_SCAN1 = "/scan"
+SlashCmdList["SCAN"] = handleFilterCommand

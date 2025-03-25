@@ -1,38 +1,16 @@
--- READY CHECK
-
-local function readyCheck()
-    DoReadyCheck()
-end
-
-SLASH_READYCHECK1 = "/rc"
-SlashCmdList["READYCHECK"] = readyCheck
-
--- QUIT GROUP
-
-local function quitParty() 
-    if IsInGroup() then 
-        LeaveParty() 
-    end 
-end
-
-SLASH_QUITPARTY1 = "/q"
-SlashCmdList["QUITPARTY"] = quitParty
-
 -- TOGGLE LUA ERRORS
 
-local function toggleLUAErrors()
-    local currentSetting = GetCVar("scriptErrors")
-    if currentSetting == "1" then
+SLASH_TOGGLELUA1 = "/errors"
+SlashCmdList["TOGGLELUA"] = function()
+    local showErrors = GetCVar("scriptErrors")
+    if showErrors == "1" then
         SetCVar("scriptErrors", 0)
-        print(YELLOW_CHAT_LUA .. "LUA Errors: " .. "|r" .. WHITE_CHAT_LUA .. "Disabled" .. "|r")
+        print(YELLOW_CHAT_LUA .. "LUA Errors: " .. "|r" .. "Off")
     else
         SetCVar("scriptErrors", 1)
-        print(YELLOW_CHAT_LUA .. "LUA Errors: " .. "|r" .. WHITE_CHAT_LUA .. "Enabled" .. "|r")
+        print(YELLOW_CHAT_LUA .. "LUA Errors: " .. "|r" .. "On")
     end
 end
-
-SLASH_TOGGLELUA1 = "/errors"
-SlashCmdList["TOGGLELUA"] = toggleLUAErrors
 
 -- RELOAD THE UI
 

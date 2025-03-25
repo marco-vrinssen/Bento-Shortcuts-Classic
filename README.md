@@ -1,70 +1,135 @@
 # Bento Shortcuts Classic
 
-Addon for World of Warcraft Classic enhancing communication with chat commands, macro utilities, and group/game functions.
+Addon for World of Warcraft Classic. Offers chat scanning, whisper utilities, macros, and game functions.
 
-**Usage:** Type `/bentoshortcuts` for a command overview.
+**Usage:** `/bentoshortcuts`
 
 ## Chat Commands
 
-- **Keyword Scan:**  
-  `/scan <KEYWORD>` – Scan all chat channels for messages containing KEYWORD.  
-  
-  `/scan stop` or `/scan clear` – Stop scanning.
+### KEYWORD SCAN
 
-- **Multi Whisper:**  
-  `/w+ MESSAGE` – Whisper MESSAGE to all players in the current /who list.  
-  
-  `/w+ N MESSAGE` – Whisper MESSAGE to the first N players in the /who list.  
-  
-  `/w+ -CLASS MESSAGE` – Whisper MESSAGE to players excluding a specific CLASS.  
-  
-  `/w+ N -CLASS MESSAGE` – Whisper MESSAGE to the first N players excluding CLASS.
+```
+/scan <KEYWORD>
+```
 
-- **Whisper Reply:**  
-  `/r+ MESSAGE` – Whisper MESSAGE to all players who last whispered you.  
-  
-  `/r+ N MESSAGE` – Whisper MESSAGE to the last N players who whispered you.
+Scans chat channels for messages containing KEYWORD. Stop scanning with `/scan stop` or `/scan clear`.
+
+### MULTI WHISPER
+
+```
+/w+ MESSAGE
+/w+ N MESSAGE
+/w+ -CLASS MESSAGE
+/w+ N -CLASS MESSAGE
+```
+
+Whispers MESSAGE to players in the current /who list. Supports targeting the first N players or excluding a specific class.
+
+### WHISPER REPLY
+
+```
+/r+ MESSAGE
+/r+ N MESSAGE
+```
+
+Replies to the player(s) who last whispered you.
 
 ## Macro Commands
 
-- **Target Macro (Find):**  
-  `/find [TARGET]` – Create or update a macro to target a specified player or your current target if omitted.
-  
-- **Add to Target Macro:**  
-  `/find+ [TARGET]` – Add a target to the existing macro (up to 3 entries).
+### TARGET MACRO
+
+```
+/find [TARGET]
+```
+
+Creates or updates a macro to target the specified player or the current target if omitted.
+
+### ADD TARGET
+
+```
+/find+ [TARGET]
+```
+
+Adds a player to the target macro (up to 3 targets).
 
 ## Travel Command
 
-- **Travel Search:**  
-  `/travel ZONE` – Search for warlocks in ZONE who can summon.  
-  
-  `/travel` – Search for mages in the current zone who can provide portals.
+```
+/travel [ZONE]
+```
+
+Searches for summoner warlocks in ZONE, or mages in the current zone if omitted.
 
 ## LFG Command
 
-- **LFG Broadcast:**  
-  `/lfg MESSAGE` – Broadcast MESSAGE across LFG channels ("World" and "LookingForGroup").
+```
+/lfg MESSAGE
+```
+
+Broadcasts MESSAGE on World and LookingForGroup channels.
 
 ## Group & Game Utility
 
-- **Group Utility:**  
-  `/rc` – Perform a ready check.  
-  
-  `/q` – Leave the current party or raid.
+### GROUP UTILITIES
 
-- **Game Utility:**  
-  `/errors` – Toggle LUA error display.  
-  
-  `/ui` – Reload the user interface.  
-  
-  `/gx` – Restart the graphics engine.  
-  
-  `/rl` – Reload the UI, restart the graphics engine, and clear the game cache.
+```
+/rc
+/q
+```
+
+Performs a ready check or leaves the party/raid.
+
+### GAME UTILITIES
+
+```
+/errors
+/ui
+/gx
+/rl
+```
+
+Toggles LUA error display, reloads the UI, restarts graphics, and clears the game cache.
 
 ## Additional Features
 
-- **Copy Name Popup:**  
-  Press Control + I (or Command + I on Mac) while hovering over an item or unit to show its name.
+### COPY NAME
 
-- **Right-Click Menus:**  
-  Access targeting and player link options by right-clicking on player frames or names.
+Press Control + I (or Command + I on Mac) when hovering over an item or unit to copy its name.
+
+### RIGHT-CLICK MENU
+
+Access targeting and link options by right-clicking on player frames or names.
+
+## Context Menu Options
+
+### ASSIST
+
+```
+/assist
+```
+
+Assists the target via the context menu.
+
+### FIND
+
+```
+/find [TARGET]
+```
+
+Updates the target macro for the specified player or current target.
+
+### FIND ALSO
+
+```
+/find+ [TARGET]
+```
+
+Adds an extra target to the macro (up to 3 targets).
+
+### ARMORY LINK
+
+```
+/armory
+```
+
+Generates a link to the Classic Armory.

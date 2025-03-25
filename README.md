@@ -6,16 +6,17 @@ Addon for World of Warcraft Classic. Offers chat scanning, whisper utilities, ma
 
 ## Chat Commands
 
-### KEYWORD SCAN
-
+### KEYWORD SCAN  
+**Command:**  
 ```
 /scan <KEYWORD>
 ```
 
-Scans chat channels for messages containing KEYWORD. Stop scanning with `/scan stop` or `/scan clear`.
+**Explanation:**  
+Scans chat channels for messages containing KEYWORD. Use `/scan stop` or `/scan clear` to end scanning.
 
-### MULTI WHISPER
-
+### MULTI WHISPER  
+**Command:**  
 ```
 /w+ MESSAGE
 /w+ N MESSAGE
@@ -23,64 +24,75 @@ Scans chat channels for messages containing KEYWORD. Stop scanning with `/scan s
 /w+ N -CLASS MESSAGE
 ```
 
-Whispers MESSAGE to players in the current /who list. Supports targeting the first N players or excluding a specific class.
+**Explanation:**  
+Sends a whisper to players in the current /who list. Supports limiting to the first N players or excluding a specified class.
 
-### WHISPER REPLY
-
+### WHISPER REPLY  
+**Command:**  
 ```
 /r+ MESSAGE
 /r+ N MESSAGE
 ```
 
-Replies to the player(s) who last whispered you.
+**Explanation:**  
+Replies to the last whisper sender(s).
 
 ## Macro Commands
 
-### TARGET MACRO
-
+### TARGET MACRO  
+**Command:**  
 ```
 /find [TARGET]
 ```
 
-Creates or updates a macro to target the specified player or the current target if omitted.
+**Explanation:**  
+Creates or updates a target macro using the given player name, or your current target if omitted.
 
-### ADD TARGET
-
+### ADD TARGET  
+**Command:**  
 ```
 /find+ [TARGET]
 ```
 
-Adds a player to the target macro (up to 3 targets).
+**Explanation:**  
+Adds an additional target to the macro (max 3 targets).
 
 ## Travel Command
 
+### TRAVEL SEARCH  
+**Command:**  
 ```
 /travel [ZONE]
 ```
 
-Searches for summoner warlocks in ZONE, or mages in the current zone if omitted.
+**Explanation:**  
+Searches for summoner warlocks in the specified ZONE, or mages in your current zone if omitted.
 
 ## LFG Command
 
+### LFG BROADCAST  
+**Command:**  
 ```
 /lfg MESSAGE
 ```
 
-Broadcasts MESSAGE on World and LookingForGroup channels.
+**Explanation:**  
+Broadcasts a message on both World and LookingForGroup channels.
 
 ## Group & Game Utility
 
-### GROUP UTILITIES
-
+### GROUP UTILITIES  
+**Commands:**  
 ```
 /rc
 /q
 ```
 
-Performs a ready check or leaves the party/raid.
+**Explanation:**  
+Performs a ready check or leaves your current party/raid.
 
-### GAME UTILITIES
-
+### GAME UTILITIES  
+**Commands:**  
 ```
 /errors
 /ui
@@ -88,48 +100,52 @@ Performs a ready check or leaves the party/raid.
 /rl
 ```
 
+**Explanation:**  
 Toggles LUA error display, reloads the UI, restarts graphics, and clears the game cache.
 
 ## Additional Features
 
-### COPY NAME
+### COPY NAME  
+**Action:**  
+Press Control + I (or Command + I on Mac)
 
-Press Control + I (or Command + I on Mac) when hovering over an item or unit to copy its name.
+**Explanation:**  
+Copies the name of an item or unit you are hovering over.
 
-### RIGHT-CLICK MENU
+## Right-Click Menu Options
 
-Access targeting and link options by right-clicking on player frames or names.
-
-## Context Menu Options
-
-### ASSIST
-
+### ASSIST  
+**Command:**  
 ```
 /assist
 ```
 
-Assists the target via the context menu.
+**Explanation:**  
+Assists the selected target via the right-click menu.
 
-### FIND
-
+### FIND  
+**Command:**  
 ```
 /find [TARGET]
 ```
 
-Updates the target macro for the specified player or current target.
+**Explanation:**  
+Activates the target macro for the chosen player via the right-click menu.
 
-### FIND ALSO
-
+### FIND ALSO  
+**Command:**  
 ```
 /find+ [TARGET]
 ```
 
-Adds an extra target to the macro (up to 3 targets).
+**Explanation:**  
+Adds an extra target to the macro (max 3) using the right-click menu.
 
-### ARMORY LINK
-
+### ARMORY LINK  
+**Command:**  
 ```
 /armory
 ```
 
-Generates a link to the Classic Armory.
+**Explanation:**  
+Generates a link to the Classic Armory for the selected player.

@@ -1,117 +1,47 @@
 # Bento Shortcuts Classic
 
-Addon for World of Warcraft Classic. Offers chat scanning, whisper utilities, macros, and game functions.
+Utility addon for World of Warcraft Classic providing targeting, communication, travel, and interface shortcuts.
 
-**Usage:** `/bentoshortcuts`
+**Settings:** `/bentoshortcuts`
 
 ## Chat Commands
 
-### KEYWORD SCAN  
-```
-/scan <KEYWORD>
-```
-Scans chat channels for messages containing KEYWORD. Use `/scan stop` or `/scan clear` to end scanning.
+### Keyword Scanning
+- `/scan <KEYWORD>` - Monitor chat channels for messages containing keyword
+- `/scan stop` - End scanning
+- `/scan clear` - End scanning
 
-### MULTI WHISPER  
-```
-/w+ MESSAGE
-/w+ N MESSAGE
-/w+ -CLASS MESSAGE
-/w+ N -CLASS MESSAGE
-```
-Sends a whisper to players in the current /who list. Supports limiting to the first N players or excluding a specified class.
+### Multi Messaging
+- `/w+ [MESSAGE]` - Whisper to all players in current /who list
+  - `/w+ N [MESSAGE]` - Whisper first N players only
+  - `/w+ -CLASS [MESSAGE]` - Exclude players of specified class
+- `/r+ [MESSAGE]` - Reply to recent whisper senders
+  - `/r+ N [MESSAGE]` - Reply to last N whisper senders
+- `/lfg [MESSAGE]` - Broadcast to World and LookingForGroup channels
 
-### WHISPER REPLY  
-```
-/r+ MESSAGE
-/r+ N MESSAGE
-```
-Replies to the last whisper sender(s).
+### Player Targeting
+- `/find [NAME]` - Set find macro to specified name
+- `/find` - Set find macro to current target's name
+- `/find+ [NAME]` - Add specified name to find macro
+- `/find+` - Add current target to find macro
 
-## Macro Commands
+### Travel Shortcuts
+- `/travel [ZONE]` - Find warlocks offering summons to specified zone
+- `/travel` - Find mages offering portals in current zone
 
-### TARGET MACRO  
-```
-/find [TARGET]
-```
-Creates or updates a target macro using the given player name, or your current target if omitted.
+### Group Utility
+- `/rc` - Perform ready check
+- `/q` - Leave current party/raid
 
-### ADD TARGET  
-```
-/find+ [TARGET]
-```
-Adds an additional target to the macro (max 3 targets).
+## UI Shortcuts
 
-## Travel Command
+### System Commands
+- `/errors` - Toggle LUA error display
+- `/ui` - Reload interface
+- `/gx` - Restart graphics engine
+- `/rl` - Reload UI, restart graphics, clear cache
 
-### TRAVEL SEARCH  
-```
-/travel [ZONE]
-```
-Searches for summoner warlocks in the specified ZONE, or mages in your current zone if omitted.
-
-## LFG Command
-
-### LFG BROADCAST  
-```
-/lfg MESSAGE
-```
-Broadcasts a message on both World and LookingForGroup channels.
-
-## Group Utility
-
-### READY CHECK  
-```
-/rc
-```
-Performs a ready check.
-
-### QUIT PARTY/RAID  
-```
-/q
-```
-Leaves your current party/raid.
-
-## Game Utility
-
-### GAME UTILITIES  
-```
-/errors
-/ui
-/gx
-/rl
-```
-Toggles LUA error display, reloads the UI, restarts graphics, and clears the game cache.
-
-## Additional Features
-
-### COPY NAME  
-Press Control + I (or Command + I on Mac) when hovering over an item or unit to copy its name.
-
-### UI RELOAD SHORTCUT
-Right-click the main menu button to quickly reload your UI.
-
-## Right-Click Menu Options
-
-### ASSIST  
-```
-Assist
-```
-Assists the selected target via the right-click menu.
-
-### FIND  
-```
-Find
-```
-Activates the target macro for the chosen player via the right-click menu.
-
-### FIND ALSO  
-```
-Find Also
-Adds an extra target to the macro (max 3) using the right-click menu.
-
-### ARMORY LINK  
-```
-Classic Armory
-```
-Generates a link to the Classic Armory for the selected player.
+### Quick Actions
+- **UI Reload:** Right-click main menu button
+- **Classic Armory:** Access via right-click menu on players
+- **Copy Name:** Press Control+I (Command+I on Mac) when hovering over item/unit

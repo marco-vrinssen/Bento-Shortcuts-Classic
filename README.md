@@ -1,4 +1,4 @@
-# Bento Commands Classic
+# Bento Shortcuts Classic
 
 Addon for World of Warcraft Classic with chat commands enhancing communication, featuring chat filtering and multi-communication functionalities.
 

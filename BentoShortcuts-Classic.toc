@@ -1,6 +1,6 @@
 ## Interface: 11500
 ## Title: Bento Shortcuts Classic
-## Notes: Chat commands enhancing communication, featuring chat filtering and multi-communication functionalities.
+## Notes: Provides useful commands and options for more efficient interaction with the environment.
 ## Version: 1.0
 ## Author: MIYANKO
 

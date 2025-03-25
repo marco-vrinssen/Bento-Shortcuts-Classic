@@ -56,7 +56,7 @@ filterCommandEvents:SetScript("OnEvent", keywordValidation)
 -- SLASH COMMAND HANDLER
 
 local function handleFilterCommand(msg)
-    if msg == "" then
+    if msg == "" or msg == "stop" or msg == "clear" then
         wipe(keywordTable)
         print(YELLOW_CHAT_LUA .. "Scanning stopped.")
         filterCommandEvents:UnregisterEvent("CHAT_MSG_CHANNEL")
@@ -65,31 +65,11 @@ local function handleFilterCommand(msg)
             filterCommandEvents:RegisterEvent("CHAT_MSG_CHANNEL")
         end
 
-        if strfind(msg, "+") then
-            local keywordSets = {strsplit(" ", msg)}
-            for _, set in ipairs(keywordSets) do
-                if strfind(set, "+") then
-                    local compoundSet = {}
-                    for keyword in string.gmatch(set, "[^+]+") do
-                        table.insert(compoundSet, keyword)
-                    end
-                    table.insert(keywordTable, compoundSet)
-                else
-                    table.insert(keywordTable, set)
-                end
-            end
-        else
-            table.insert(keywordTable, msg)
-        end
+        table.insert(keywordTable, msg)
 
         local newKeywordsStr = ""
         for i, keywordSet in ipairs(keywordTable) do
-            if type(keywordSet) == "string" then
-                newKeywordsStr = newKeywordsStr .. "\"" .. keywordSet .. "\""
-            elseif type(keywordSet) == "table" then
-                local compoundStr = table.concat(keywordSet, " + ")
-                newKeywordsStr = newKeywordsStr .. "\"" .. compoundStr .. "\""
-            end
+            newKeywordsStr = newKeywordsStr .. "\"" .. keywordSet .. "\""
             if i ~= #keywordTable then
                 newKeywordsStr = newKeywordsStr .. ", "
             end
@@ -97,8 +77,6 @@ local function handleFilterCommand(msg)
         print(YELLOW_CHAT_LUA .. "Scanning all channels for" .. "|r" .. " " .. newKeywordsStr:gsub('"', '') .. ".")
     end
 end
-
--- REGISTER SLASH COMMAND
 
 SLASH_SCAN1 = "/scan"
 SlashCmdList["SCAN"] = handleFilterCommand

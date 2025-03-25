@@ -32,21 +32,20 @@ local function showNamePopup(name)
     end
 end
 
-local function getHoveredName()
+-- GET HOVERED NAME OR TARGET NAME
+local function getHoveredOrTargetName()
     local name, link = GameTooltip:GetItem()
     if name then return name end
 
-    name = GameTooltipTextLeft1:GetText()
-    if name and not UnitPlayerControlled("mouseover") then
-        return name
-    end
+    name = UnitName("target")
+    if name then return name end
 
     return nil
 end
 
 frame:SetScript("OnUpdate", function(self, elapsed)
     if GameTooltip:IsVisible() then
-        self.hoveredName = getHoveredName()
+        self.hoveredName = getHoveredOrTargetName()
     else
         self.hoveredName = nil
     end
@@ -59,7 +58,7 @@ keyFrame:SetScript("OnKeyDown", function(self, key)
     if key == "I" and (IsControlKeyDown() or (isMac and IsMetaKeyDown())) then
         showNamePopup(frame.hoveredName)
         keyFrame:SetPropagateKeyboardInput(false)
-        C_Timer.After(0.2, function() keyFrame:SetPropagateKeyboardInput(true) end)
+        C_Timer.After(0.1, function() keyFrame:SetPropagateKeyboardInput(true) end)
         return
     end
 end)

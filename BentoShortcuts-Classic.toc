@@ -6,11 +6,11 @@
 
 Modules/_Tokens.lua
 Modules/Chat.lua
+Modules/CopyName.lua
 Modules/Game.lua
 Modules/Group.lua
 Modules/Intro.lua
 Modules/LFG.lua
-Modules/Objects.lua
 Modules/Players.lua
 Modules/Travel.lua
 Modules/Whisper.lua

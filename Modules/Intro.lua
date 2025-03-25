@@ -1,7 +1,7 @@
 -- ENABLE COMMAND INTRO MESSAGE
 
 local function commandsIntro()
-    print(YELLOW_CHAT_LUA .. "/bentocmd" .. "|r" .. " for available commands.")
+    print(YELLOW_CHAT_LUA .. "/bentoshortcuts" .. "|r" .. " for available commands.")
 end
 
 local introEvents = CreateFrame("Frame")
@@ -102,8 +102,8 @@ local function showCommandList()
     end)
 end
 
-SLASH_BENTOCMD1 = "/bentocmd"
-SlashCmdList["BENTOCMD"] = function(msg, editBox)
+SLASH_BENTOSHORTCUTS1 = "/bentoshortcuts"
+SlashCmdList["BENTOSHORTCUTS"] = function(msg, editBox)
     if msg == "" then
         showCommandList()
     end

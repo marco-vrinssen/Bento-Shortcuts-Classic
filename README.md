@@ -1,58 +1,70 @@
 # Bento Shortcuts Classic
 
-Addon for World of Warcraft Classic with chat commands enhancing communication, featuring chat filtering and multi-communication functionalities.
+Addon for World of Warcraft Classic enhancing communication with chat commands, macro utilities, and group/game functions.
 
-Type `/bentocmd` for available commands.
+**Usage:** Type `/bentoshortcuts` for a command overview.
 
 ## Chat Commands
 
-### Chat Filtering
-`/f KEYWORD` - Filter all active channels for KEYWORD and repost matching messages.
-`/f KEYWORD1+KEYWORD2` - Filter all active channels for the combination of KEYWORD1 and KEYWORD2 and repost matching messages.
-`/f` - Clear and stop the filtering.
+- **Keyword Scan:**  
+  `/scan <KEYWORD>` – Scan all chat channels for messages containing KEYWORD.  
+  
+  `/scan stop` or `/scan clear` – Stop scanning.
 
-### Multi Whisper
-`/ww MESSAGE` - Send MESSAGE to all players in a currently open /who instance.
-`/ww N MESSAGE` - Send MESSAGE to the first N players in a currently open /who instance.
-`/ww -CLASS MESSAGE` - Send MESSAGE to all players except those of CLASS in a currently open /who instance.
-`/ww N -CLASS MESSAGE` - Send MESSAGE to the first N players except those of CLASS in a currently open /who instance.
+- **Multi Whisper:**  
+  `/w+ MESSAGE` – Whisper MESSAGE to all players in the current /who list.  
+  
+  `/w+ N MESSAGE` – Whisper MESSAGE to the first N players in the /who list.  
+  
+  `/w+ -CLASS MESSAGE` – Whisper MESSAGE to players excluding a specific CLASS.  
+  
+  `/w+ N -CLASS MESSAGE` – Whisper MESSAGE to the first N players excluding CLASS.
 
-### Whisper Invite
-`/wi` - Send MESSAGE and invite all players in the currently open /who list.
-`/wgi` - Send MESSAGE and guild invite all players in the currently open /who list.
+- **Whisper Reply:**  
+  `/r+ MESSAGE` – Whisper MESSAGE to all players who last whispered you.  
+  
+  `/r+ N MESSAGE` – Whisper MESSAGE to the last N players who whispered you.
 
-### Whisper Last
-`/wl MESSAGE` - Send MESSAGE to all players who whispered you.
-`/wl N MESSAGE` - Send MESSAGE to the last N players who whispered you.
+## Macro Commands
 
-### Whisper Sellers
-`/wah MESSAGE` - Send MESSAGE to all unique sellers in current auction house search results.
-`/wah N MESSAGE` - Send MESSAGE to the first N unique sellers in current auction house search results.
+- **Target Macro (Find):**  
+  `/find [TARGET]` – Create or update a macro to target a specified player or your current target if omitted.
+  
+- **Add to Target Macro:**  
+  `/find+ [TARGET]` – Add a target to the existing macro (up to 3 entries).
 
-### Find Mages and Warlocks
-`/port ZONE` - Search for warlocks in ZONE who can summon.
-`/port` - Search for mages in the current zone who can provide portals.
+## Travel Command
 
-### Close Whisper Tabs
-`/c` - Close all whisper tabs.
+- **Travel Search:**  
+  `/travel ZONE` – Search for warlocks in ZONE who can summon.  
+  
+  `/travel` – Search for mages in the current zone who can provide portals.
 
-### Target Macros
-`/fm TARGET` - Create or update a macro to target TARGET. If no TARGET is specified, the current target is used.
-`/fm NAME` - Create or update a macro to target NAME. If no NAME is specified, the current target is used.
-`/fm+ TARGET` - Add the current target or specified TARGET to the existing target macro. Up to 3 targets can be added.
-`/fm+ NAME` - Add the current target or specified NAME to the existing target macro. Up to 3 targets can be added.
-`/am TARGET` - Create or update a macro to assist TARGET. If no TARGET is specified, the current target is used.
-`/am NAME` - Create or update a macro to assist NAME. If no NAME is specified, the current target is used.
+## LFG Command
 
-### Group Utility
-`/rc` - Perform a ready check.
-`/q` - Leave the current party or raid.
+- **LFG Broadcast:**  
+  `/lfg MESSAGE` – Broadcast MESSAGE across LFG channels ("World" and "LookingForGroup").
 
-### Game Utility
-`/ui` - Reload the user interface.
-`/gx` - Restart the graphics engine.
-`/le` - Toggle the display of LUA errors.
-`/rl` - Reload the UI, restart the graphics engine, and clear the game cache.
+## Group & Game Utility
 
-## Right Click Menu Entries
-Simply right-click on the player frame or name and copy the corresponding link.
+- **Group Utility:**  
+  `/rc` – Perform a ready check.  
+  
+  `/q` – Leave the current party or raid.
+
+- **Game Utility:**  
+  `/errors` – Toggle LUA error display.  
+  
+  `/ui` – Reload the user interface.  
+  
+  `/gx` – Restart the graphics engine.  
+  
+  `/rl` – Reload the UI, restart the graphics engine, and clear the game cache.
+
+## Additional Features
+
+- **Copy Name Popup:**  
+  Press Control + I (or Command + I on Mac) while hovering over an item or unit to show its name.
+
+- **Right-Click Menus:**  
+  Access targeting and player link options by right-clicking on player frames or names.

@@ -5,12 +5,12 @@
 ## Author: MIYANKO
 
 Modules/_Tokens.lua
-Modules/ChatScan.lua
-Modules/ContextOptions.lua
-Modules/GameEngine.lua
-Modules/GroupUtility.lua
+Modules/Chat.lua
+Modules/Game.lua
+Modules/Group.lua
 Modules/Intro.lua
 Modules/LFG.lua
-Modules/MultiReply.lua
-Modules/MultiWhisper.lua
+Modules/Objects.lua
+Modules/Players.lua
 Modules/Travel.lua
+Modules/Whisper.lua

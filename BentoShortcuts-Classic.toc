@@ -11,6 +11,6 @@ Modules/Game.lua
 Modules/Group.lua
 Modules/Intro.lua
 Modules/LFG.lua
-Modules/Players.lua
 Modules/Travel.lua
+Modules/UnitLinks.lua
 Modules/Whisper.lua

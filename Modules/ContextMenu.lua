@@ -1,8 +1,9 @@
--- CONSTANTS
+-- DEFINE CONSTANTS
 local regionNames = {'us', 'kr', 'eu', 'tw', 'cn'}
 local region = regionNames[GetCurrentRegion()]
 
--- DEFINE NAME OR TARGET FOR FIND MACRO
+
+-- CREATE TARGET MACRO
 local function createTargetMacro(msg)
     local macroName = "FIND"
     local macroBody
@@ -24,7 +25,7 @@ local function createTargetMacro(msg)
     macroBody = macroBody .. "\n/run if UnitExists(\"target\") and not UnitIsDead(\"target\") and GetRaidTargetIndex(\"target\") == nil then SetRaidTarget(\"target\",8) end"
 
     local macroIndex = GetMacroIndexByName(macroName)
-    if (macroIndex > 0) then
+    if macroIndex > 0 then
         EditMacro(macroIndex, macroName, "Ability_Hunter_SniperShot", macroBody)
     else
         CreateMacro(macroName, "Ability_Hunter_SniperShot", macroBody, nil)
@@ -36,7 +37,8 @@ end
 SLASH_TARGETMACRO1 = "/find"
 SlashCmdList["TARGETMACRO"] = createTargetMacro
 
--- ADD NAME OR TARGET TO FIND MACRO
+
+-- ADD TARGET TO EXISTING MACRO
 local function addToTargetMacro(msg)
     local macroName = "FIND"
     local macroIndex = GetMacroIndexByName(macroName)
@@ -91,15 +93,6 @@ end
 SLASH_TARGETMACROADD1 = "/find+"
 SlashCmdList["TARGETMACROADD"] = addToTargetMacro
 
--- TRIGGER FIND MACRO WITH CONTEXT DATA NAME
-local function triggerFindMacroWithName(playerName)
-    createTargetMacro(playerName)
-end
-
--- TRIGGER FIND ALSO MACRO WITH CONTEXT DATA NAME
-local function triggerFindAlsoMacroWithName(playerName)
-    addToTargetMacro(playerName)
-end
 
 -- ASSIST PLAYER
 local function assistPlayer(targetName)
@@ -110,20 +103,21 @@ local function assistPlayer(targetName)
             return false
         end
     end
-    
+
     local macroName = "ASSIST"
     local macroBody = "/assist " .. targetName
-    
+
     local macroIndex = GetMacroIndexByName(macroName)
     if macroIndex > 0 then
         EditMacro(macroIndex, macroName, "Ability_DualWield", macroBody)
     else
         CreateMacro(macroName, "Ability_DualWield", macroBody, nil)
     end
-    
+
     print(YELLOW_CHAT_LUA .. "ASSIST macro updated to" .. "|r" .. " " .. targetName .. ".")
     return true
 end
+
 
 -- FIX SERVER NAME
 local function fixServerName(server)
@@ -143,6 +137,7 @@ local function fixServerName(server)
     return server
 end
 
+
 -- GENERATE URL
 local function generateURL(type, name, server)
     local url
@@ -158,7 +153,8 @@ local function generateURL(type, name, server)
     return url
 end
 
--- POPUP LINK
+
+-- SHOW POPUP LINK
 local function popupLink(argType, argName, argServer)
     local type = argType
     local name = argName and argName:lower()
@@ -190,29 +186,28 @@ local function popupLink(argType, argName, argServer)
     StaticPopup_Show("PopupLinkDialog", "", "", {url = url})
 end
 
--- UNIFIED MENU MODIFICATION FUNCTION
+
+-- MODIFY RIGHT-CLICK MENU
 local function modifyMenu(menuType, isPlayer)
     Menu.ModifyMenu(menuType, function(owner, rootDescription, contextData)
         local playerName = contextData.name
         local server = contextData.server or GetNormalizedRealmName()
-        
-        -- REMOVE DUPLICATE TARGETING SECTION
-        if not rootDescription:HasTitle("Targeting") then
+
+        if rootDescription.HasTitle and not rootDescription:HasTitle("Targeting") then
             rootDescription:CreateDivider()
             rootDescription:CreateTitle("Targeting")
             rootDescription:CreateButton("Assist", function()
                 assistPlayer(playerName)
             end)
             rootDescription:CreateButton("Find", function()
-                triggerFindMacroWithName(playerName)
+                createTargetMacro(playerName)
             end)
             rootDescription:CreateButton("Find Also", function()
-                triggerFindAlsoMacroWithName(playerName)
+                addToTargetMacro(playerName)
             end)
         end
 
-        -- ARMORY LINK FOR PLAYERS
-        if isPlayer or (owner:GetUnit() and UnitIsPlayer(owner:GetUnit())) then
+        if rootDescription.HasTitle and not rootDescription:HasTitle("Player Links") then
             rootDescription:CreateDivider()
             rootDescription:CreateTitle("Player Links")
             rootDescription:CreateButton("Armory Link", function()
@@ -222,7 +217,8 @@ local function modifyMenu(menuType, isPlayer)
     end)
 end
 
--- MODIFY CHAT MENUS
+
+-- APPLY MENU MODIFICATIONS
 local chatTypes = {
     "SELF", "PLAYER", "PARTY", "RAID", "RAID_PLAYER", "ENEMY_PLAYER",
     "FOCUS", "FRIEND", "GUILD", "GUILD_OFFLINE", "ARENAENEMY",
@@ -233,7 +229,6 @@ for _, value in ipairs(chatTypes) do
     modifyMenu("MENU_UNIT_"..value, true)
 end
 
--- MODIFY UNIT MENUS
 local unitTypes = {
     "SELF", "PLAYER", "PARTY", "RAID", "RAID_PLAYER", "ENEMY_PLAYER",
     "FOCUS", "FRIEND", "GUILD", "GUILD_OFFLINE", "ARENAENEMY",

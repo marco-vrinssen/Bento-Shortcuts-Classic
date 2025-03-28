@@ -44,3 +44,20 @@ MainMenuMicroButton:HookScript("OnClick", function(self, buttonClicked)
         ReloadUI()
     end
 end)
+
+-- CUSTOM TOOLTIP FOR MAIN MENU MICRO BUTTON
+
+local altTooltip = CreateFrame("GameTooltip", "CustomTooltip", UIParent, "GameTooltipTemplate")
+
+MainMenuMicroButton:HookScript("OnEnter", function(self)
+    altTooltip:SetOwner(GameTooltip, "ANCHOR_NONE")
+    altTooltip:SetPoint("TOPLEFT", GameTooltip, "BOTTOMLEFT", 0, -2)
+    altTooltip:SetPoint("TOPRIGHT", GameTooltip, "BOTTOMRIGHT", 0, -2)
+    altTooltip:ClearLines()
+    altTooltip:AddLine("Right-Click: Reload UI", 1, 1, 1)
+    altTooltip:Show()
+end)
+
+MainMenuMicroButton:HookScript("OnLeave", function()
+    altTooltip:Hide()
+end)

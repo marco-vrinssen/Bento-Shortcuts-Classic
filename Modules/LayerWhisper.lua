@@ -17,12 +17,17 @@ local function layerCommand()
                 end
             end
 
+            local whisperCount = 0
             for index in pairs(selectedIndices) do
+                if whisperCount >= 5 then break end
                 local info = C_FriendList.GetWhoInfo(index)
                 if info and info.fullName then
                     SendChatMessage(message, "WHISPER", nil, info.fullName)
+                    whisperCount = whisperCount + 1
                 end
             end
+
+            C_FriendList.SendWho("") -- Close the /who window
         end
     end)
 end

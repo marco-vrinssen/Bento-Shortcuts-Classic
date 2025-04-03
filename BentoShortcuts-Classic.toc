@@ -11,7 +11,9 @@ Modules/ContextMenu.lua
 Modules/GameUtility.lua
 Modules/GroupManagement.lua
 Modules/IntroCommand.lua
+Modules/LayerWhisper.lua
 Modules/LFG.lua
+Modules/MultiReply.lua
 Modules/MultiWhisper.lua
 Modules/NameCopy.lua
 Modules/Travel.lua

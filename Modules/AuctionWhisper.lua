@@ -15,5 +15,5 @@ local function sendAuctionMessages(msg)
     end
 end
 
-SLASH_WSELLER1 = "/wseller"
+SLASH_WSELLER1 = "/ws"
 SlashCmdList["WSELLER"] = sendAuctionMessages

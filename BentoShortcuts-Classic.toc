@@ -7,7 +7,6 @@
 Modules/_Tokens.lua
 Modules/AuctionWhisper.lua
 Modules/ChatScan.lua
-Modules/ContextMenu.lua
 Modules/GameUtility.lua
 Modules/GroupManagement.lua
 Modules/IntroCommand.lua

@@ -19,6 +19,7 @@ Utility addon for World of Warcraft Classic providing targeting, communication, 
 - `/r+ [MESSAGE]` : Reply to recent whisper senders
   - `/r+ N [MESSAGE]` : Reply to last N whisper senders
 - `/lfg [MESSAGE]` : Broadcast to World and LookingForGroup channels
+- `/ws [MESSAGE]` : Whisper to all sellers of currently displayed auctions
 
 ### Player Targeting
 - `/find [NAME]` : Set find macro to specified name

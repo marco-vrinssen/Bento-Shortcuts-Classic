@@ -41,6 +41,7 @@ local function showCommandList()
     tooltip:AddLine(YELLOW_CHAT_LUA .. "/r+ MESSAGE" .. "|r" .. WHITE_CHAT_LUA .. ": Reply to recent whisper senders." .. "|r")
     tooltip:AddLine(YELLOW_CHAT_LUA .. "/r+ N MESSAGE" .. "|r" .. WHITE_CHAT_LUA .. ": Reply to last N whisper senders." .. "|r")
     tooltip:AddLine(YELLOW_CHAT_LUA .. "/lfg MESSAGE" .. "|r" .. WHITE_CHAT_LUA .. ": Broadcast to World and LookingForGroup channels." .. "|r")
+    tooltip:AddLine(YELLOW_CHAT_LUA .. "/ws MESSAGE" .. "|r" .. WHITE_CHAT_LUA .. ": Whisper to all sellers of currently displayed auctions." .. "|r")
 
     tooltip:AddLine(" ")
 

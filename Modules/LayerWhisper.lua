@@ -6,7 +6,7 @@ local function layerCommand()
 
     C_FriendList.SendWho(randomMinLevel .. "-" .. randomMaxLevel)
 
-    C_Timer.After(1, function()
+    C_Timer.After(0.5, function()
         local numWhos = C_FriendList.GetNumWhoResults()
         if numWhos and numWhos > 0 then
             local selectedIndices = {}

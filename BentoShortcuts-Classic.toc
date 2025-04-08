@@ -5,7 +5,6 @@
 ## Author: MIYANKO
 
 Modules/_Tokens.lua
-Modules/AuctionWhisper.lua
 Modules/ChatScan.lua
 Modules/GameUtility.lua
 Modules/GroupManagement.lua

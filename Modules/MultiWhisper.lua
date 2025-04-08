@@ -1,6 +1,7 @@
 -- WHISPER PLAYERS IN /WHO LIST
 
 local function whisperPlayers(msg)
+    
     local limit, classExclusion, message
 
     limit, classExclusion, message = msg:match("^(%d+)%s*-%s*(%w+)%s+(.+)$")
@@ -14,32 +15,32 @@ local function whisperPlayers(msg)
         end
     end
 
-    local numWhos = C_FriendList.GetNumWhoResults()
+    local numWhoResults = C_FriendList.GetNumWhoResults()
 
     if limit then
         limit = tonumber(limit)
     else
-        limit = numWhos
+        limit = numWhoResults
     end
 
     if classExclusion then
         classExclusion = classExclusion:lower()
     end
 
-    if message and message ~= "" and numWhos and numWhos > 0 then
-        local count = 0
-        for i = 1, numWhos do
-            if count >= limit then break end
-            local info = C_FriendList.GetWhoInfo(i)
-            if info and info.fullName then
+    if message and message ~= "" and numWhoResults and numWhoResults > 0 then
+        local whisperCount = 0
+        for i = 1, numWhoResults do
+            if whisperCount >= limit then break end
+            local whoInfo = C_FriendList.GetWhoInfo(i)
+            if whoInfo and whoInfo.fullName then
                 if classExclusion then
-                    if info.classStr:lower() ~= classExclusion then
-                        SendChatMessage(message, "WHISPER", nil, info.fullName)
-                        count = count + 1
+                    if whoInfo.classStr:lower() ~= classExclusion then
+                        SendChatMessage(message, "WHISPER", nil, whoInfo.fullName)
+                        whisperCount = whisperCount + 1
                     end
                 else
-                    SendChatMessage(message, "WHISPER", nil, info.fullName)
-                    count = count + 1
+                    SendChatMessage(message, "WHISPER", nil, whoInfo.fullName)
+                    whisperCount = whisperCount + 1
                 end
             end
         end
@@ -48,3 +49,26 @@ end
 
 SLASH_MULTIWHISPER1 = "/w+"
 SlashCmdList["MULTIWHISPER"] = whisperPlayers
+
+-- SEND MESSAGES TO AUCTION SELLERS
+
+local function sendAuctionMessages(msg)
+    
+    if not msg or msg == "" then
+        print("Usage: /wah <message>")
+        return
+    end
+
+    local auctionItemCount = GetNumAuctionItems("list")
+    
+    for i = 1, auctionItemCount do
+        local _, _, _, _, _, _, _, _, _, _, _, _, _, auctionOwner = GetAuctionItemInfo("list", i)
+        
+        if auctionOwner then
+            SendChatMessage(msg, "WHISPER", nil, auctionOwner)
+        end
+    end
+end
+
+SLASH_WSELLER1 = "/ws"
+SlashCmdList["WSELLER"] = sendAuctionMessages

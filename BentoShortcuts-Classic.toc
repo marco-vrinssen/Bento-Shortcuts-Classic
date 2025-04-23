@@ -5,14 +5,12 @@
 ## Author: MIYANKO
 
 Modules/_Tokens.lua
+Modules/Broadcast.lua
 Modules/ChatScan.lua
-Modules/GameUtility.lua
-Modules/GroupManagement.lua
-Modules/IntroCommand.lua
-Modules/LayerWhisper.lua
-Modules/LFG.lua
-Modules/MultiReply.lua
-Modules/MultiWhisper.lua
-Modules/NameCopy.lua
-Modules/Travel.lua
-Modules/UnitLinks.lua
+Modules/CopyName.lua
+Modules/Group.lua
+Modules/Intro.lua
+Modules/Targeting.lua
+Modules/Utility.lua
+Modules/Whisper.lua
+Modules/Who.lua

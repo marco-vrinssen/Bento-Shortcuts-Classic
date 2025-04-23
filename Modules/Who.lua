@@ -12,5 +12,5 @@ local function portCommand(msg)
     end
 end
 
-SLASH_TRAVEL1 = "/travel"
-SlashCmdList["TRAVEL"] = portCommand
+SLASH_PORT1 = "/port"
+SlashCmdList["PORT"] = portCommand

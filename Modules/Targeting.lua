@@ -1,8 +1,11 @@
 -- CONSTANTS
+
 local regionNames = {'us', 'kr', 'eu', 'tw', 'cn'}
 local region = regionNames[GetCurrentRegion()]
 
+
 -- DEFINE NAME OR TARGET FOR FIND MACRO
+
 local function createTargetMacro(msg)
     local macroName = "FIND"
     local macroBody
@@ -36,7 +39,9 @@ end
 SLASH_TARGETMACRO1 = "/find"
 SlashCmdList["TARGETMACRO"] = createTargetMacro
 
+
 -- ADD NAME OR TARGET TO FIND MACRO
+
 local function addToTargetMacro(msg)
     local macroName = "FIND"
     local macroIndex = GetMacroIndexByName(macroName)
@@ -91,17 +96,23 @@ end
 SLASH_TARGETMACROADD1 = "/find+"
 SlashCmdList["TARGETMACROADD"] = addToTargetMacro
 
+
 -- TRIGGER FIND MACRO WITH CONTEXT DATA NAME
+
 local function triggerFindMacroWithName(playerName)
     createTargetMacro(playerName)
 end
 
+
 -- TRIGGER FIND ALSO MACRO WITH CONTEXT DATA NAME
+
 local function triggerFindAlsoMacroWithName(playerName)
     addToTargetMacro(playerName)
 end
 
+
 -- ASSIST PLAYER
+
 local function assistPlayer(targetName)
     if not targetName then
         targetName = UnitName("target")
@@ -125,7 +136,9 @@ local function assistPlayer(targetName)
     return true
 end
 
+
 -- FIX SERVER NAME
+
 local function fixServerName(server)
     if server == nil or server == "" then
         return
@@ -143,7 +156,9 @@ local function fixServerName(server)
     return server
 end
 
+
 -- GENERATE URL
+
 local function generateURL(type, name, server)
     local url
     if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
@@ -158,7 +173,9 @@ local function generateURL(type, name, server)
     return url
 end
 
+
 -- POPUP LINK
+
 local function popupLink(argType, argName, argServer)
     local type = argType
     local name = argName and argName:lower()
@@ -190,7 +207,9 @@ local function popupLink(argType, argName, argServer)
     StaticPopup_Show("PopupLinkDialog", "", "", {url = url})
 end
 
+
 -- MODIFY MENU
+
 local chatTypes = {
     "SELF", "PLAYER", "PARTY", "RAID", "RAID_PLAYER", "ENEMY_PLAYER",
     "FOCUS", "FRIEND", "GUILD", "GUILD_OFFLINE", "ARENAENEMY",
@@ -201,7 +220,6 @@ for _, value in ipairs(chatTypes) do
     Menu.ModifyMenu("MENU_UNIT_"..value, function(owner, rootDescription, contextData)
         local server = contextData.server or GetNormalizedRealmName()
         
-        -- TARGETING SECTION
         rootDescription:CreateDivider()
         rootDescription:CreateTitle("Targeting")
         rootDescription:CreateButton("Assist", function()
@@ -214,7 +232,6 @@ for _, value in ipairs(chatTypes) do
             triggerFindAlsoMacroWithName(contextData.name)
         end)
 
-        -- PLAYER LINKS SECTION
         rootDescription:CreateDivider()
         rootDescription:CreateTitle("Player Links")
         rootDescription:CreateButton("Armory Link", function()
@@ -226,7 +243,6 @@ end
 Menu.ModifyMenu("MENU_CHAT_PLAYER", function(owner, rootDescription, contextData)
     local playerName = contextData.name
 
-    -- TARGETING SECTION
     rootDescription:CreateDivider()
     rootDescription:CreateTitle("Targeting")
     rootDescription:CreateButton("Assist", function()
@@ -239,7 +255,6 @@ Menu.ModifyMenu("MENU_CHAT_PLAYER", function(owner, rootDescription, contextData
         triggerFindAlsoMacroWithName(playerName)
     end)
 
-    -- PLAYER LINKS SECTION
     rootDescription:CreateDivider()
     rootDescription:CreateTitle("Player Links")
     rootDescription:CreateButton("Armory Link", function()

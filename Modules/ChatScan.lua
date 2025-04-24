@@ -1,35 +1,35 @@
--- INITIALIZE VARIABLES
+-- INITIALIZE KEYWORD STORAGE AND PLAYER NAME
 
-local keywordTable = {}
-local playerName = UnitName("player")
+local activeKeywordFilters = {}
+local localPlayerName = UnitName("player")
 
--- NOTIFICATION FUNCTIONS
+-- NOTIFICATION ON KEYWORD MATCH
 
-local function keywordMatch(msg, senderName)
-    local playerLink = "|Hplayer:" .. senderName .. "|h" .. YELLOW_CHAT_LUA .. "[" .. senderName .. "]: " .. "|r" .. "|h"
-    print(playerLink .. msg)
+local function notifyKeywordMatch(matchedMessage, matchedSender)
+    local senderLink = "|Hplayer:" .. matchedSender .. "|h" .. YELLOW_CHAT_LUA .. "[" .. matchedSender .. "]: " .. "|r" .. "|h"
+    print(senderLink .. matchedMessage)
     PlaySound(3175, "Master", true)
 end
 
--- KEYWORD MATCHING LOGIC
+-- KEYWORD FILTERING LOGIC
 
-local function keywordFilter(msg)
-    for _, keywordSet in ipairs(keywordTable) do
-        if type(keywordSet) == "string" then
-            local pattern = strlower(keywordSet)
-            if strfind(strlower(msg), pattern) then
+local function doesMessageMatchAnyKeywordFilter(chatMessage)
+    for _, keywordFilter in ipairs(activeKeywordFilters) do
+        if type(keywordFilter) == "string" then
+            local keywordPattern = strlower(keywordFilter)
+            if strfind(strlower(chatMessage), keywordPattern) then
                 return true
             end
-        elseif type(keywordSet) == "table" then
-            local allMatch = true
-            for _, keyword in ipairs(keywordSet) do
-                local pattern = strlower(keyword)
-                if not strfind(strlower(msg), pattern) then
-                    allMatch = false
+        elseif type(keywordFilter) == "table" then
+            local allKeywordsPresent = true
+            for _, requiredKeyword in ipairs(keywordFilter) do
+                local keywordPattern = strlower(requiredKeyword)
+                if not strfind(strlower(chatMessage), keywordPattern) then
+                    allKeywordsPresent = false
                     break
                 end
             end
-            if allMatch then
+            if allKeywordsPresent then
                 return true
             end
         end
@@ -37,46 +37,64 @@ local function keywordFilter(msg)
     return false
 end
 
--- EVENT HANDLING
+-- EVENT HANDLER FOR CHAT MESSAGE SCANNING
 
-local function keywordValidation(self, event, msg, senderName, languageName, channelName, ...)
-    if next(keywordTable) and strmatch(channelName, "%d+") then
+local function handleChatMessageEvent(self, event, chatMessage, senderName, languageName, channelName, ...)
+    if next(activeKeywordFilters) and strmatch(channelName, "%d+") then
         local channelNumber = tonumber(strmatch(channelName, "%d+"))
-        if channelNumber and channelNumber >= 1 and channelNumber <= 20 and keywordFilter(msg) then
-            keywordMatch(msg, senderName)
+        if channelNumber and channelNumber >= 1 and channelNumber <= 20 and doesMessageMatchAnyKeywordFilter(chatMessage) then
+            notifyKeywordMatch(chatMessage, senderName)
         end
     end
 end
 
--- FRAME SETUP
+-- SETUP CHAT EVENT FRAME
 
-local filterCommandEvents = CreateFrame("Frame")
-filterCommandEvents:SetScript("OnEvent", keywordValidation)
+local chatScanEventFrame = CreateFrame("Frame")
+chatScanEventFrame:SetScript("OnEvent", handleChatMessageEvent)
 
--- SLASH COMMAND HANDLER
+-- SLASH COMMAND HANDLER FOR KEYWORD SCANNING
 
-local function handleFilterCommand(msg)
-    if msg == "" or msg == "stop" or msg == "clear" then
-        wipe(keywordTable)
-        print(YELLOW_CHAT_LUA .. "Scanning stopped.")
-        filterCommandEvents:UnregisterEvent("CHAT_MSG_CHANNEL")
+local function handleScanSlashCommand(commandInput)
+    local trimmedInput = commandInput:gsub("^%s*(.-)%s*$", "%1")
+    if trimmedInput == "" or trimmedInput == "stop" or trimmedInput == "clear" then
+        wipe(activeKeywordFilters)
+        print(YELLOW_CHAT_LUA .. "[CHAT SCAN]:" .. "|r " .. WHITE_CHAT_LUA .. "Stopped and cleared.|r")
+        chatScanEventFrame:UnregisterEvent("CHAT_MSG_CHANNEL")
     else
-        if not filterCommandEvents:IsEventRegistered("CHAT_MSG_CHANNEL") then
-            filterCommandEvents:RegisterEvent("CHAT_MSG_CHANNEL")
+        if not chatScanEventFrame:IsEventRegistered("CHAT_MSG_CHANNEL") then
+            chatScanEventFrame:RegisterEvent("CHAT_MSG_CHANNEL")
         end
 
-        table.insert(keywordTable, msg)
-
-        local newKeywordsStr = ""
-        for i, keywordSet in ipairs(keywordTable) do
-            newKeywordsStr = newKeywordsStr .. "\"" .. keywordSet .. "\""
-            if i ~= #keywordTable then
-                newKeywordsStr = newKeywordsStr .. ", "
+        local keywordList = {}
+        for keyword in string.gmatch(trimmedInput, '([^,]+)') do
+            local cleanedKeyword = keyword:gsub("^%s*(.-)%s*$", "%1")
+            if cleanedKeyword ~= "" then
+                table.insert(keywordList, cleanedKeyword)
             end
         end
-        print(YELLOW_CHAT_LUA .. "Scanning all channels for" .. "|r" .. " " .. newKeywordsStr:gsub('"', '') .. ".")
+
+        if #keywordList == 1 then
+            table.insert(activeKeywordFilters, keywordList[1])
+        elseif #keywordList > 1 then
+            table.insert(activeKeywordFilters, keywordList)
+        end
+
+        local groupedKeywordStrings = {}
+        for _, keywordFilter in ipairs(activeKeywordFilters) do
+            if type(keywordFilter) == "string" then
+                table.insert(groupedKeywordStrings, WHITE_CHAT_LUA .. keywordFilter .. "|r")
+            elseif type(keywordFilter) == "table" then
+                local coloredKeywords = {}
+                for i, kw in ipairs(keywordFilter) do
+                    table.insert(coloredKeywords, WHITE_CHAT_LUA .. kw .. "|r")
+                end
+                table.insert(groupedKeywordStrings, table.concat(coloredKeywords, GREY_CHAT_LUA .. " and " .. "|r"))
+            end
+        end
+        print(YELLOW_CHAT_LUA .. "[CHAT SCAN]:" .. "|r " .. table.concat(groupedKeywordStrings, " / "))
     end
 end
 
 SLASH_SCAN1 = "/scan"
-SlashCmdList["SCAN"] = handleFilterCommand
+SlashCmdList["SCAN"] = handleScanSlashCommand

@@ -89,10 +89,10 @@ local function handleScanSlashCommand(commandInput)
                 for i, kw in ipairs(keywordFilter) do
                     table.insert(coloredKeywords, WHITE_CHAT_LUA .. kw .. "|r")
                 end
-                table.insert(groupedKeywordStrings, table.concat(coloredKeywords, GREY_CHAT_LUA .. " and " .. "|r"))
+                table.insert(groupedKeywordStrings, table.concat(coloredKeywords, YELLOW_CHAT_LUA .. " AND " .. "|r"))
             end
         end
-        print(YELLOW_CHAT_LUA .. "[CHAT SCAN]:" .. "|r " .. table.concat(groupedKeywordStrings, " / "))
+        print(YELLOW_CHAT_LUA .. "[CHAT SCAN]:" .. "|r " .. table.concat(groupedKeywordStrings, YELLOW_CHAT_LUA .. " / " .. "|r"))
     end
 end
 

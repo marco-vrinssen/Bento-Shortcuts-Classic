@@ -13,7 +13,7 @@ SlashCmdList["TOGGLELUA"] = function()
 end
 
 
--- RELOAD THE UI
+-- RELOAD UI
 
 SLASH_RELOADUI1 = "/ui"
 SlashCmdList["RELOADUI"] = function()
@@ -21,7 +21,7 @@ SlashCmdList["RELOADUI"] = function()
 end
 
 
--- RESTART THE GRAPHICS ENGINE
+-- RESTART GRAPHICS ENGINE
 
 SLASH_GXRESTART1 = "/gx"
 SlashCmdList["GXRESTART"] = function()
@@ -29,7 +29,7 @@ SlashCmdList["GXRESTART"] = function()
 end
 
 
--- RELOAD THE UI AND RESTART THE GRAPHICS ENGINE AND CLEAR GAME CACHE
+-- FULL RELOAD: UI, GRAPHICS ENGINE, AND GAME CACHE
 
 local function fullReload()
     ReloadUI()
@@ -41,7 +41,7 @@ SLASH_FULLRELOAD1 = "/rl"
 SlashCmdList["FULLRELOAD"] = fullReload
 
 
--- RELOAD UI ON GAME MICRO MENU RIGHT CLICK
+-- RELOAD UI ON MAIN MENU MICRO BUTTON RIGHT CLICK
 
 MainMenuMicroButton:HookScript("OnClick", function(self, buttonClicked)
     if buttonClicked == "RightButton" then

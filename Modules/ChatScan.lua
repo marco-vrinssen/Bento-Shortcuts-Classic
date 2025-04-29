@@ -6,7 +6,7 @@ local localPlayerName = UnitName("player")
 -- NOTIFICATION ON KEYWORD MATCH
 
 local function notifyKeywordMatch(matchedMessage, matchedSender)
-    local senderLink = "|Hplayer:" .. matchedSender .. "|h" .. YELLOW_CHAT_LUA .. "[" .. matchedSender .. "]: " .. "|r" .. "|h"
+    local senderLink = "|Hplayer:" .. matchedSender .. "|h" .. YELLOW_LIGHT_LUA .. "[" .. matchedSender .. "]: " .. "|r" .. "|h"
     print(senderLink .. matchedMessage)
     PlaySound(3175, "Master", true)
 end
@@ -59,7 +59,7 @@ local function handleScanSlashCommand(commandInput)
     local trimmedInput = commandInput:gsub("^%s*(.-)%s*$", "%1")
     if trimmedInput == "" or trimmedInput == "stop" or trimmedInput == "clear" then
         wipe(activeKeywordFilters)
-        print(YELLOW_CHAT_LUA .. "[CHAT SCAN]:" .. "|r " .. WHITE_CHAT_LUA .. "Stopped and cleared.|r")
+        print(YELLOW_LIGHT_LUA .. "[CHAT SCAN]:" .. "|r " .. WHITE_LUA .. "Stopped and cleared.|r")
         chatScanEventFrame:UnregisterEvent("CHAT_MSG_CHANNEL")
     else
         if not chatScanEventFrame:IsEventRegistered("CHAT_MSG_CHANNEL") then
@@ -83,16 +83,16 @@ local function handleScanSlashCommand(commandInput)
         local groupedKeywordStrings = {}
         for _, keywordFilter in ipairs(activeKeywordFilters) do
             if type(keywordFilter) == "string" then
-                table.insert(groupedKeywordStrings, WHITE_CHAT_LUA .. keywordFilter .. "|r")
+                table.insert(groupedKeywordStrings, WHITE_LUA .. keywordFilter .. "|r")
             elseif type(keywordFilter) == "table" then
                 local coloredKeywords = {}
                 for i, kw in ipairs(keywordFilter) do
-                    table.insert(coloredKeywords, WHITE_CHAT_LUA .. kw .. "|r")
+                    table.insert(coloredKeywords, WHITE_LUA .. kw .. "|r")
                 end
-                table.insert(groupedKeywordStrings, table.concat(coloredKeywords, YELLOW_CHAT_LUA .. " AND " .. "|r"))
+                table.insert(groupedKeywordStrings, table.concat(coloredKeywords, YELLOW_LIGHT_LUA .. " AND " .. "|r"))
             end
         end
-        print(YELLOW_CHAT_LUA .. "[CHAT SCAN]:" .. "|r " .. table.concat(groupedKeywordStrings, YELLOW_CHAT_LUA .. " / " .. "|r"))
+        print(YELLOW_LIGHT_LUA .. "[CHAT SCAN]:" .. "|r " .. table.concat(groupedKeywordStrings, YELLOW_LIGHT_LUA .. " / " .. "|r"))
     end
 end
 

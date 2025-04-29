@@ -43,7 +43,6 @@ BLUE_CHAT_LUA = "|cFFAAAAFF"            -- #AAAAFF
 GREEN_CHAT = {0.25, 1.0, 0.25}          -- #40FF40
 GREEN_CHAT_LUA = "|cFF40FF40"           -- #40FF40
 
-
 -- ELEMENTS
 
 FONT = STANDARD_TEXT_FONT

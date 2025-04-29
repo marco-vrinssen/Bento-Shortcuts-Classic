@@ -30,9 +30,12 @@ Utility addon for World of Warcraft Classic providing targeting, communication, 
 ### Travel Shortcuts
 - `/travel [ZONE]` : Find warlocks offering summons to specified zone
 - `/travel` : Find mages offering portals in current zone
+- `/port [ZONE]` : Find warlocks offering summoning portals to zone; if blank, find mage portals
 
 ### Group Utility
 - `/rc` : Perform ready check
+- `/rc+` : Initiate role poll
+- `/mp` : Mark tanks and healers in party with raid icons
 - `/q` : Leave current party/raid
 
 ### System Commands

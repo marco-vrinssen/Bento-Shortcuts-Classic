@@ -33,7 +33,7 @@ local function createTargetMacro(msg)
         CreateMacro(macroName, "Ability_Hunter_SniperShot", macroBody, nil)
     end
 
-    print(BentoChatColors.YELLOW_LUA .. "FIND:" .. "|r" .. " " .. targetName .. ".")
+    print(YELLOW_CHAT_LUA .. "FIND:" .. "|r" .. " " .. targetName .. ".")
 end
 
 SLASH_TARGETMACRO1 = "/find"
@@ -90,7 +90,7 @@ local function addToTargetMacro(msg)
     end
 
     local newTargetsStr = table.concat(existingTargets, ", ") .. ", " .. targetName
-    print(BentoChatColors.YELLOW_LUA .. "FIND:" .. "|r" .. " " .. newTargetsStr .. ".")
+    print(YELLOW_CHAT_LUA .. "FIND:" .. "|r" .. " " .. newTargetsStr .. ".")
 end
 
 SLASH_TARGETMACROADD1 = "/find+"
@@ -132,7 +132,7 @@ local function assistPlayer(targetName)
         CreateMacro(macroName, "Ability_DualWield", macroBody, nil)
     end
     
-    print(BentoChatColors.YELLOW_LUA .. "ASSIST macro updated to" .. "|r" .. " " .. targetName .. ".")
+    print(YELLOW_CHAT_LUA .. "ASSIST macro updated to" .. "|r" .. " " .. targetName .. ".")
     return true
 end
 

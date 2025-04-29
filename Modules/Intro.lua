@@ -1,81 +1,88 @@
--- DISPLAY LOGIN MESSAGE
+-- ENABLE COMMAND INTRO MESSAGE
 
 local function commandsIntro()
-    print(BentoChatColors.YELLOW_LUA.."/bentoshortcuts|r for available commands.")
+    print(YELLOW_CHAT_LUA .. "/bentoshortcuts" .. "|r" .. " for available commands.")
 end
 
-local introFrame = CreateFrame("Frame")
-introFrame:RegisterEvent("PLAYER_LOGIN")
-introFrame:SetScript("OnEvent", commandsIntro)
+local introEvents = CreateFrame("Frame")
+introEvents:RegisterEvent("PLAYER_LOGIN")
+introEvents:SetScript("OnEvent", commandsIntro)
 
--- RENDER COMMAND LIST TOOLTIP
+-- SHOW COMMAND LIST IN TOOLTIP
 
 local function showCommandList()
-    local tt = _G["CommandListTooltip"]
-        or CreateFrame("GameTooltip","CommandListTooltip",UIParent,"GameTooltipTemplate")
-    tt:ClearLines()
-    tt:SetOwner(UIParent,"ANCHOR_NONE")
-    tt:SetPoint("CENTER",UIParent,"CENTER")
-    tt:SetMovable(true); tt:EnableMouse(true)
-    tt:RegisterForDrag("LeftButton")
-    tt:SetScript("OnDragStart",tt.StartMoving)
-    tt:SetScript("OnDragStop",tt.StopMovingOrSizing)
-    tt:SetResizable(true)
+    local tooltip = _G["CommandListTooltip"] or CreateFrame("GameTooltip", "CommandListTooltip", UIParent, "GameTooltipTemplate")
+    tooltip:ClearLines()
+    tooltip:SetOwner(UIParent, "ANCHOR_NONE")
+    tooltip:SetPoint("CENTER", UIParent, "CENTER")
+    tooltip:SetMovable(true)
+    tooltip:EnableMouse(true)
+    tooltip:RegisterForDrag("LeftButton")
+    tooltip:SetScript("OnDragStart", tooltip.StartMoving)
+    tooltip:SetScript("OnDragStop", tooltip.StopMovingOrSizing)
+    tooltip:SetResizable(true)
 
-    tt:AddLine(BentoChatColors.YELLOW_LUA.."BENTO COMMANDS|r")
-    tt:AddLine(" ")
+    tooltip:AddLine(YELLOW_CHAT_LUA .. "Bento Commands" .. "|r")
+    
+    tooltip:AddLine(" ")
+    tooltip:AddLine(" ")
 
-    tt:AddLine(BentoChatColors.YELLOW_LUA.."KEYWORD SCANNING|r")
-    tt:AddLine(BentoChatColors.YELLOW_LUA.."/scan KEYWORD|r"..BentoChatColors.WHITE_LUA..": Monitor channels for keyword.|r")
-    tt:AddLine(BentoChatColors.YELLOW_LUA.."/scan stop|r"..BentoChatColors.WHITE_LUA..": Stop and clear filters.|r")
-    tt:AddLine(BentoChatColors.YELLOW_LUA.."/scan clear|r"..BentoChatColors.WHITE_LUA..": Stop and clear filters.|r")
-    tt:AddLine(" ")
+    tooltip:AddLine(YELLOW_CHAT_LUA .. "Keyword Scanning" .. "|r")
+    tooltip:AddLine(YELLOW_CHAT_LUA .. "/scan KEYWORD" .. "|r" .. WHITE_CHAT_LUA .. ": Monitor chat channels for messages containing keyword." .. "|r")
+    tooltip:AddLine(YELLOW_CHAT_LUA .. "/scan stop" .. "|r" .. WHITE_CHAT_LUA .. ": End scanning." .. "|r")
+    tooltip:AddLine(YELLOW_CHAT_LUA .. "/scan clear" .. "|r" .. WHITE_CHAT_LUA .. ": End scanning." .. "|r")
 
-    tt:AddLine(BentoChatColors.YELLOW_LUA.."MULTI MESSAGING|r")
-    tt:AddLine(BentoChatColors.YELLOW_LUA.."/w+ MESSAGE|r"..BentoChatColors.WHITE_LUA..": Whisper all /who results.|r")
-    tt:AddLine(BentoChatColors.YELLOW_LUA.."/w+ N MESSAGE|r"..BentoChatColors.WHITE_LUA..": Whisper first N /who results.|r")
-    tt:AddLine(BentoChatColors.YELLOW_LUA.."/w+ -CLASS MESSAGE|r"..BentoChatColors.WHITE_LUA..": Exclude class from whispers.|r")
-    tt:AddLine(BentoChatColors.YELLOW_LUA.."/r+ MESSAGE|r"..BentoChatColors.WHITE_LUA..": Reply to recent whisper senders.|r")
-    tt:AddLine(BentoChatColors.YELLOW_LUA.."/r+ N MESSAGE|r"..BentoChatColors.WHITE_LUA..": Reply to last N whisper senders.|r")
-    tt:AddLine(" ")
+    tooltip:AddLine(" ")
 
-    tt:AddLine(BentoChatColors.YELLOW_LUA.."LFG BROADCAST|r")
-    tt:AddLine(BentoChatColors.YELLOW_LUA.."/lfg MESSAGE|r"..BentoChatColors.WHITE_LUA..": Broadcast to World & LFG channels.|r")
-    tt:AddLine(BentoChatColors.YELLOW_LUA.."/ws MESSAGE|r"..BentoChatColors.WHITE_LUA..": Whisper all current auction sellers.|r")
-    tt:AddLine(" ")
+    tooltip:AddLine(YELLOW_CHAT_LUA .. "Multi Messaging" .. "|r")
+    tooltip:AddLine(YELLOW_CHAT_LUA .. "/w+ MESSAGE" .. "|r" .. WHITE_CHAT_LUA .. ": Whisper to all players in current /who list." .. "|r")
+    tooltip:AddLine(YELLOW_CHAT_LUA .. "/w+ N MESSAGE" .. "|r" .. WHITE_CHAT_LUA .. ": Whisper first N players only." .. "|r")
+    tooltip:AddLine(YELLOW_CHAT_LUA .. "/w+ -CLASS MESSAGE" .. "|r" .. WHITE_CHAT_LUA .. ": Exclude players of specified class." .. "|r")
+    tooltip:AddLine(YELLOW_CHAT_LUA .. "/r+ MESSAGE" .. "|r" .. WHITE_CHAT_LUA .. ": Reply to recent whisper senders." .. "|r")
+    tooltip:AddLine(YELLOW_CHAT_LUA .. "/r+ N MESSAGE" .. "|r" .. WHITE_CHAT_LUA .. ": Reply to last N whisper senders." .. "|r")
+    tooltip:AddLine(YELLOW_CHAT_LUA .. "/lfg MESSAGE" .. "|r" .. WHITE_CHAT_LUA .. ": Broadcast to World and LookingForGroup channels." .. "|r")
+    tooltip:AddLine(YELLOW_CHAT_LUA .. "/ws MESSAGE" .. "|r" .. WHITE_CHAT_LUA .. ": Whisper to all sellers of currently displayed auctions." .. "|r")
 
-    tt:AddLine(BentoChatColors.YELLOW_LUA.."PLAYER TARGETING|r")
-    tt:AddLine(BentoChatColors.YELLOW_LUA.."/find NAME|r"..BentoChatColors.WHITE_LUA..": Create FIND macro for NAME.|r")
-    tt:AddLine(BentoChatColors.YELLOW_LUA.."/find|r"..BentoChatColors.WHITE_LUA..": Create FIND macro for current target.|r")
-    tt:AddLine(BentoChatColors.YELLOW_LUA.."/find+ NAME|r"..BentoChatColors.WHITE_LUA..": Add NAME to FIND macro.|r")
-    tt:AddLine(BentoChatColors.YELLOW_LUA.."/find+|r"..BentoChatColors.WHITE_LUA..": Add current target to FIND macro.|r")
-    tt:AddLine(" ")
+    tooltip:AddLine(" ")
 
-    tt:AddLine(BentoChatColors.YELLOW_LUA.."PORTAL FINDING|r")
-    tt:AddLine(BentoChatColors.YELLOW_LUA.."/port ZONE|r"..BentoChatColors.WHITE_LUA..": Find warlock summons to ZONE.|r")
-    tt:AddLine(BentoChatColors.YELLOW_LUA.."/port|r"..BentoChatColors.WHITE_LUA..": Find mage portals in current zone.|r")
-    tt:AddLine(" ")
+    tooltip:AddLine(YELLOW_CHAT_LUA .. "Player Targeting" .. "|r")
+    tooltip:AddLine(YELLOW_CHAT_LUA .. "/find NAME" .. "|r" .. WHITE_CHAT_LUA .. ": Set find macro to specified name." .. "|r")
+    tooltip:AddLine(YELLOW_CHAT_LUA .. "/find" .. "|r" .. WHITE_CHAT_LUA .. ": Set find macro to current target's name." .. "|r")
+    tooltip:AddLine(YELLOW_CHAT_LUA .. "/find+ NAME" .. "|r" .. WHITE_CHAT_LUA .. ": Add specified name to find macro." .. "|r")
+    tooltip:AddLine(YELLOW_CHAT_LUA .. "/find+" .. "|r" .. WHITE_CHAT_LUA .. ": Add current target to find macro." .. "|r")
 
-    tt:AddLine(BentoChatColors.YELLOW_LUA.."GROUP UTILITY|r")
-    tt:AddLine(BentoChatColors.YELLOW_LUA.."/rc|r"..BentoChatColors.WHITE_LUA..": Perform ready check.|r")
-    tt:AddLine(BentoChatColors.YELLOW_LUA.."/rc+|r"..BentoChatColors.WHITE_LUA..": Initiate role poll.|r")
-    tt:AddLine(BentoChatColors.YELLOW_LUA.."/mp|r"..BentoChatColors.WHITE_LUA..": Mark tanks & healers in party.|r")
-    tt:AddLine(BentoChatColors.YELLOW_LUA.."/q|r"..BentoChatColors.WHITE_LUA..": Leave party/raid.|r")
-    tt:AddLine(" ")
+    tooltip:AddLine(" ")
 
-    tt:AddLine(BentoChatColors.YELLOW_LUA.."SYSTEM COMMANDS|r")
-    tt:AddLine(BentoChatColors.YELLOW_LUA.."/errors|r"..BentoChatColors.WHITE_LUA..": Toggle Lua error display.|r")
-    tt:AddLine(BentoChatColors.YELLOW_LUA.."/ui|r"..BentoChatColors.WHITE_LUA..": Reload UI.|r")
-    tt:AddLine(BentoChatColors.YELLOW_LUA.."/gx|r"..BentoChatColors.WHITE_LUA..": Restart graphics engine.|r")
-    tt:AddLine(BentoChatColors.YELLOW_LUA.."/rl|r"..BentoChatColors.WHITE_LUA..": Full reload (UI, graphics, cache).|r")
+    tooltip:AddLine(YELLOW_CHAT_LUA .. "Travel Shortcuts" .. "|r")
+    tooltip:AddLine(YELLOW_CHAT_LUA .. "/travel ZONE" .. "|r" .. WHITE_CHAT_LUA .. ": Find warlocks offering summons to specified zone." .. "|r")
+    tooltip:AddLine(YELLOW_CHAT_LUA .. "/travel" .. "|r" .. WHITE_CHAT_LUA .. ": Find mages offering portals in current zone." .. "|r")
 
-    tt:Show()
-    local btn = CreateFrame("Button",nil,tt,"UIPanelCloseButton")
-    btn:SetPoint("TOPRIGHT",tt,"TOPRIGHT")
-    btn:SetScript("OnClick",function() tt:Hide() end)
+    tooltip:AddLine(" ")
+
+    tooltip:AddLine(YELLOW_CHAT_LUA .. "Group Utility" .. "|r")
+    tooltip:AddLine(YELLOW_CHAT_LUA .. "/rc" .. "|r" .. WHITE_CHAT_LUA .. ": Perform ready check." .. "|r")
+    tooltip:AddLine(YELLOW_CHAT_LUA .. "/q" .. "|r" .. WHITE_CHAT_LUA .. ": Leave current party/raid." .. "|r")
+
+    tooltip:AddLine(" ")
+
+    tooltip:AddLine(YELLOW_CHAT_LUA .. "System Commands" .. "|r")
+    tooltip:AddLine(YELLOW_CHAT_LUA .. "/errors" .. "|r" .. WHITE_CHAT_LUA .. ": Toggle LUA error display." .. "|r")
+    tooltip:AddLine(YELLOW_CHAT_LUA .. "/ui" .. "|r" .. WHITE_CHAT_LUA .. ": Reload interface." .. "|r")
+    tooltip:AddLine(YELLOW_CHAT_LUA .. "/gx" .. "|r" .. WHITE_CHAT_LUA .. ": Restart graphics engine." .. "|r")
+    tooltip:AddLine(YELLOW_CHAT_LUA .. "/rl" .. "|r" .. WHITE_CHAT_LUA .. ": Reload UI, restart graphics, clear cache." .. "|r")
+
+    tooltip:Show()
+
+    local closeButton = CreateFrame("Button", nil, tooltip, "UIPanelCloseButton")
+    closeButton:SetPoint("TOPRIGHT", tooltip, "TOPRIGHT")
+    closeButton:SetScript("OnClick", function()
+        tooltip:Hide()
+    end)
 end
 
 SLASH_BENTOSHORTCUTS1 = "/bentoshortcuts"
-SlashCmdList["BENTOSHORTCUTS"] = function(msg)
-    if msg == "" then showCommandList() end
+SlashCmdList["BENTOSHORTCUTS"] = function(msg, editBox)
+    if msg == "" then
+        showCommandList()
+    end
 end

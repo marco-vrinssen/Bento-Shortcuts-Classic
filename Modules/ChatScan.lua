@@ -59,7 +59,7 @@ local function handleScanSlashCommand(commandInput)
     local trimmedInput = commandInput:gsub("^%s*(.-)%s*$", "%1")
     if trimmedInput == "" or trimmedInput == "stop" or trimmedInput == "clear" then
         wipe(activeKeywordFilters)
-        print(YELLOW_CHAT_LUA .. "[CHAT SCAN]:" .. "|r " .. WHITE_CHAT_LUA .. "Stopped and cleared.|r")
+        print(BentoChatColors.YELLOW_LUA .. "[CHAT SCAN]:" .. "|r " .. BentoChatColors.WHITE_LUA .. "Stopped and cleared.|r")
         chatScanEventFrame:UnregisterEvent("CHAT_MSG_CHANNEL")
     else
         if not chatScanEventFrame:IsEventRegistered("CHAT_MSG_CHANNEL") then
@@ -92,7 +92,7 @@ local function handleScanSlashCommand(commandInput)
                 table.insert(groupedKeywordStrings, table.concat(coloredKeywords, YELLOW_CHAT_LUA .. " AND " .. "|r"))
             end
         end
-        print(YELLOW_CHAT_LUA .. "[CHAT SCAN]:" .. "|r " .. table.concat(groupedKeywordStrings, YELLOW_CHAT_LUA .. " / " .. "|r"))
+        print(BentoChatColors.YELLOW_LUA .. "[CHAT SCAN]:" .. "|r " .. table.concat(groupedKeywordStrings, BentoChatColors.YELLOW_LUA .. " / " .. "|r"))
     end
 end
 

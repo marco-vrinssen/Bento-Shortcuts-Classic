@@ -5,10 +5,10 @@ SlashCmdList["TOGGLELUA"] = function()
     local showErrors = GetCVar("scriptErrors")
     if showErrors == "1" then
         SetCVar("scriptErrors", 0)
-        print(YELLOW_CHAT_LUA .. "LUA Errors: " .. "|r" .. "Off")
+        print(BentoChatColors.YELLOW_LUA .. "LUA Errors: " .. "|r" .. "Off")
     else
         SetCVar("scriptErrors", 1)
-        print(YELLOW_CHAT_LUA .. "LUA Errors: " .. "|r" .. "On")
+        print(BentoChatColors.YELLOW_LUA .. "LUA Errors: " .. "|r" .. "On")
     end
 end
 

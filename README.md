@@ -28,9 +28,8 @@ Utility addon for World of Warcraft Classic providing targeting, communication, 
 - `/find+` : Add current target to find macro
 
 ### Travel Shortcuts
-- `/travel [ZONE]` : Find warlocks offering summons to specified zone
-- `/travel` : Find mages offering portals in current zone
-- `/port [ZONE]` : Find warlocks offering summoning portals to zone; if blank, find mage portals
+- `/port [ZONE]` : Find warlock summoners to specified zone
+- `/port`        : Find mage portals in current zone
 
 ### Group Utility
 - `/rc` : Perform ready check

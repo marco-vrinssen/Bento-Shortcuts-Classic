@@ -1,15 +1,14 @@
--- LOGIN MESSAGE DISPLAY
+-- DISPLAY LOGIN MESSAGE
 
 local function commandsIntro()
-    print(YELLOW_CHAT_LUA.."/bentoshortcuts|r for available commands.")
+    print(BentoChatColors.YELLOW_LUA.."/bentoshortcuts|r for available commands.")
 end
 
 local introFrame = CreateFrame("Frame")
 introFrame:RegisterEvent("PLAYER_LOGIN")
 introFrame:SetScript("OnEvent", commandsIntro)
 
-
--- COMMAND LIST TOOLTIP
+-- RENDER COMMAND LIST TOOLTIP
 
 local function showCommandList()
     local tt = _G["CommandListTooltip"]
@@ -23,52 +22,52 @@ local function showCommandList()
     tt:SetScript("OnDragStop",tt.StopMovingOrSizing)
     tt:SetResizable(true)
 
-    tt:AddLine(YELLOW_CHAT_LUA.."BENTO COMMANDS|r")
+    tt:AddLine(BentoChatColors.YELLOW_LUA.."BENTO COMMANDS|r")
     tt:AddLine(" ")
 
-    tt:AddLine(YELLOW_CHAT_LUA.."KEYWORD SCANNING|r")
-    tt:AddLine(YELLOW_CHAT_LUA.."/scan KEYWORD|r"..WHITE_CHAT_LUA..": Monitor channels for keyword.|r")
-    tt:AddLine(YELLOW_CHAT_LUA.."/scan stop|r"..WHITE_CHAT_LUA..": Stop and clear filters.|r")
-    tt:AddLine(YELLOW_CHAT_LUA.."/scan clear|r"..WHITE_CHAT_LUA..": Stop and clear filters.|r")
+    tt:AddLine(BentoChatColors.YELLOW_LUA.."KEYWORD SCANNING|r")
+    tt:AddLine(BentoChatColors.YELLOW_LUA.."/scan KEYWORD|r"..BentoChatColors.WHITE_LUA..": Monitor channels for keyword.|r")
+    tt:AddLine(BentoChatColors.YELLOW_LUA.."/scan stop|r"..BentoChatColors.WHITE_LUA..": Stop and clear filters.|r")
+    tt:AddLine(BentoChatColors.YELLOW_LUA.."/scan clear|r"..BentoChatColors.WHITE_LUA..": Stop and clear filters.|r")
     tt:AddLine(" ")
 
-    tt:AddLine(YELLOW_CHAT_LUA.."MULTI MESSAGING|r")
-    tt:AddLine(YELLOW_CHAT_LUA.."/w+ MESSAGE|r"..WHITE_CHAT_LUA..": Whisper all /who results.|r")
-    tt:AddLine(YELLOW_CHAT_LUA.."/w+ N MESSAGE|r"..WHITE_CHAT_LUA..": Whisper first N /who results.|r")
-    tt:AddLine(YELLOW_CHAT_LUA.."/w+ -CLASS MESSAGE|r"..WHITE_CHAT_LUA..": Exclude class from whispers.|r")
-    tt:AddLine(YELLOW_CHAT_LUA.."/r+ MESSAGE|r"..WHITE_CHAT_LUA..": Reply to recent whisper senders.|r")
-    tt:AddLine(YELLOW_CHAT_LUA.."/r+ N MESSAGE|r"..WHITE_CHAT_LUA..": Reply to last N whisper senders.|r")
+    tt:AddLine(BentoChatColors.YELLOW_LUA.."MULTI MESSAGING|r")
+    tt:AddLine(BentoChatColors.YELLOW_LUA.."/w+ MESSAGE|r"..BentoChatColors.WHITE_LUA..": Whisper all /who results.|r")
+    tt:AddLine(BentoChatColors.YELLOW_LUA.."/w+ N MESSAGE|r"..BentoChatColors.WHITE_LUA..": Whisper first N /who results.|r")
+    tt:AddLine(BentoChatColors.YELLOW_LUA.."/w+ -CLASS MESSAGE|r"..BentoChatColors.WHITE_LUA..": Exclude class from whispers.|r")
+    tt:AddLine(BentoChatColors.YELLOW_LUA.."/r+ MESSAGE|r"..BentoChatColors.WHITE_LUA..": Reply to recent whisper senders.|r")
+    tt:AddLine(BentoChatColors.YELLOW_LUA.."/r+ N MESSAGE|r"..BentoChatColors.WHITE_LUA..": Reply to last N whisper senders.|r")
     tt:AddLine(" ")
 
-    tt:AddLine(YELLOW_CHAT_LUA.."LFG BROADCAST|r")
-    tt:AddLine(YELLOW_CHAT_LUA.."/lfg MESSAGE|r"..WHITE_CHAT_LUA..": Broadcast to World & LFG channels.|r")
-    tt:AddLine(YELLOW_CHAT_LUA.."/ws MESSAGE|r"..WHITE_CHAT_LUA..": Whisper all current auction sellers.|r")
+    tt:AddLine(BentoChatColors.YELLOW_LUA.."LFG BROADCAST|r")
+    tt:AddLine(BentoChatColors.YELLOW_LUA.."/lfg MESSAGE|r"..BentoChatColors.WHITE_LUA..": Broadcast to World & LFG channels.|r")
+    tt:AddLine(BentoChatColors.YELLOW_LUA.."/ws MESSAGE|r"..BentoChatColors.WHITE_LUA..": Whisper all current auction sellers.|r")
     tt:AddLine(" ")
 
-    tt:AddLine(YELLOW_CHAT_LUA.."PLAYER TARGETING|r")
-    tt:AddLine(YELLOW_CHAT_LUA.."/find NAME|r"..WHITE_CHAT_LUA..": Create FIND macro for NAME.|r")
-    tt:AddLine(YELLOW_CHAT_LUA.."/find|r"..WHITE_CHAT_LUA..": Create FIND macro for current target.|r")
-    tt:AddLine(YELLOW_CHAT_LUA.."/find+ NAME|r"..WHITE_CHAT_LUA..": Add NAME to FIND macro.|r")
-    tt:AddLine(YELLOW_CHAT_LUA.."/find+|r"..WHITE_CHAT_LUA..": Add current target to FIND macro.|r")
+    tt:AddLine(BentoChatColors.YELLOW_LUA.."PLAYER TARGETING|r")
+    tt:AddLine(BentoChatColors.YELLOW_LUA.."/find NAME|r"..BentoChatColors.WHITE_LUA..": Create FIND macro for NAME.|r")
+    tt:AddLine(BentoChatColors.YELLOW_LUA.."/find|r"..BentoChatColors.WHITE_LUA..": Create FIND macro for current target.|r")
+    tt:AddLine(BentoChatColors.YELLOW_LUA.."/find+ NAME|r"..BentoChatColors.WHITE_LUA..": Add NAME to FIND macro.|r")
+    tt:AddLine(BentoChatColors.YELLOW_LUA.."/find+|r"..BentoChatColors.WHITE_LUA..": Add current target to FIND macro.|r")
     tt:AddLine(" ")
 
-    tt:AddLine(YELLOW_CHAT_LUA.."PORTAL FINDING|r")
-    tt:AddLine(YELLOW_CHAT_LUA.."/port ZONE|r"..WHITE_CHAT_LUA..": Find warlock summons to ZONE.|r")
-    tt:AddLine(YELLOW_CHAT_LUA.."/port|r"..WHITE_CHAT_LUA..": Find mage portals in current zone.|r")
+    tt:AddLine(BentoChatColors.YELLOW_LUA.."PORTAL FINDING|r")
+    tt:AddLine(BentoChatColors.YELLOW_LUA.."/port ZONE|r"..BentoChatColors.WHITE_LUA..": Find warlock summons to ZONE.|r")
+    tt:AddLine(BentoChatColors.YELLOW_LUA.."/port|r"..BentoChatColors.WHITE_LUA..": Find mage portals in current zone.|r")
     tt:AddLine(" ")
 
-    tt:AddLine(YELLOW_CHAT_LUA.."GROUP UTILITY|r")
-    tt:AddLine(YELLOW_CHAT_LUA.."/rc|r"..WHITE_CHAT_LUA..": Perform ready check.|r")
-    tt:AddLine(YELLOW_CHAT_LUA.."/rc+|r"..WHITE_CHAT_LUA..": Initiate role poll.|r")
-    tt:AddLine(YELLOW_CHAT_LUA.."/mp|r"..WHITE_CHAT_LUA..": Mark tanks & healers in party.|r")
-    tt:AddLine(YELLOW_CHAT_LUA.."/q|r"..WHITE_CHAT_LUA..": Leave party/raid.|r")
+    tt:AddLine(BentoChatColors.YELLOW_LUA.."GROUP UTILITY|r")
+    tt:AddLine(BentoChatColors.YELLOW_LUA.."/rc|r"..BentoChatColors.WHITE_LUA..": Perform ready check.|r")
+    tt:AddLine(BentoChatColors.YELLOW_LUA.."/rc+|r"..BentoChatColors.WHITE_LUA..": Initiate role poll.|r")
+    tt:AddLine(BentoChatColors.YELLOW_LUA.."/mp|r"..BentoChatColors.WHITE_LUA..": Mark tanks & healers in party.|r")
+    tt:AddLine(BentoChatColors.YELLOW_LUA.."/q|r"..BentoChatColors.WHITE_LUA..": Leave party/raid.|r")
     tt:AddLine(" ")
 
-    tt:AddLine(YELLOW_CHAT_LUA.."SYSTEM COMMANDS|r")
-    tt:AddLine(YELLOW_CHAT_LUA.."/errors|r"..WHITE_CHAT_LUA..": Toggle Lua error display.|r")
-    tt:AddLine(YELLOW_CHAT_LUA.."/ui|r"..WHITE_CHAT_LUA..": Reload UI.|r")
-    tt:AddLine(YELLOW_CHAT_LUA.."/gx|r"..WHITE_CHAT_LUA..": Restart graphics engine.|r")
-    tt:AddLine(YELLOW_CHAT_LUA.."/rl|r"..WHITE_CHAT_LUA..": Full reload (UI, graphics, cache).|r")
+    tt:AddLine(BentoChatColors.YELLOW_LUA.."SYSTEM COMMANDS|r")
+    tt:AddLine(BentoChatColors.YELLOW_LUA.."/errors|r"..BentoChatColors.WHITE_LUA..": Toggle Lua error display.|r")
+    tt:AddLine(BentoChatColors.YELLOW_LUA.."/ui|r"..BentoChatColors.WHITE_LUA..": Reload UI.|r")
+    tt:AddLine(BentoChatColors.YELLOW_LUA.."/gx|r"..BentoChatColors.WHITE_LUA..": Restart graphics engine.|r")
+    tt:AddLine(BentoChatColors.YELLOW_LUA.."/rl|r"..BentoChatColors.WHITE_LUA..": Full reload (UI, graphics, cache).|r")
 
     tt:Show()
     local btn = CreateFrame("Button",nil,tt,"UIPanelCloseButton")

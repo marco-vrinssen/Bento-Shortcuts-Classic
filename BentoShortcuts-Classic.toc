@@ -1,6 +1,6 @@
 ## Interface: 11500
 ## Title: Bento Shortcuts Classic
-## Notes: Provides useful commands and options for more efficient interaction with the environment.
+## Notes: Provides useful shortcuts for more efficient interactions.
 ## Version: 1.0
 ## Author: MIYANKO
 
@@ -13,7 +13,7 @@ Modules/CopyName.lua
 Modules/GearManager.lua
 Modules/Group.lua
 Modules/Intro.lua
+Modules/Port.lua
 Modules/Targeting.lua
 Modules/Utility.lua
 Modules/Whisper.lua
-Modules/Who.lua

@@ -1,6 +1,6 @@
 # Bento Shortcuts Classic
 
-Utility addon for World of Warcraft Classic providing targeting, communication, travel, and interface shortcuts.
+Addon for World of Warcraft Classic that provides useful shortcuts for more efficient interactions.
 
 ## Features
 

@@ -4,10 +4,13 @@
 ## Version: 1.0
 ## Author: MIYANKO
 
+## SavedVariables: BentoGearManager
+
 Modules/Tokens.lua
 Modules/Broadcast.lua
 Modules/ChatScan.lua
 Modules/CopyName.lua
+Modules/GearManager.lua
 Modules/Group.lua
 Modules/Intro.lua
 Modules/Targeting.lua

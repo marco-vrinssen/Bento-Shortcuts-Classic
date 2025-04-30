@@ -1,10 +1,9 @@
 -- CONSTANTS
 
 local regionNames = {'us', 'kr', 'eu', 'tw', 'cn'}
-local region = regionNames[GetCurrentRegion()]
+local region = regionNames[GetCurrentRegion()}
 
-
--- DEFINE NAME OR TARGET FOR FIND MACRO
+-- DEFINE FIND MACRO CREATION
 
 local function createTargetMacro(msg)
     local macroName = "FIND"
@@ -40,7 +39,7 @@ SLASH_TARGETMACRO1 = "/find"
 SlashCmdList["TARGETMACRO"] = createTargetMacro
 
 
--- ADD NAME OR TARGET TO FIND MACRO
+-- DEFINE FIND MACRO ADDITION
 
 local function addToTargetMacro(msg)
     local macroName = "FIND"
@@ -96,22 +95,19 @@ end
 SLASH_TARGETMACROADD1 = "/find+"
 SlashCmdList["TARGETMACROADD"] = addToTargetMacro
 
-
--- TRIGGER FIND MACRO WITH CONTEXT DATA NAME
+-- DEFINE FIND MACRO TRIGGER WITH CONTEXT NAME
 
 local function triggerFindMacroWithName(playerName)
     createTargetMacro(playerName)
 end
 
-
--- TRIGGER FIND ALSO MACRO WITH CONTEXT DATA NAME
+-- DEFINE FIND ALSO MACRO TRIGGER WITH CONTEXT NAME
 
 local function triggerFindAlsoMacroWithName(playerName)
     addToTargetMacro(playerName)
 end
 
-
--- ASSIST PLAYER
+-- DEFINE ASSIST MACRO CREATION
 
 local function assistPlayer(targetName)
     if not targetName then
@@ -137,7 +133,7 @@ local function assistPlayer(targetName)
 end
 
 
--- FIX SERVER NAME
+-- DEFINE SERVER NAME NORMALIZATION
 
 local function fixServerName(server)
     if server == nil or server == "" then
@@ -156,8 +152,7 @@ local function fixServerName(server)
     return server
 end
 
-
--- GENERATE URL
+-- DEFINE ARMORY URL GENERATION
 
 local function generateURL(type, name, server)
     local url
@@ -173,8 +168,7 @@ local function generateURL(type, name, server)
     return url
 end
 
-
--- POPUP LINK
+-- DEFINE ARMORY LINK POPUP
 
 local function popupLink(argType, argName, argServer)
     local type = argType
@@ -207,8 +201,7 @@ local function popupLink(argType, argName, argServer)
     StaticPopup_Show("PopupLinkDialog", "", "", {url = url})
 end
 
-
--- MODIFY MENU
+-- MODIFY CONTEXT MENU FOR UNIT TYPES
 
 local chatTypes = {
     "SELF", "PLAYER", "PARTY", "RAID", "RAID_PLAYER", "ENEMY_PLAYER",
@@ -239,6 +232,8 @@ for _, value in ipairs(chatTypes) do
         end)
     end)
 end
+
+-- MODIFY CONTEXT MENU FOR CHAT PLAYER
 
 Menu.ModifyMenu("MENU_CHAT_PLAYER", function(owner, rootDescription, contextData)
     local playerName = contextData.name

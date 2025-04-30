@@ -1,4 +1,4 @@
--- READY CHECK
+-- READY CHECK COMMAND
 
 local function readyCheck()
     DoReadyCheck()
@@ -7,8 +7,7 @@ end
 SLASH_READYCHECK1 = "/rc"
 SlashCmdList["READYCHECK"] = readyCheck
 
-
--- ROLE CHECK
+-- ROLE CHECK COMMAND
 
 local function roleCheck()
     InitiateRolePoll()
@@ -17,8 +16,7 @@ end
 SLASH_ROLECHECK1 = "/rc+"
 SlashCmdList["ROLECHECK"] = roleCheck
 
-
--- QUIT GROUP
+-- QUIT GROUP COMMAND
 
 local function quitParty() 
     if IsInGroup() then 
@@ -29,8 +27,7 @@ end
 SLASH_QUITPARTY1 = "/q"
 SlashCmdList["QUITPARTY"] = quitParty
 
-
--- MARK PARTY
+-- MARK PARTY MEMBERS BY ROLE
 
 local function markParty()
     if not IsInGroup() then

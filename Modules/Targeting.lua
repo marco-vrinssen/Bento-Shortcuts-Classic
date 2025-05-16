@@ -1,7 +1,7 @@
 -- CONSTANTS
 
 local regionNames = {'us', 'kr', 'eu', 'tw', 'cn'}
-local region = regionNames[GetCurrentRegion()}
+local region = regionNames[GetCurrentRegion()]
 
 -- DEFINE FIND MACRO CREATION
 

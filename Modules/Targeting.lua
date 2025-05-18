@@ -5,50 +5,61 @@ local region = regionNames[GetCurrentRegion()]
 
 -- DEFINE FIND MACRO CREATION
 
-local function createTargetMacro(msg)
-    local macroName = "FIND"
-    local macroBody
+local function createFindMacros(targetInput)
+    local macroNameFind = "FIND"
+    local macroNameFindPlus = "FIND+"
+    local macroBodyFind
+    local macroBodyFindPlus
     local targetName
 
-    if msg and msg ~= "" then
-        targetName = msg
-        macroBody = "/cleartarget\n/target " .. msg
+    if targetInput and targetInput ~= "" then
+        targetName = targetInput
+        macroBodyFind = "/cleartarget\n/target " .. targetInput
     else
         targetName = UnitName("target")
         if targetName then
-            macroBody = "/cleartarget\n/target " .. targetName
+            macroBodyFind = "/cleartarget\n/target " .. targetName
         else
             print("No target selected and no name provided.")
             return
         end
     end
 
-    macroBody = macroBody .. "\n/run if UnitExists(\"target\") and not UnitIsDead(\"target\") and GetRaidTargetIndex(\"target\") == nil then SetRaidTarget(\"target\",8) end"
+    macroBodyFindPlus = macroBodyFind .. "\n/run if UnitExists(\"target\") and not UnitIsDead(\"target\") and GetRaidTargetIndex(\"target\") == nil then SetRaidTarget(\"target\",8) end"
 
-    local macroIndex = GetMacroIndexByName(macroName)
-    if macroIndex > 0 then
-        EditMacro(macroIndex, macroName, "Ability_Hunter_SniperShot", macroBody)
+    local macroIndexFind = GetMacroIndexByName(macroNameFind)
+    if macroIndexFind > 0 then
+        EditMacro(macroIndexFind, macroNameFind, "Ability_Hunter_SniperShot", macroBodyFind)
     else
-        CreateMacro(macroName, "Ability_Hunter_SniperShot", macroBody, nil)
+        CreateMacro(macroNameFind, "Ability_Hunter_SniperShot", macroBodyFind, nil)
+    end
+
+    local macroIndexFindPlus = GetMacroIndexByName(macroNameFindPlus)
+    if macroIndexFindPlus > 0 then
+        EditMacro(macroIndexFindPlus, macroNameFindPlus, "Ability_Hunter_SniperShot", macroBodyFindPlus)
+    else
+        CreateMacro(macroNameFindPlus, "Ability_Hunter_SniperShot", macroBodyFindPlus, nil)
     end
 
     print(YELLOW_LIGHT_LUA .. "FIND:" .. "|r" .. " " .. targetName .. ".")
 end
 
 SLASH_TARGETMACRO1 = "/find"
-SlashCmdList["TARGETMACRO"] = createTargetMacro
+SlashCmdList["TARGETMACRO"] = createFindMacros
 
+-- DEFINE FIND+ MACRO ADDITION
 
--- DEFINE FIND MACRO ADDITION
-
-local function addToTargetMacro(msg)
-    local macroName = "FIND"
-    local macroIndex = GetMacroIndexByName(macroName)
-    local macroBody = macroIndex > 0 and GetMacroBody(macroName) or ""
+local function addToFindPlusMacro(targetInput)
+    local macroNameFind = "FIND"
+    local macroNameFindPlus = "FIND+"
+    local macroIndexFind = GetMacroIndexByName(macroNameFind)
+    local macroIndexFindPlus = GetMacroIndexByName(macroNameFindPlus)
+    local macroBodyFind = macroIndexFind > 0 and GetMacroBody(macroNameFind) or ""
+    local macroBodyFindPlus = macroIndexFindPlus > 0 and GetMacroBody(macroNameFindPlus) or ""
     local targetName
 
-    if msg and msg ~= "" then
-        targetName = msg
+    if targetInput and targetInput ~= "" then
+        targetName = targetInput
     else
         targetName = UnitName("target")
         if not targetName then
@@ -58,12 +69,12 @@ local function addToTargetMacro(msg)
     end
 
     local existingTargets = {}
-    for target in macroBody:gmatch("/target ([^\n]+)") do
+    for target in macroBodyFind:gmatch("/target ([^\n]+)") do
         table.insert(existingTargets, target)
     end
 
-    for _, target in ipairs(existingTargets) do
-        if target == targetName then
+    for _, existingTarget in ipairs(existingTargets) do
+        if existingTarget == targetName then
             print(targetName .. " is already in the target list.")
             return
         end
@@ -74,37 +85,48 @@ local function addToTargetMacro(msg)
         return
     end
 
-    if macroBody == "" or not macroBody:find("/cleartarget") then
-        macroBody = "/cleartarget\n/target " .. targetName
+    if macroBodyFind == "" or not macroBodyFind:find("/cleartarget") then
+        macroBodyFind = "/cleartarget\n/target " .. targetName
     else
-        macroBody = macroBody:gsub("\n/run .+", "") .. "\n/target " .. targetName
+        macroBodyFind = macroBodyFind:gsub("\n/run .+", "") .. "\n/target " .. targetName
     end
 
-    macroBody = macroBody .. "\n/run if UnitExists(\"target\") and not UnitIsDead(\"target\") and GetRaidTargetIndex(\"target\") == nil then SetRaidTarget(\"target\",8) end"
+    macroBodyFindPlus = macroBodyFind .. "\n/run if UnitExists(\"target\") and not UnitIsDead(\"target\") and GetRaidTargetIndex(\"target\") == nil then SetRaidTarget(\"target\",8) end"
 
-    if macroIndex > 0 then
-        EditMacro(macroIndex, macroName, "Ability_Hunter_SniperShot", macroBody)
+    if macroIndexFind > 0 then
+        EditMacro(macroIndexFind, macroNameFind, "Ability_Hunter_SniperShot", macroBodyFind)
     else
-        CreateMacro(macroName, "Ability_Hunter_SniperShot", macroBody, nil)
+        CreateMacro(macroNameFind, "Ability_Hunter_SniperShot", macroBodyFind, nil)
     end
 
-    local newTargetsStr = table.concat(existingTargets, ", ") .. ", " .. targetName
+    if macroIndexFindPlus > 0 then
+        EditMacro(macroIndexFindPlus, macroNameFindPlus, "Ability_Hunter_SniperShot", macroBodyFindPlus)
+    else
+        CreateMacro(macroNameFindPlus, "Ability_Hunter_SniperShot", macroBodyFindPlus, nil)
+    end
+
+    local newTargetsStr = table.concat(existingTargets, ", ")
+    if newTargetsStr ~= "" then
+        newTargetsStr = newTargetsStr .. ", " .. targetName
+    else
+        newTargetsStr = targetName
+    end
     print(YELLOW_LIGHT_LUA .. "FIND:" .. "|r" .. " " .. newTargetsStr .. ".")
 end
 
 SLASH_TARGETMACROADD1 = "/find+"
-SlashCmdList["TARGETMACROADD"] = addToTargetMacro
+SlashCmdList["TARGETMACROADD"] = addToFindPlusMacro
 
 -- DEFINE FIND MACRO TRIGGER WITH CONTEXT NAME
 
 local function triggerFindMacroWithName(playerName)
-    createTargetMacro(playerName)
+    createFindMacros(playerName)
 end
 
--- DEFINE FIND ALSO MACRO TRIGGER WITH CONTEXT NAME
+-- DEFINE FIND+ MACRO TRIGGER WITH CONTEXT NAME
 
-local function triggerFindAlsoMacroWithName(playerName)
-    addToTargetMacro(playerName)
+local function triggerFindPlusMacroWithName(playerName)
+    addToFindPlusMacro(playerName)
 end
 
 -- DEFINE ASSIST MACRO CREATION
@@ -221,8 +243,8 @@ for _, value in ipairs(chatTypes) do
         rootDescription:CreateButton("Find", function()
             triggerFindMacroWithName(contextData.name)
         end)
-        rootDescription:CreateButton("Find Also", function()
-            triggerFindAlsoMacroWithName(contextData.name)
+        rootDescription:CreateButton("Find+", function()
+            triggerFindPlusMacroWithName(contextData.name)
         end)
 
         rootDescription:CreateDivider()
@@ -246,8 +268,8 @@ Menu.ModifyMenu("MENU_CHAT_PLAYER", function(owner, rootDescription, contextData
     rootDescription:CreateButton("Find", function()
         triggerFindMacroWithName(playerName)
     end)
-    rootDescription:CreateButton("Find Also", function()
-        triggerFindAlsoMacroWithName(playerName)
+    rootDescription:CreateButton("Find+", function()
+        triggerFindPlusMacroWithName(playerName)
     end)
 
     rootDescription:CreateDivider()

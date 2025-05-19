@@ -1,7 +1,9 @@
--- WHISPER PLAYERS IN /WHO LIST WITHOUT SKIP LIST CHECK
+-- WHISPER PLAYERS IN /WHO LIST
 
 local function whisperPlayers(msg)
+    
     local limit, classExclusion, message
+
     limit, classExclusion, message = msg:match("^(%d+)%s*-%s*(%w+)%s+(.+)$")
     if not limit then
         limit, message = msg:match("^(%d+)%s+(.+)$")
@@ -12,15 +14,19 @@ local function whisperPlayers(msg)
             end
         end
     end
+
     local numWhoResults = C_FriendList.GetNumWhoResults()
+
     if limit then
         limit = tonumber(limit)
     else
         limit = numWhoResults
     end
+
     if classExclusion then
         classExclusion = classExclusion:lower()
     end
+
     if message and message ~= "" and numWhoResults and numWhoResults > 0 then
         local whisperCount = 0
         for i = 1, numWhoResults do
@@ -47,14 +53,17 @@ SlashCmdList["MULTIWHISPER"] = whisperPlayers
 -- SEND MESSAGES TO AUCTION SELLERS
 
 local function sendAuctionMessages(msg)
+    
     if not msg or msg == "" then
         print("Usage: /wah <message>")
         return
     end
 
     local auctionItemCount = GetNumAuctionItems("list")
+    
     for i = 1, auctionItemCount do
         local _, _, _, _, _, _, _, _, _, _, _, _, _, auctionOwner = GetAuctionItemInfo("list", i)
+        
         if auctionOwner then
             SendChatMessage(msg, "WHISPER", nil, auctionOwner)
         end
@@ -119,76 +128,3 @@ latestWhispEvents:RegisterEvent("CHAT_MSG_WHISPER")
 latestWhispEvents:SetScript("OnEvent", function(_, _, msg, sender)
     trackWhispers(_, _, msg, sender)
 end)
-
--- MULTIWHISPER WITH SAVED PLAYER SKIP LIST VIA /W+-
-
-local function whisperPlayersWithSkip(msg)
-    if not BentoShortcutsClassicDB then
-        BentoShortcutsClassicDB = {}
-    end
-    if not BentoShortcutsClassicDB.MultiWhisperSkipList then
-        BentoShortcutsClassicDB.MultiWhisperSkipList = {}
-    end
-    local limit, classExclusion, message
-    limit, classExclusion, message = msg:match("^(%d+)%s*-%s*(%w+)%s+(.+)$")
-    if not limit then
-        limit, message = msg:match("^(%d+)%s+(.+)$")
-        if not limit then
-            classExclusion, message = msg:match("^%-(%w+)%s+(.+)$")
-            if not classExclusion then
-                message = msg
-            end
-        end
-    end
-    local numWhoResults = C_FriendList.GetNumWhoResults()
-    if limit then
-        limit = tonumber(limit)
-    else
-        limit = numWhoResults
-    end
-    if classExclusion then
-        classExclusion = classExclusion:lower()
-    end
-    if message and message ~= "" and numWhoResults and numWhoResults > 0 then
-        local whisperCount = 0
-        for i = 1, numWhoResults do
-            if whisperCount >= limit then break end
-            local whoInfo = C_FriendList.GetWhoInfo(i)
-            if whoInfo and whoInfo.fullName then
-                local playerKey = whoInfo.fullName
-                if classExclusion then
-                    if whoInfo.classStr:lower() ~= classExclusion then
-                        if not BentoShortcutsClassicDB.MultiWhisperSkipList[playerKey] then
-                            SendChatMessage(message, "WHISPER", nil, whoInfo.fullName)
-                            BentoShortcutsClassicDB.MultiWhisperSkipList[playerKey] = true
-                            whisperCount = whisperCount + 1
-                        end
-                    end
-                else
-                    if not BentoShortcutsClassicDB.MultiWhisperSkipList[playerKey] then
-                        SendChatMessage(message, "WHISPER", nil, whoInfo.fullName)
-                        BentoShortcutsClassicDB.MultiWhisperSkipList[playerKey] = true
-                        whisperCount = whisperCount + 1
-                    end
-                end
-            end
-        end
-    end
-end
-
-SLASH_MULTIWHISPER_SKIP1 = "/w+-"
-SlashCmdList["MULTIWHISPER_SKIP"] = whisperPlayersWithSkip
-
--- CLEAR MULTIWHISPER SKIP LIST FUNCTIONALITY
-
-local function clearMultiWhisperSkipList()
-    if BentoShortcutsClassicDB and BentoShortcutsClassicDB.MultiWhisperSkipList then
-        BentoShortcutsClassicDB.MultiWhisperSkipList = {}
-        print("MultiWhisper skip list cleared.")
-    else
-        print("MultiWhisper skip list is already empty.")
-    end
-end
-
-SLASH_CLEARPLAYERLIST1 = "/clearplayerlist"
-SlashCmdList["CLEARPLAYERLIST"] = clearMultiWhisperSkipList

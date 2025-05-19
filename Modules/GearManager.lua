@@ -1,5 +1,5 @@
-if not BentoGearManager then
-    BentoGearManager = {}
+if not BentoShortcutsClassicDB then
+    BentoShortcutsClassicDB = {}
 end
 
 -- SLASH COMMANDS
@@ -83,7 +83,7 @@ local function SaveGearSet(setName)
     end
   end
 
-  BentoGearManager[setName] = gearSetTable
+  BentoShortcutsClassicDB[setName] = gearSetTable
 
   print(YELLOW_LIGHT_LUA .. "[GEAR MANAGER]:|r " .. WHITE_LUA .. setName .. " Saved|r")
 end
@@ -96,7 +96,7 @@ local function EquipGearSet(setName)
     return
   end
 
-  local set = BentoGearManager[setName]
+  local set = BentoShortcutsClassicDB[setName]
   if not set then
     print(("No gear set named '%s' found."):format(setName))
     return

@@ -45,6 +45,12 @@ local function showCommandList()
 
     tooltip:AddLine(" ")
 
+    tooltip:AddLine(YELLOW_LIGHT_LUA .. "Gear Manager" .. "|r")
+    tooltip:AddLine(YELLOW_LIGHT_LUA .. "/gearset NAME" .. "|r" .. WHITE_LUA .. ": Save your currently equipped gear as a set named NAME." .. "|r")
+    tooltip:AddLine(YELLOW_LIGHT_LUA .. "/equipset NAME" .. "|r" .. WHITE_LUA .. ": Equip the gear set named NAME." .. "|r")
+
+    tooltip:AddLine(" ")
+
     tooltip:AddLine(YELLOW_LIGHT_LUA .. "Player Targeting" .. "|r")
     tooltip:AddLine(YELLOW_LIGHT_LUA .. "/find NAME" .. "|r" .. WHITE_LUA .. ": Set find macro to specified name." .. "|r")
     tooltip:AddLine(YELLOW_LIGHT_LUA .. "/find" .. "|r" .. WHITE_LUA .. ": Set find macro to current target's name." .. "|r")

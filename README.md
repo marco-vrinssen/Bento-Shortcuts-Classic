@@ -21,6 +21,10 @@ Addon for World of Warcraft Classic that provides useful shortcuts for more effi
 - `/lfg [MESSAGE]` : Broadcast to World and LookingForGroup channels
 - `/ws [MESSAGE]` : Whisper to all sellers of currently displayed auctions
 
+### Gear Manager
+- `/gearset [NAME]` : Save your currently equipped gear as a set named NAME
+- `/equipset [NAME]` : Equip the gear set named NAME
+
 ### Player Targeting
 - `/find [NAME]` : Set find macro to specified name
 - `/find` : Set find macro to current target's name

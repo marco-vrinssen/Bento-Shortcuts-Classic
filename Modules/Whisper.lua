@@ -122,12 +122,14 @@ end)
 
 -- MULTIWHISPER WITH SAVED PLAYER SKIP LIST VIA /W+-
 
+-- IGNORED PLAYERS FOR /W+- STORED IN BENTOSHORTCUTSCLASSICDB.MULTIWHISPERIGNORE
+
 local function whisperPlayersWithSkip(msg)
     if not BentoShortcutsClassicDB then
         BentoShortcutsClassicDB = {}
     end
-    if not BentoShortcutsClassicDB.MultiWhisperSkipList then
-        BentoShortcutsClassicDB.MultiWhisperSkipList = {}
+    if type(BentoShortcutsClassicDB.MultiWhisperIgnore) ~= "table" then
+        BentoShortcutsClassicDB.MultiWhisperIgnore = {}
     end
     local limit, classExclusion, message
     limit, classExclusion, message = msg:match("^(%d+)%s*-%s*(%w+)%s+(.+)$")
@@ -158,16 +160,16 @@ local function whisperPlayersWithSkip(msg)
                 local playerKey = whoInfo.fullName
                 if classExclusion then
                     if whoInfo.classStr:lower() ~= classExclusion then
-                        if not BentoShortcutsClassicDB.MultiWhisperSkipList[playerKey] then
+                        if not BentoShortcutsClassicDB.MultiWhisperIgnore[playerKey] then
                             SendChatMessage(message, "WHISPER", nil, whoInfo.fullName)
-                            BentoShortcutsClassicDB.MultiWhisperSkipList[playerKey] = true
+                            BentoShortcutsClassicDB.MultiWhisperIgnore[playerKey] = true
                             whisperCount = whisperCount + 1
                         end
                     end
                 else
-                    if not BentoShortcutsClassicDB.MultiWhisperSkipList[playerKey] then
+                    if not BentoShortcutsClassicDB.MultiWhisperIgnore[playerKey] then
                         SendChatMessage(message, "WHISPER", nil, whoInfo.fullName)
-                        BentoShortcutsClassicDB.MultiWhisperSkipList[playerKey] = true
+                        BentoShortcutsClassicDB.MultiWhisperIgnore[playerKey] = true
                         whisperCount = whisperCount + 1
                     end
                 end
@@ -181,14 +183,14 @@ SlashCmdList["MULTIWHISPER_SKIP"] = whisperPlayersWithSkip
 
 -- CLEAR MULTIWHISPER SKIP LIST FUNCTIONALITY
 
-local function clearMultiWhisperSkipList()
-    if BentoShortcutsClassicDB and BentoShortcutsClassicDB.MultiWhisperSkipList then
-        BentoShortcutsClassicDB.MultiWhisperSkipList = {}
-        print("MultiWhisper skip list cleared.")
+local function clearMultiWhisperIgnore()
+    if BentoShortcutsClassicDB and BentoShortcutsClassicDB.MultiWhisperIgnore then
+        BentoShortcutsClassicDB.MultiWhisperIgnore = {}
+        print("MultiWhisper ignore list cleared.")
     else
-        print("MultiWhisper skip list is already empty.")
+        print("MultiWhisper ignore list is already empty.")
     end
 end
 
 SLASH_CLEARPLAYERLIST1 = "/clearplayerlist"
-SlashCmdList["CLEARPLAYERLIST"] = clearMultiWhisperSkipList
+SlashCmdList["CLEARPLAYERLIST"] = clearMultiWhisperIgnore

@@ -67,7 +67,7 @@ local function GetItemNameByID(itemID)
   return ("ItemID:%d"):format(itemID)
 end
 
--- SAVE GEAR SET
+-- GEAR SETS STORED AS SUBTABLES IN BENTOSHORTCUTSCLASSICDB.GEARSETS
 
 local function SaveGearSet(setName)
   if setName == "" then
@@ -75,20 +75,25 @@ local function SaveGearSet(setName)
     return
   end
 
-  local gearSetTable = {}
+  if type(BentoShortcutsClassicDB.GearSets) ~= "table" then
+    BentoShortcutsClassicDB.GearSets = {}
+  end
+
+  if type(BentoShortcutsClassicDB.GearSets[setName]) ~= "table" then
+    BentoShortcutsClassicDB.GearSets[setName] = {}
+  end
+
   for slotID = 1, 19 do
     local itemID = GetInventoryItemID("player", slotID)
     if itemID then
-      gearSetTable[slotID] = itemID
+      BentoShortcutsClassicDB.GearSets[setName][slotID] = itemID
+    else
+      BentoShortcutsClassicDB.GearSets[setName][slotID] = nil
     end
   end
 
-  BentoShortcutsClassicDB[setName] = gearSetTable
-
   print(YELLOW_LIGHT_LUA .. "[GEAR MANAGER]:|r " .. WHITE_LUA .. setName .. " Saved|r")
 end
-
--- EQUIP GEAR SET
 
 local function EquipGearSet(setName)
   if setName == "" then
@@ -96,7 +101,11 @@ local function EquipGearSet(setName)
     return
   end
 
-  local set = BentoShortcutsClassicDB[setName]
+  if type(BentoShortcutsClassicDB.GearSets) ~= "table" then
+    BentoShortcutsClassicDB.GearSets = {}
+  end
+
+  local set = BentoShortcutsClassicDB.GearSets[setName]
   if not set then
     print(("No gear set named '%s' found."):format(setName))
     return

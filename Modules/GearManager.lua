@@ -4,8 +4,8 @@ end
 
 -- SLASH COMMANDS
 
-SLASH_GEARSET1  = "/gearset"
-SLASH_EQUIPSET1 = "/equipset"
+SLASH_SETGEAR1 = "/set"
+SLASH_EQUIPGEAR1 = "/equip"
 
 -- TRIM HELPER
 
@@ -67,6 +67,34 @@ local function GetItemNameByID(itemID)
   return ("ItemID:%d"):format(itemID)
 end
 
+-- GEAR SET MANAGER SAVED MESSAGE
+
+local function PrintGearSetSavedMessage(gearSetName)
+  print(YELLOW_LIGHT_LUA .. "[Gear Set Manager]:|r Set " .. gearSetName .. " saved.")
+end
+
+-- GEAR SET MANAGER EQUIPPED MESSAGE
+
+local function PrintGearSetEquippedMessage(gearSetName)
+  print(YELLOW_LIGHT_LUA .. "[Gear Set Manager]:|r Set " .. gearSetName .. " equipped.")
+end
+
+-- GEAR SET MANAGER ITEM MISSING MESSAGE
+
+local function PrintGearSetItemMissingMessage(itemName)
+  print(YELLOW_LIGHT_LUA .. "[Gear Set Manager]:|r Item " .. itemName .. " missing.")
+end
+
+-- GEAR SET MANAGER USAGE MESSAGE
+
+local function printSetGearUsage()
+  print(YELLOW_LIGHT_LUA .. "[Set Gear]:|r /set NAME")
+end
+
+local function printEquipGearUsage()
+  print(YELLOW_LIGHT_LUA .. "[Equip Gear]:|r /equip NAME")
+end
+
 -- GEAR SETS STORED AS SUBTABLES IN BENTOSHORTCUTSCLASSICDB.GEARSETS
 
 local function SaveGearSet(setName)
@@ -92,7 +120,7 @@ local function SaveGearSet(setName)
     end
   end
 
-  print(YELLOW_LIGHT_LUA .. "[GEAR MANAGER]:|r " .. WHITE_LUA .. setName .. " Saved|r")
+  PrintGearSetSavedMessage(setName)
 end
 
 local function EquipGearSet(setName)
@@ -138,31 +166,32 @@ local function EquipGearSet(setName)
         if found then break end
       end
       if not found then
-        table.insert(missingItems, GetItemNameByID(wantedID))
+        local itemName = GetItemNameByID(wantedID)
+        PrintGearSetItemMissingMessage(itemName)
+        table.insert(missingItems, itemName)
       end
     end
   end
 
-  if #missingItems > 0 then
-    print(
-      YELLOW_LIGHT_LUA .. "[GEAR MANAGER]:|r " ..
-      WHITE_LUA .. setName .. " not equipped because " ..
-      table.concat(missingItems, ", ") .. " is missing|r"
-    )
-  else
-    print(
-      YELLOW_LIGHT_LUA .. "[GEAR MANAGER]:|r " ..
-      WHITE_LUA .. setName .. " Equipped|r"
-    )
+  if #missingItems == 0 then
+    PrintGearSetEquippedMessage(setName)
   end
 end
 
 -- SLASH COMMAND HOOKS
 
-SlashCmdList["GEARSET"] = function(msg)
+SlashCmdList["SETGEAR"] = function(msg)
+  if trim(msg) == "" then
+    printSetGearUsage()
+    return
+  end
   SaveGearSet(trim(msg))
 end
 
-SlashCmdList["EQUIPSET"] = function(msg)
+SlashCmdList["EQUIPGEAR"] = function(msg)
+  if trim(msg) == "" then
+    printEquipGearUsage()
+    return
+  end
   EquipGearSet(trim(msg))
 end

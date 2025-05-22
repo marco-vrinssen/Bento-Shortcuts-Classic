@@ -82,10 +82,10 @@ end
 local function printMutedSounds()
     ensureSavedVariables()
     if #BentoShortcutsClassicDB.MutedSounds == 0 then
-        print("No sounds are currently muted.")
+        print(YELLOW_LIGHT_LUA .. "[Sound Mute]:|r No sounds are currently muted.")
         return
     end
-    print("Muted sound IDs:")
+    print(YELLOW_LIGHT_LUA .. "[Sound Mute]:|r Muted sound IDs:")
     for _, soundId in ipairs(BentoShortcutsClassicDB.MutedSounds) do
         print("- " .. tostring(soundId))
     end
@@ -97,27 +97,27 @@ SLASH_MUTESOUND1 = "/mutesound"
 SlashCmdList["MUTESOUND"] = function(msg)
     local arg = msg and msg:match("^%s*(.-)%s*$") or ""
     if arg == "" then
-        print("Usage: /mutesound <ID|clear|check|default>")
+        print(YELLOW_LIGHT_LUA .. "[Sound Mute]:|r /mutesound ID / clear / check / default")
         return
     end
     if arg == "clear" then
         clearMutedSounds()
-        print("All muted sounds cleared.")
+        print(YELLOW_LIGHT_LUA .. "[Sound Mute]:|r All muted sounds cleared.")
         return
     elseif arg == "check" then
         printMutedSounds()
         return
     elseif arg == "default" then
         restoreDefaultSounds()
-        print("Default muted sounds restored.")
+        print(YELLOW_LIGHT_LUA .. "[Sound Mute]:|r Default muted sounds restored.")
         return
     end
     local soundId = tonumber(arg)
     if soundId then
         addMutedSound(soundId)
-        print("Muted sound ID: " .. soundId)
+        print(YELLOW_LIGHT_LUA .. "[Sound Mute]:|r Muted sound ID: " .. soundId)
     else
-        print("Invalid argument. Usage: /mutesound <ID|clear|check|default>")
+        print(YELLOW_LIGHT_LUA .. "[Sound Mute]:|r /mutesound ID / clear / check / default")
     end
 end
 

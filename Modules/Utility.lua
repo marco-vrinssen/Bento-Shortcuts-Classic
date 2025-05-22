@@ -1,17 +1,18 @@
 -- TOGGLE LUA ERRORS
 
-SLASH_TOGGLELUA1 = "/errors"
-SlashCmdList["TOGGLELUA"] = function()
-    local showErrors = GetCVar("scriptErrors")
-    if showErrors == "1" then
-        SetCVar("scriptErrors", 0)
-        print(YELLOW_LIGHT_LUA .. "LUA Errors: " .. "|r" .. "Off")
-    else
+SLASH_ERRORDISPLAY1 = "/errors"
+SlashCmdList["ERRORDISPLAY"] = function(msg)
+    local arg = msg and msg:match("^%s*(.-)%s*$"):lower() or ""
+    if arg == "show" or arg == "on" then
         SetCVar("scriptErrors", 1)
-        print(YELLOW_LIGHT_LUA .. "LUA Errors: " .. "|r" .. "On")
+        print(YELLOW_LIGHT_LUA .. "[Error Display]:|r On")
+    elseif arg == "hide" or arg == "off" then
+        SetCVar("scriptErrors", 0)
+        print(YELLOW_LIGHT_LUA .. "[Error Display]:|r Off")
+    else
+        print(YELLOW_LIGHT_LUA .. "[Error Display]:|r /errors show / hide / on / off")
     end
 end
-
 
 -- RELOAD UI
 
@@ -20,14 +21,12 @@ SlashCmdList["RELOADUI"] = function()
     ReloadUI()
 end
 
-
 -- RESTART GRAPHICS ENGINE
 
 SLASH_GXRESTART1 = "/gx"
 SlashCmdList["GXRESTART"] = function()
     ConsoleExec("gxRestart")
 end
-
 
 -- FULL RELOAD: UI, GRAPHICS ENGINE, AND GAME CACHE
 
@@ -40,7 +39,6 @@ end
 SLASH_FULLRELOAD1 = "/rl"
 SlashCmdList["FULLRELOAD"] = fullReload
 
-
 -- RELOAD UI ON MAIN MENU MICRO BUTTON RIGHT CLICK
 
 MainMenuMicroButton:HookScript("OnClick", function(self, buttonClicked)
@@ -48,7 +46,6 @@ MainMenuMicroButton:HookScript("OnClick", function(self, buttonClicked)
         ReloadUI()
     end
 end)
-
 
 -- CUSTOM TOOLTIP FOR MAIN MENU MICRO BUTTON
 

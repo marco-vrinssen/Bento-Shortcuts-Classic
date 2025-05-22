@@ -1,37 +1,22 @@
--- INITIALIZE KEYWORD STORAGE AND PLAYER NAME
+-- INITIALIZE KEYWORD STORAGE
 
 local activeKeywordFilters = {}
-local localPlayerName = UnitName("player")
 
 -- NOTIFICATION ON KEYWORD MATCH
 
 local function notifyKeywordMatch(matchedMessage, matchedSender)
-    local senderLink = "|Hplayer:" .. matchedSender .. "|h" .. YELLOW_LIGHT_LUA .. "[" .. matchedSender .. "]: " .. "|r" .. "|h"
-    print(senderLink .. matchedMessage)
-    PlaySound(3175, "Master", true)
+    local senderLink = "|Hplayer:" .. matchedSender .. "|h" .. YELLOW_LIGHT_LUA .. "[" .. matchedSender .. "]:|r|h"
+    print(senderLink .. " " .. matchedMessage)
+    PlaySound(1115, "Master", true)
 end
 
 -- KEYWORD FILTERING LOGIC
 
 local function doesMessageMatchAnyKeywordFilter(chatMessage)
-    for _, keywordFilter in ipairs(activeKeywordFilters) do
-        if type(keywordFilter) == "string" then
-            local keywordPattern = strlower(keywordFilter)
-            if strfind(strlower(chatMessage), keywordPattern) then
-                return true
-            end
-        elseif type(keywordFilter) == "table" then
-            local allKeywordsPresent = true
-            for _, requiredKeyword in ipairs(keywordFilter) do
-                local keywordPattern = strlower(requiredKeyword)
-                if not strfind(strlower(chatMessage), keywordPattern) then
-                    allKeywordsPresent = false
-                    break
-                end
-            end
-            if allKeywordsPresent then
-                return true
-            end
+    local lowerMessage = strlower(chatMessage)
+    for i = 1, #activeKeywordFilters do
+        if strfind(lowerMessage, strlower(activeKeywordFilters[i]), 1, true) then
+            return true
         end
     end
     return false
@@ -39,8 +24,8 @@ end
 
 -- EVENT HANDLER FOR CHAT MESSAGE SCANNING
 
-local function handleChatMessageEvent(self, event, chatMessage, senderName, languageName, channelName, ...)
-    if next(activeKeywordFilters) and strmatch(channelName, "%d+") then
+local function handleChatMessageEvent(_, _, chatMessage, senderName, _, channelName, ...)
+    if #activeKeywordFilters > 0 and strmatch(channelName, "%d+") then
         local channelNumber = tonumber(strmatch(channelName, "%d+"))
         if channelNumber and channelNumber >= 1 and channelNumber <= 20 and doesMessageMatchAnyKeywordFilter(chatMessage) then
             notifyKeywordMatch(chatMessage, senderName)
@@ -59,40 +44,15 @@ local function handleScanSlashCommand(commandInput)
     local trimmedInput = commandInput:gsub("^%s*(.-)%s*$", "%1")
     if trimmedInput == "" or trimmedInput == "stop" or trimmedInput == "clear" then
         wipe(activeKeywordFilters)
-        print(YELLOW_LIGHT_LUA .. "[CHAT SCAN]:" .. "|r " .. WHITE_LUA .. "Stopped and cleared.|r")
+        print(YELLOW_LIGHT_LUA .. "[Chat Scan]:|r Stopped and cleared.")
         chatScanEventFrame:UnregisterEvent("CHAT_MSG_CHANNEL")
     else
         if not chatScanEventFrame:IsEventRegistered("CHAT_MSG_CHANNEL") then
             chatScanEventFrame:RegisterEvent("CHAT_MSG_CHANNEL")
         end
-
-        local keywordList = {}
-        for keyword in string.gmatch(trimmedInput, '([^,]+)') do
-            local cleanedKeyword = keyword:gsub("^%s*(.-)%s*$", "%1")
-            if cleanedKeyword ~= "" then
-                table.insert(keywordList, cleanedKeyword)
-            end
-        end
-
-        if #keywordList == 1 then
-            table.insert(activeKeywordFilters, keywordList[1])
-        elseif #keywordList > 1 then
-            table.insert(activeKeywordFilters, keywordList)
-        end
-
-        local groupedKeywordStrings = {}
-        for _, keywordFilter in ipairs(activeKeywordFilters) do
-            if type(keywordFilter) == "string" then
-                table.insert(groupedKeywordStrings, WHITE_LUA .. keywordFilter .. "|r")
-            elseif type(keywordFilter) == "table" then
-                local coloredKeywords = {}
-                for i, kw in ipairs(keywordFilter) do
-                    table.insert(coloredKeywords, WHITE_LUA .. kw .. "|r")
-                end
-                table.insert(groupedKeywordStrings, table.concat(coloredKeywords, YELLOW_LIGHT_LUA .. " AND " .. "|r"))
-            end
-        end
-        print(YELLOW_LIGHT_LUA .. "[CHAT SCAN]:" .. "|r " .. table.concat(groupedKeywordStrings, YELLOW_LIGHT_LUA .. " / " .. "|r"))
+        table.insert(activeKeywordFilters, trimmedInput)
+        local keywordString = table.concat(activeKeywordFilters, " / ")
+        print(YELLOW_LIGHT_LUA .. "[Chat Scan]:|r " .. keywordString)
     end
 end
 

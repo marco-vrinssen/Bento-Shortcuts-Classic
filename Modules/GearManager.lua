@@ -28,11 +28,6 @@ else
   error("No container API found!")
 end
 
--- COLOR CONSTANTS
-
-local YELLOW_LIGHT_LUA = "|cFFFDE89B"
-local WHITE_LUA = "|cFFFFFFFF"
-
 -- SLOTID TO SLOTNAME MAP
 
 local SLOTID_TO_SLOTNAME = {

@@ -3,6 +3,10 @@
 local regionNames = {'us', 'kr', 'eu', 'tw', 'cn'}
 local region = regionNames[GetCurrentRegion()]
 
+-- SET MARKED FOR DEATH ICON FOR FIND+ MACRO
+
+local FIND_PLUS_ICON = "Ability_Hunter_MarkedForDeath"
+
 -- DEFINE FIND MACRO CREATION
 
 local function createFindMacros(targetInput)
@@ -36,9 +40,9 @@ local function createFindMacros(targetInput)
 
     local macroIndexFindPlus = GetMacroIndexByName(macroNameFindPlus)
     if macroIndexFindPlus > 0 then
-        EditMacro(macroIndexFindPlus, macroNameFindPlus, "Ability_Hunter_SniperShot", macroBodyFindPlus)
+        EditMacro(macroIndexFindPlus, macroNameFindPlus, FIND_PLUS_ICON, macroBodyFindPlus)
     else
-        CreateMacro(macroNameFindPlus, "Ability_Hunter_SniperShot", macroBodyFindPlus, nil)
+        CreateMacro(macroNameFindPlus, FIND_PLUS_ICON, macroBodyFindPlus, nil)
     end
 
     print(YELLOW_LIGHT_LUA .. "FIND:" .. "|r" .. " " .. targetName .. ".")
@@ -100,9 +104,9 @@ local function addToFindPlusMacro(targetInput)
     end
 
     if macroIndexFindPlus > 0 then
-        EditMacro(macroIndexFindPlus, macroNameFindPlus, "Ability_Hunter_SniperShot", macroBodyFindPlus)
+        EditMacro(macroIndexFindPlus, macroNameFindPlus, FIND_PLUS_ICON, macroBodyFindPlus)
     else
-        CreateMacro(macroNameFindPlus, "Ability_Hunter_SniperShot", macroBodyFindPlus, nil)
+        CreateMacro(macroNameFindPlus, FIND_PLUS_ICON, macroBodyFindPlus, nil)
     end
 
     local newTargetsStr = table.concat(existingTargets, ", ")

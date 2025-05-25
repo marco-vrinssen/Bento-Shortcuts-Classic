@@ -1,15 +1,9 @@
 -- AUTO LOOT ITEMS WHEN LOOT WINDOW OPENS
 
-local lastLootTime = 0
-local LOOT_DELAY = 0.05
-
 local function autoLooting()
     if GetCVarBool("autoLootDefault") ~= IsModifiedClick("AUTOLOOTTOGGLE") then
-        if (GetTime() - lastLootTime) >= LOOT_DELAY then
-            for i = GetNumLootItems(), 1, -1 do
-                LootSlot(i)
-            end
-            lastLootTime = GetTime()
+        for lootSlotIndex = GetNumLootItems(), 1, -1 do
+            LootSlot(lootSlotIndex)
         end
     end
 end

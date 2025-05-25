@@ -2,33 +2,37 @@ if not BentoShortcutsClassicDB then
     BentoShortcutsClassicDB = {}
 end
 
--- SLASH COMMANDS
+-- REGISTER SLASH COMMANDS
 
 SLASH_GEARSET1  = "/gearset"
 SLASH_EQUIPSET1 = "/equipset"
 
--- TRIM HELPER
 
-local function trim(s)
-  return s and s:match("^%s*(.-)%s*$") or ""
+-- IMPLEMENT STRING UTILITIES
+
+local function trim(inputString)
+  return inputString and inputString:match("^%s*(.-)%s*$") or ""
 end
 
--- CONTAINER API PICKER
+-- SETUP CONTAINER API COMPATIBILITY
 
-local GetNumSlots, GetLink, UseItem
+local GetNumSlots, GetLink, UseItem, PickupContainerItemFunc
 if GetContainerNumSlots then
   GetNumSlots = GetContainerNumSlots
-  GetLink    = GetContainerItemLink
-  UseItem    = UseContainerItem
+  GetLink = GetContainerItemLink
+  UseItem = UseContainerItem
+  PickupContainerItemFunc = PickupContainerItem
 elseif C_Container then
   GetNumSlots = C_Container.GetContainerNumSlots
-  GetLink    = C_Container.GetContainerItemLink
-  UseItem    = C_Container.UseContainerItem
+  GetLink = C_Container.GetContainerItemLink
+  UseItem = C_Container.UseContainerItem
+  PickupContainerItemFunc = C_Container.PickupContainerItem
 else
   error("No container API found!")
 end
 
--- SLOTID TO SLOTNAME MAP
+
+-- DEFINE SLOT MAPPINGS
 
 local SLOTID_TO_SLOTNAME = {
   [1] = "HeadSlot",
@@ -52,7 +56,7 @@ local SLOTID_TO_SLOTNAME = {
   [19] = "TabardSlot"
 }
 
--- GET ITEM NAME BY ITEMID
+-- IMPLEMENT ITEM UTILITIES
 
 local function GetItemNameByID(itemID)
   local itemName = GetItemInfo(itemID)
@@ -62,7 +66,7 @@ local function GetItemNameByID(itemID)
   return ("ItemID:%d"):format(itemID)
 end
 
--- GEAR SETS STORED AS SUBTABLES IN BENTOSHORTCUTSCLASSICDB.GEARSETS
+-- IMPLEMENT GEAR SET SAVING
 
 local function SaveGearSet(setName)
   if setName == "" then
@@ -90,6 +94,8 @@ local function SaveGearSet(setName)
   print(YELLOW_LIGHT_LUA .. "[Gear Set Manager]:|r " .. WHITE_LUA .. setName .. " Set Saved|r")
 end
 
+-- IMPLEMENT GEAR SET EQUIPPING
+
 local function EquipGearSet(setName)
   if setName == "" then
     print("Usage: /equipset SetName")
@@ -100,8 +106,8 @@ local function EquipGearSet(setName)
     BentoShortcutsClassicDB.GearSets = {}
   end
 
-  local set = BentoShortcutsClassicDB.GearSets[setName]
-  if not set then
+  local gearSet = BentoShortcutsClassicDB.GearSets[setName]
+  if not gearSet then
     print(("No gear set named '%s' found."):format(setName))
     return
   end
@@ -113,27 +119,33 @@ local function EquipGearSet(setName)
 
   local missingItems = {}
 
-  for slotID, wantedID in pairs(set) do
-    local equipped = GetInventoryItemID("player", slotID)
-    if equipped ~= wantedID then
-      local found = false
-      for bag = 0, 4 do
-        local num = GetNumSlots(bag) or 0
-        for bs = 1, num do
-          local link = GetLink(bag, bs)
-          if link then
-            local id = tonumber(link:match("item:(%d+):"))
-            if id == wantedID then
-              UseItem(bag, bs)
-              found = true
+  for slotID, wantedItemID in pairs(gearSet) do
+    local equippedItemID = GetInventoryItemID("player", slotID)
+    if equippedItemID ~= wantedItemID then
+      local itemFound = false
+      for bagIndex = 0, 4 do
+        local bagSlotCount = GetNumSlots(bagIndex) or 0
+        for bagSlot = 1, bagSlotCount do
+          local itemLink = GetLink(bagIndex, bagSlot)
+          if itemLink then
+            local bagItemID = tonumber(itemLink:match("item:(%d+):"))
+            if bagItemID == wantedItemID then
+              if CursorHasItem() then
+                ClearCursor()
+              end
+              
+              PickupContainerItemFunc(bagIndex, bagSlot)
+              PickupInventoryItem(slotID)
+              
+              itemFound = true
               break
             end
           end
         end
-        if found then break end
+        if itemFound then break end
       end
-      if not found then
-        table.insert(missingItems, GetItemNameByID(wantedID))
+      if not itemFound then
+        table.insert(missingItems, GetItemNameByID(wantedItemID))
       end
     end
   end
@@ -152,12 +164,12 @@ local function EquipGearSet(setName)
   end
 end
 
--- SLASH COMMAND HOOKS
+-- REGISTER COMMAND HANDLERS
 
-SlashCmdList["GEARSET"] = function(msg)
-  SaveGearSet(trim(msg))
+SlashCmdList["GEARSET"] = function(commandMessage)
+  SaveGearSet(trim(commandMessage))
 end
 
-SlashCmdList["EQUIPSET"] = function(msg)
-  EquipGearSet(trim(msg))
+SlashCmdList["EQUIPSET"] = function(commandMessage)
+  EquipGearSet(trim(commandMessage))
 end

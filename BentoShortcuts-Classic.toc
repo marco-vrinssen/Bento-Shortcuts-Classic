@@ -7,9 +7,7 @@
 ## SavedVariables: BentoShortcutsClassicDB
 
 Modules/Tokens.lua
-
-Modules/AutoRepair.lua
-Modules/AutoSellJunk.lua
+Modules/AutoMerchant.lua
 Modules/Broadcast.lua
 Modules/ChatScan.lua
 Modules/ConfirmDialogs.lua

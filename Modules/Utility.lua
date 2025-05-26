@@ -1,16 +1,14 @@
 -- TOGGLE LUA ERRORS
 
 SLASH_ERRORDISPLAY1 = "/errors"
-SlashCmdList["ERRORDISPLAY"] = function(msg)
-    local arg = msg and msg:match("^%s*(.-)%s*$"):lower() or ""
-    if arg == "show" or arg == "on" then
-        SetCVar("scriptErrors", 1)
-        print(YELLOW_LIGHT_LUA .. "[Error Display]:|r On")
-    elseif arg == "hide" or arg == "off" then
+SlashCmdList["ERRORDISPLAY"] = function()
+    local currentErrorsSetting = GetCVar("scriptErrors")
+    if currentErrorsSetting == "1" then
         SetCVar("scriptErrors", 0)
         print(YELLOW_LIGHT_LUA .. "[Error Display]:|r Off")
     else
-        print(YELLOW_LIGHT_LUA .. "[Error Display]:|r /errors show / hide / on / off")
+        SetCVar("scriptErrors", 1)
+        print(YELLOW_LIGHT_LUA .. "[Error Display]:|r On")
     end
 end
 

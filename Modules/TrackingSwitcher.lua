@@ -4,6 +4,7 @@ local addonName = "TrackThemAll"
 local trackingTimer = nil
 local isRunning = false
 local isPaused = false
+local trackingSoundId = 567407 -- Button click sound for tracking toggle
 
 -- DEFINE HERB AND MINERAL TRACKING SPELL CONFIGURATIONS WITH TEXTURES
 
@@ -50,11 +51,12 @@ local function StartTimer()
         return
     end
     
+    MuteSoundFile(trackingSoundId)
     print(YELLOW_LIGHT_LUA .. "[Tracking Switcher]:|r " .. "Started Herb and Mineral Tracking.")
     isRunning = true
     isPaused = false
     
-    trackingTimer = C_Timer.NewTicker(1.75, function()
+    trackingTimer = C_Timer.NewTicker(1.5, function()
         if UnitAffectingCombat("player") then
             if not isPaused then
                 print(YELLOW_LIGHT_LUA .. "[Tracking Switcher]:|r " .. "Tracking paused.")
@@ -75,6 +77,7 @@ local function StopTimer()
         trackingTimer = nil
     end
     
+    UnmuteSoundFile(trackingSoundId)
     isRunning = false
     isPaused = false
     print(YELLOW_LIGHT_LUA .. "[Tracking Switcher]:|r " .. "Stopped Herb and Mineral Tracking.")

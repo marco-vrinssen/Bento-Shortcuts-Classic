@@ -17,9 +17,10 @@ Modules/FastLoot.lua
 Modules/GearManager.lua
 Modules/Group.lua
 Modules/Intro.lua
+Modules/MultiReply.lua
+Modules/MultiWhisper.lua
 Modules/MuteSounds.lua
 Modules/Port.lua
 Modules/Targeting.lua
 Modules/TrackingSwitcher.lua
 Modules/Utility.lua
-Modules/Whisper.lua

@@ -7,7 +7,7 @@ local activeKeywordFilters = {}
 local function notifyKeywordMatch(matchedMessage, matchedSender)
     local senderLink = "|Hplayer:" .. matchedSender .. "|h" .. YELLOW_LIGHT_LUA .. "[" .. matchedSender .. "]:|r|h"
     print(senderLink .. " " .. matchedMessage)
-    PlaySound(1115, "Master", true)
+    PlaySound(3175, "Master", true)
 end
 
 -- KEYWORD FILTERING LOGIC

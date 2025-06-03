@@ -1,79 +1,83 @@
 # Bento Shortcuts Classic
 
-Addon for World of Warcraft Classic providing efficiency-enhancing shortcuts and automation.
+World of Warcraft Classic addon providing efficiency shortcuts and automation for enhanced gameplay.
 
-## Core Features
+Type `/bentoshortcuts` in-game to see all commands.
 
-### Command Overview
+## Chat & Communication
 
-- `/bentoshortcuts` : Display all available commands
-
-### Chat & Messaging
-
-- `/scan <KEYWORD>` : Monitor chat for keyword
-- `/scan stop` : Stop scanning
-- `/scan clear` : Clear scan results
-- `/w+ [MESSAGE]` : Whisper all players in /who list
-  - `/w+ N [MESSAGE]` : Whisper first N players
-  - `/w+ -CLASS [MESSAGE]` : Exclude class
-- `/w+- [MESSAGE]` : Whisper with ignore list (persistent)
+- `/scan KEYWORD` : Monitor chat channels for keyword
+- `/scan stop` : Stop keyword scanning  
+- `/scan clear` : Clear keyword scanning
+- `/w+ MESSAGE` : Whisper all players in /who list
+- `/w+ N MESSAGE` : Whisper first N players only
+- `/w+ -CLASS MESSAGE` : Exclude specific class from whispers
+- `/w+- MESSAGE` : Whisper with persistent ignore list
 - `/clearplayerlist` : Clear whisper ignore list
-- `/r+ [MESSAGE]` : Reply to recent whisper senders
-  - `/r+ N [MESSAGE]` : Reply to last N senders
-- `/ws [MESSAGE]` : Whisper all auction sellers
-- `/lfg [MESSAGE]` : Broadcast to World/LFG channels
+- `/r+ MESSAGE` : Reply to recent whisper senders
+- `/r+ N MESSAGE` : Reply to last N whisper senders
+- `/r+ reset` : Reset whispered players list
+- `/lfg MESSAGE` : Broadcast to World and LookingForGroup channels
 
-### Gear Manager
+## Gear Management
 
-- `/gearset [NAME]` : Save current gear as named set
-- `/equipset [NAME]` : Equip named gear set
-- Gear sets stored in dedicated subtables for organization
+- `/gearset NAME` : Save current gear as named set
+- `/equipset NAME` : Equip saved gear set
+- Gear sets are stored persistently across sessions
 
-### Player Targeting
+## Player Targeting
 
-- `/find [NAME]` : Set find macro to name
-- `/find` : Set find macro to current target
-- `/find+ [NAME]` : Add name to find macro
+- `/find NAME` : Create find macro for specific player
+- `/find` : Create find macro for current target
+- `/find+ NAME` : Add player to existing find macro
 - `/find+` : Add current target to find macro
+- Generates targeting macros with Classic Armory links
 
-### Travel & Portal Shortcuts
+## Travel & Portals
 
-- `/travel [ZONE]` : Find warlocks for summons
-- `/travel` : Find mages for portals in zone
+- `/port ZONE` : Find warlocks for summons to zone
+- `/port` : Find mages for portals in current zone
 
-### Group & Raid Utility
+## Group Management
 
-- `/rc` : Ready check
+- `/rc` : Initiate ready check
+- `/rc+` : Initiate role check
 - `/q` : Leave party/raid
+- `/mp` : Mark party members by role
 
-### System & UI Commands
+## System & Interface
 
-- `/errors` : Toggle LUA error display
-- `/ui` : Reload interface
+- `/errors` : Toggle Lua error display
+- `/ui` : Reload user interface
 - `/gx` : Restart graphics engine
-- `/rl` : Reload UI, restart graphics, clear cache
+- `/rl` : Full reload with UI, graphics, and cache clear
+- Right-click Main Menu button for quick UI reload
 
-### Sound Management
+## Sound Management
 
-- `/mutesound <ID>` : Mute sound by ID
+- `/mutesound ID` : Mute specific sound by ID
 - `/mutesound clear` : Unmute all sounds
-- `/mutesound check` : List muted sounds
+- `/mutesound check` : List currently muted sounds
 - `/mutesound default` : Restore default muted sounds
-- Muted sounds stored in dedicated subtable
+- Includes preset mutes for common annoying sounds
 
-### Automation & Quality of Life
+## Tracking Automation
 
-- Fast looting: auto-loot items
-- Auto-sell junk: sell gray items at vendor
-- Auto-repair: repair gear at vendor
-- Auto-confirm dialogs: accept common prompts
-- Copy name: Ctrl+I (Cmd+I on Mac) to copy unit/item name
-- UI reload: right-click main menu button
+- `/ts` : Toggle herb/mineral tracking switcher
+- Automatically alternates between Find Herbs and Find Minerals
 
-### Classic Armory
+## Automatic Features
 
-- Generate Classic Armory link via context menu
+### Merchant Automation
+- Auto-sell junk items when visiting vendors
+- Auto-repair damaged gear at vendors
 
----
+### Loot Automation  
+- Fast loot for quicker item collection
+- Auto-confirm loot roll and bind confirmations
 
-For full usage, type `/bentoshortcuts` in-game.
+### Quality of Life
+- Copy names with Ctrl+I (Mac: Cmd+I) for hovered items/units
+- Context menus with Classic Armory links and targeting options
+
+All settings and saved data persist between sessions.

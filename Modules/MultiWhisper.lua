@@ -100,7 +100,7 @@ local function whisperPlayersWithSkip(msg)
     end
 end
 
-SLASH_MULTIWHISPER_SKIP1 = "/w+-"
+SLASH_MULTIWHISPER_SKIP1 = "/spam"
 SlashCmdList["MULTIWHISPER_SKIP"] = whisperPlayersWithSkip
 
 -- CLEAR MULTIWHISPER SKIP LIST FUNCTIONALITY

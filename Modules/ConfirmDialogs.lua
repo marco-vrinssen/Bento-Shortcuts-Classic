@@ -55,12 +55,3 @@ end
 local equipBindTradeableConfirmationFrame = CreateFrame("Frame")
 equipBindTradeableConfirmationFrame:RegisterEvent("EQUIP_BIND_TRADEABLE_CONFIRM")
 equipBindTradeableConfirmationFrame:SetScript("OnEvent", handleEquipBindTradeableConfirmation)
-
--- AUTOMATICALLY CONFIRM DELETE ITEM DIALOGS
-
-local function handleDeleteItemConfirmation()
-    DeleteCursorItem()
-end
-local deleteItemConfirmationFrame = CreateFrame("Frame")
-deleteItemConfirmationFrame:RegisterEvent("DELETE_ITEM_CONFIRM")
-deleteItemConfirmationFrame:SetScript("OnEvent", handleDeleteItemConfirmation)

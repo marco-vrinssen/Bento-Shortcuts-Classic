@@ -1,57 +1,63 @@
--- AUTOMATICALLY CONFIRM LOOT ROLL DIALOGS
+-- HANDLE LOOT ROLL CONFIRMATION TO AUTO CONFIRM DIALOGS
 
-local function handleLootRollConfirmation(_, _, lootRollIdentifier, rollTypeSelected)
-    ConfirmLootRoll(lootRollIdentifier, rollTypeSelected)
+local function handleLootRollConfirmation(_, _, lootId, rollType)
+    ConfirmLootRoll(lootId, rollType)
     StaticPopup_Hide("CONFIRM_LOOT_ROLL")
 end
-local lootRollConfirmationFrame = CreateFrame("Frame")
-lootRollConfirmationFrame:RegisterEvent("CONFIRM_LOOT_ROLL")
-lootRollConfirmationFrame:SetScript("OnEvent", handleLootRollConfirmation)
 
--- AUTOMATICALLY CONFIRM LOOT BIND DIALOGS
+local lootRollFrame = CreateFrame("Frame")
+lootRollFrame:RegisterEvent("CONFIRM_LOOT_ROLL")
+lootRollFrame:SetScript("OnEvent", handleLootRollConfirmation)
 
-local function handleLootBindConfirmation(_, _, slotIdentifier, bindTypeSelected, ...)
-    ConfirmLootSlot(slotIdentifier, bindTypeSelected)
+-- HANDLE LOOT BIND CONFIRMATION TO AUTO CONFIRM DIALOGS
+
+local function handleLootBindConfirmation(_, _, slotId, bindType, ...)
+    ConfirmLootSlot(slotId, bindType)
     StaticPopup_Hide("LOOT_BIND", ...)
 end
-local lootBindConfirmationFrame = CreateFrame("Frame")
-lootBindConfirmationFrame:RegisterEvent("LOOT_BIND_CONFIRM")
-lootBindConfirmationFrame:SetScript("OnEvent", handleLootBindConfirmation)
 
--- AUTOMATICALLY CONFIRM MERCHANT TRADE TIMER REMOVAL
+local lootBindFrame = CreateFrame("Frame")
+lootBindFrame:RegisterEvent("LOOT_BIND_CONFIRM")
+lootBindFrame:SetScript("OnEvent", handleLootBindConfirmation)
 
-local function handleMerchantTradeTimerRemoval()
+-- HANDLE MERCHANT TIMER REMOVAL TO AUTO SELL CURSOR ITEM
+
+local function handleMerchantTimer()
     SellCursorItem()
 end
-local merchantTradeTimerConfirmationFrame = CreateFrame("Frame")
-merchantTradeTimerConfirmationFrame:RegisterEvent("MERCHANT_CONFIRM_TRADE_TIMER_REMOVAL")
-merchantTradeTimerConfirmationFrame:SetScript("OnEvent", handleMerchantTradeTimerRemoval)
 
--- AUTOMATICALLY CONFIRM MAIL LOCK SEND ITEMS
+local merchantFrame = CreateFrame("Frame")
+merchantFrame:RegisterEvent("MERCHANT_CONFIRM_TRADE_TIMER_REMOVAL")
+merchantFrame:SetScript("OnEvent", handleMerchantTimer)
 
-local function handleMailLockSendItemsConfirmation(_, _, mailItemIdentifier)
-    RespondMailLockSendItem(mailItemIdentifier, true)
+-- HANDLE MAIL LOCK CONFIRMATION TO AUTO RESPOND SEND ITEMS
+
+local function handleMailLockConfirmation(_, _, mailId)
+    RespondMailLockSendItem(mailId, true)
 end
-local mailLockSendItemsConfirmationFrame = CreateFrame("Frame")
-mailLockSendItemsConfirmationFrame:RegisterEvent("MAIL_LOCK_SEND_ITEMS")
-mailLockSendItemsConfirmationFrame:SetScript("OnEvent", handleMailLockSendItemsConfirmation)
 
--- AUTOMATICALLY CONFIRM EQUIP BIND DIALOGS
+local mailLockFrame = CreateFrame("Frame")
+mailLockFrame:RegisterEvent("MAIL_LOCK_SEND_ITEMS")
+mailLockFrame:SetScript("OnEvent", handleMailLockConfirmation)
 
-local function handleEquipBindConfirmation(_, _, itemIdentifier)
-    EquipPendingItem(itemIdentifier)
+-- HANDLE EQUIP BIND CONFIRMATION TO AUTO EQUIP ITEMS
+
+local function handleEquipBindConfirmation(_, _, itemId)
+    EquipPendingItem(itemId)
     StaticPopup_Hide("EQUIP_BIND")
 end
-local equipBindConfirmationFrame = CreateFrame("Frame")
-equipBindConfirmationFrame:RegisterEvent("EQUIP_BIND_CONFIRM")
-equipBindConfirmationFrame:SetScript("OnEvent", handleEquipBindConfirmation)
 
--- AUTOMATICALLY CONFIRM EQUIP BIND TRADEABLE DIALOGS
+local equipBindFrame = CreateFrame("Frame")
+equipBindFrame:RegisterEvent("EQUIP_BIND_CONFIRM")
+equipBindFrame:SetScript("OnEvent", handleEquipBindConfirmation)
 
-local function handleEquipBindTradeableConfirmation(_, _, itemIdentifier)
-    StaticPopupDialogs["EQUIP_BIND_TRADEABLE"]:OnAccept(itemIdentifier)
+-- HANDLE EQUIP TRADEABLE CONFIRMATION TO AUTO ACCEPT BIND
+
+local function handleEquipTradeableConfirmation(_, _, itemId)
+    StaticPopupDialogs["EQUIP_BIND_TRADEABLE"]:OnAccept(itemId)
     StaticPopup_Hide("EQUIP_BIND_TRADEABLE")
 end
-local equipBindTradeableConfirmationFrame = CreateFrame("Frame")
-equipBindTradeableConfirmationFrame:RegisterEvent("EQUIP_BIND_TRADEABLE_CONFIRM")
-equipBindTradeableConfirmationFrame:SetScript("OnEvent", handleEquipBindTradeableConfirmation)
+
+local equipTradeableFrame = CreateFrame("Frame")
+equipTradeableFrame:RegisterEvent("EQUIP_BIND_TRADEABLE_CONFIRM")
+equipTradeableFrame:SetScript("OnEvent", handleEquipTradeableConfirmation)

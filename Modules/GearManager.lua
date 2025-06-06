@@ -108,7 +108,7 @@ local function equipGearSet(setName)
 
   local gearSet = BentoShortcutsClassicDB.GearSets[setName]
   if not gearSet then
-    print(("No gear set named '%s' found."):format(setName))
+    print(("No gear set named "%s" found."):format(setName))
     return
   end
 

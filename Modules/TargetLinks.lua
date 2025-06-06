@@ -1,6 +1,6 @@
 -- Initialize regionNames for macro generation
 
-local regionNames = {'us', 'kr', 'eu', 'tw', 'cn'}
+local regionNames = {"us", "kr", "eu", "tw", "cn"}
 local currentRegion = regionNames[GetCurrentRegion()]
 local FIND_PLUS_ICON = "Ability_Hunter_MarkedForDeath"
 
@@ -166,7 +166,7 @@ local function fixServerName(serverName)
         auServerDetected = true
         serverName = serverName:sub(1, -4)
     end
-    serverName = serverName:gsub("'(%u)", function(c) return c:lower() end):gsub("'", ""):gsub("%u", "-%1"):gsub("^[-%s]+", ""):gsub("[^%w%s%-]", ""):gsub("%s", "-"):lower():gsub("%-+", "-")
+    serverName = serverName:gsub(""(%u)", function(c) return c:lower() end):gsub(""", ""):gsub("%u", "-%1"):gsub("^[-%s]+", ""):gsub("[^%w%s%-]", ""):gsub("%s", "-"):lower():gsub("%-+", "-")
     serverName = serverName:gsub("([a-zA-Z])of%-", "%1-of-")
     if auServerDetected == true then
         serverName = serverName .. "-au"

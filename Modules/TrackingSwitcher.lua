@@ -1,49 +1,39 @@
--- INITIALIZE ADDON STATE AND TRACKING VARIABLES FOR HERB/MINERAL SWITCHER
+-- Initialize addon state with tracking variables
 
-local addonName = "TrackThemAll"
-local trackingTimer = nil
-local isRunning = false
+local switchTimer = nil
+local isActive = false
 local isPaused = false
 
--- DEFINE HERB AND MINERAL TRACKING SPELL CONFIGURATIONS WITH TEXTURES
+-- Define spell configurations with textures
 
-local trackingSpells = {
+local spellConfig = {
     herbs = { name = "Find Herbs", texture = 133939 },
     minerals = { name = "Find Minerals", texture = 136025 }
 }
 
--- HANDLE ADDON LOADED EVENT AND REGISTER INITIAL SETUP MESSAGE
-
-local function OnAddonLoaded(self, event, loadedAddonName)
-    if loadedAddonName == addonName then
-        print("TrackThemAll loaded! Use /tta to toggle herb/mineral tracking.")
-        self:UnregisterEvent("ADDON_LOADED")
-    end
-end
-
--- IMPLEMENT SMART TRACKING TOGGLE BETWEEN HERBS AND MINERALS
+-- Toggle between herb and mineral tracking
 
 local function ToggleTracking()
     if UnitAffectingCombat("player") then return end
     
-    local currentTrackingTexture = GetTrackingTexture()
-    local nextSpell = currentTrackingTexture == trackingSpells.herbs.texture 
-        and trackingSpells.minerals.name 
-        or trackingSpells.herbs.name
+    local currentTexture = GetTrackingTexture()
+    local nextSpell = currentTexture == spellConfig.herbs.texture 
+        and spellConfig.minerals.name 
+        or spellConfig.herbs.name
     
     CastSpellByName(nextSpell)
 end
 
--- MANAGE AUTOMATIC TRACKING TIMER WITH COMBAT PAUSE FUNCTIONALITY
+-- Start automatic tracking timer
 
 local function StartTimer()
-    if trackingTimer then return end
+    if switchTimer then return end
     
     print(YELLOW_LIGHT_LUA .. "[Tracking Switcher]:|r Started Herb and Mineral Tracking.")
-    isRunning = true
+    isActive = true
     isPaused = false
     
-    trackingTimer = C_Timer.NewTicker(1.5, function()
+    switchTimer = C_Timer.NewTicker(1.5, function()
         if UnitAffectingCombat("player") then
             if not isPaused then
                 print(YELLOW_LIGHT_LUA .. "[Tracking Switcher]:|r Tracking paused.")
@@ -56,28 +46,24 @@ local function StartTimer()
     end)
 end
 
+-- Stop automatic tracking timer
+
 local function StopTimer()
-    if trackingTimer then
-        trackingTimer:Cancel()
-        trackingTimer = nil
+    if switchTimer then
+        switchTimer:Cancel()
+        switchTimer = nil
     end
     
-    isRunning = false
+    isActive = false
     isPaused = false
     print(YELLOW_LIGHT_LUA .. "[Tracking Switcher]:|r Stopped Herb and Mineral Tracking.")
 end
 
--- PROCESS SLASH COMMAND TO START OR STOP TRACKING AUTOMATION
+-- Handle slash command toggle
 
-local function SlashCommandHandler()
-    if isRunning then StopTimer() else StartTimer() end
+local function SlashHandler()
+    if isActive then StopTimer() else StartTimer() end
 end
 
--- REGISTER EVENT FRAME AND SLASH COMMAND FOR ADDON FUNCTIONALITY
-
-local eventFrame = CreateFrame("Frame")
-eventFrame:RegisterEvent("ADDON_LOADED")
-eventFrame:SetScript("OnEvent", OnAddonLoaded)
-
 SLASH_TRACKINGSWITCHER1 = "/ts"
-SlashCmdList["TRACKINGSWITCHER"] = SlashCommandHandler
+SlashCmdList["TRACKINGSWITCHER"] = SlashHandler

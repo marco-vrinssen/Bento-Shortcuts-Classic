@@ -1,17 +1,14 @@
--- CONSTANTS
+-- Initialize regionNames for macro generation
 
 local regionNames = {'us', 'kr', 'eu', 'tw', 'cn'}
-local region = regionNames[GetCurrentRegion()]
-
--- SET MARKED FOR DEATH ICON FOR FIND+ MACRO
-
+local currentRegion = regionNames[GetCurrentRegion()]
 local FIND_PLUS_ICON = "Ability_Hunter_MarkedForDeath"
 
--- DEFINE FIND MACRO CREATION
+-- Create createFindMacros to generate FIND and FIND+ macros for a target
 
 local function createFindMacros(targetInput)
-    local macroNameFind = "FIND"
-    local macroNameFindPlus = "FIND+"
+    local macroName = "FIND"
+    local macroPlusName = "FIND+"
     local macroBodyFind
     local macroBodyFindPlus
     local targetName
@@ -31,18 +28,18 @@ local function createFindMacros(targetInput)
 
     macroBodyFindPlus = macroBodyFind .. "\n/run if UnitExists(\"target\") and not UnitIsDead(\"target\") and GetRaidTargetIndex(\"target\") == nil then SetRaidTarget(\"target\",8) end"
 
-    local macroIndexFind = GetMacroIndexByName(macroNameFind)
+    local macroIndexFind = GetMacroIndexByName(macroName)
     if macroIndexFind > 0 then
-        EditMacro(macroIndexFind, macroNameFind, "Ability_Hunter_SniperShot", macroBodyFind)
+        EditMacro(macroIndexFind, macroName, "Ability_Hunter_SniperShot", macroBodyFind)
     else
-        CreateMacro(macroNameFind, "Ability_Hunter_SniperShot", macroBodyFind, nil)
+        CreateMacro(macroName, "Ability_Hunter_SniperShot", macroBodyFind, nil)
     end
 
-    local macroIndexFindPlus = GetMacroIndexByName(macroNameFindPlus)
+    local macroIndexFindPlus = GetMacroIndexByName(macroPlusName)
     if macroIndexFindPlus > 0 then
-        EditMacro(macroIndexFindPlus, macroNameFindPlus, FIND_PLUS_ICON, macroBodyFindPlus)
+        EditMacro(macroIndexFindPlus, macroPlusName, FIND_PLUS_ICON, macroBodyFindPlus)
     else
-        CreateMacro(macroNameFindPlus, FIND_PLUS_ICON, macroBodyFindPlus, nil)
+        CreateMacro(macroPlusName, FIND_PLUS_ICON, macroBodyFindPlus, nil)
     end
 
     print(YELLOW_LIGHT_LUA .. "FIND:" .. "|r" .. " " .. targetName .. ".")
@@ -51,15 +48,15 @@ end
 SLASH_TARGETMACRO1 = "/find"
 SlashCmdList["TARGETMACRO"] = createFindMacros
 
--- DEFINE FIND+ MACRO ADDITION
+-- Create addToFindPlusMacro to add a target to FIND and FIND+ macros
 
 local function addToFindPlusMacro(targetInput)
-    local macroNameFind = "FIND"
-    local macroNameFindPlus = "FIND+"
-    local macroIndexFind = GetMacroIndexByName(macroNameFind)
-    local macroIndexFindPlus = GetMacroIndexByName(macroNameFindPlus)
-    local macroBodyFind = macroIndexFind > 0 and GetMacroBody(macroNameFind) or ""
-    local macroBodyFindPlus = macroIndexFindPlus > 0 and GetMacroBody(macroNameFindPlus) or ""
+    local macroName = "FIND"
+    local macroPlusName = "FIND+"
+    local macroIndexFind = GetMacroIndexByName(macroName)
+    local macroIndexFindPlus = GetMacroIndexByName(macroPlusName)
+    local macroBodyFind = macroIndexFind > 0 and GetMacroBody(macroName) or ""
+    local macroBodyFindPlus = macroIndexFindPlus > 0 and GetMacroBody(macroPlusName) or ""
     local targetName
 
     if targetInput and targetInput ~= "" then
@@ -98,42 +95,42 @@ local function addToFindPlusMacro(targetInput)
     macroBodyFindPlus = macroBodyFind .. "\n/run if UnitExists(\"target\") and not UnitIsDead(\"target\") and GetRaidTargetIndex(\"target\") == nil then SetRaidTarget(\"target\",8) end"
 
     if macroIndexFind > 0 then
-        EditMacro(macroIndexFind, macroNameFind, "Ability_Hunter_SniperShot", macroBodyFind)
+        EditMacro(macroIndexFind, macroName, "Ability_Hunter_SniperShot", macroBodyFind)
     else
-        CreateMacro(macroNameFind, "Ability_Hunter_SniperShot", macroBodyFind, nil)
+        CreateMacro(macroName, "Ability_Hunter_SniperShot", macroBodyFind, nil)
     end
 
     if macroIndexFindPlus > 0 then
-        EditMacro(macroIndexFindPlus, macroNameFindPlus, FIND_PLUS_ICON, macroBodyFindPlus)
+        EditMacro(macroIndexFindPlus, macroPlusName, FIND_PLUS_ICON, macroBodyFindPlus)
     else
-        CreateMacro(macroNameFindPlus, FIND_PLUS_ICON, macroBodyFindPlus, nil)
+        CreateMacro(macroPlusName, FIND_PLUS_ICON, macroBodyFindPlus, nil)
     end
 
-    local newTargetsStr = table.concat(existingTargets, ", ")
-    if newTargetsStr ~= "" then
-        newTargetsStr = newTargetsStr .. ", " .. targetName
+    local targetsDisplay = table.concat(existingTargets, ", ")
+    if targetsDisplay ~= "" then
+        targetsDisplay = targetsDisplay .. ", " .. targetName
     else
-        newTargetsStr = targetName
+        targetsDisplay = targetName
     end
-    print(YELLOW_LIGHT_LUA .. "FIND:" .. "|r" .. " " .. newTargetsStr .. ".")
+    print(YELLOW_LIGHT_LUA .. "FIND:" .. "|r" .. " " .. targetsDisplay .. ".")
 end
 
 SLASH_TARGETMACROADD1 = "/find+"
 SlashCmdList["TARGETMACROADD"] = addToFindPlusMacro
 
--- DEFINE FIND MACRO TRIGGER WITH CONTEXT NAME
+-- Create triggerFindMacroWithName to call createFindMacros with a player name
 
 local function triggerFindMacroWithName(playerName)
     createFindMacros(playerName)
 end
 
--- DEFINE FIND+ MACRO TRIGGER WITH CONTEXT NAME
+-- Create triggerFindPlusMacroWithName to call addToFindPlusMacro with a player name
 
 local function triggerFindPlusMacroWithName(playerName)
     addToFindPlusMacro(playerName)
 end
 
--- DEFINE ASSIST MACRO CREATION
+-- Create assistPlayer to generate an assist macro for a target
 
 local function assistPlayer(targetName)
     if not targetName then
@@ -143,66 +140,65 @@ local function assistPlayer(targetName)
             return false
         end
     end
-    
+
     local macroName = "ASSIST"
     local macroBody = "/assist " .. targetName
-    
+
     local macroIndex = GetMacroIndexByName(macroName)
     if macroIndex > 0 then
         EditMacro(macroIndex, macroName, "Ability_DualWield", macroBody)
     else
         CreateMacro(macroName, "Ability_DualWield", macroBody, nil)
     end
-    
+
     print(YELLOW_LIGHT_LUA .. "ASSIST macro updated to" .. "|r" .. " " .. targetName .. ".")
     return true
 end
 
+-- Create fixServerName to normalize server names for URLs
 
--- DEFINE SERVER NAME NORMALIZATION
-
-local function fixServerName(server)
-    if server == nil or server == "" then
+local function fixServerName(serverName)
+    if serverName == nil or serverName == "" then
         return
     end
-    local auServer
-    if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC and server:sub(-3):lower() == "-au" then
-        auServer = true
-        server = server:sub(1, -4)
+    local auServerDetected
+    if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC and serverName:sub(-3):lower() == "-au" then
+        auServerDetected = true
+        serverName = serverName:sub(1, -4)
     end
-    server = server:gsub("'(%u)", function(c) return c:lower() end):gsub("'", ""):gsub("%u", "-%1"):gsub("^[-%s]+", ""):gsub("[^%w%s%-]", ""):gsub("%s", "-"):lower():gsub("%-+", "-")
-    server = server:gsub("([a-zA-Z])of%-", "%1-of-")
-    if auServer == true then
-        server = server .. "-au"
+    serverName = serverName:gsub("'(%u)", function(c) return c:lower() end):gsub("'", ""):gsub("%u", "-%1"):gsub("^[-%s]+", ""):gsub("[^%w%s%-]", ""):gsub("%s", "-"):lower():gsub("%-+", "-")
+    serverName = serverName:gsub("([a-zA-Z])of%-", "%1-of-")
+    if auServerDetected == true then
+        serverName = serverName .. "-au"
     end
-    return server
+    return serverName
 end
 
--- DEFINE ARMORY URL GENERATION
+-- Create generateURL to build armory URLs for a player
 
-local function generateURL(type, name, server)
-    local url
+local function generateURL(linkType, playerName, serverName)
+    local generatedUrl
     if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
-        if type == "armory" then
-            url = "https://www.classic-armory.org/character/"..region.."/vanilla/"..server.."/"..name
+        if linkType == "armory" then
+            generatedUrl = "https://www.classic-armory.org/character/"..currentRegion.."/vanilla/"..serverName.."/"..playerName
         end
     elseif WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
-        if type == "armory" then
-            url = "https://worldofwarcraft.blizzard.com/character/"..region.."/"..server.."/"..name
+        if linkType == "armory" then
+            generatedUrl = "https://worldofwarcraft.blizzard.com/character/"..currentRegion.."/"..serverName.."/"..playerName
         end
     end
-    return url
+    return generatedUrl
 end
 
--- DEFINE ARMORY LINK POPUP
+-- Create popupLink to show a popup with an armory link
 
-local function popupLink(argType, argName, argServer)
-    local type = argType
-    local name = argName and argName:lower()
-    local server = fixServerName(argServer)
+local function popupLink(linkType, playerName, serverName)
+    local linkTypeLocal = linkType
+    local playerNameLocal = playerName and playerName:lower()
+    local serverNameLocal = fixServerName(serverName)
 
-    local url = generateURL(type, name, server)
-    if not url then return end
+    local generatedUrl = generateURL(linkTypeLocal, playerNameLocal, serverNameLocal)
+    if not generatedUrl then return end
     StaticPopupDialogs["PopupLinkDialog"] = {
         text = "Armory Link",
         button1 = "Close",
@@ -215,30 +211,47 @@ local function popupLink(argType, argName, argServer)
             self.editBox:HighlightText()
             self.editBox:SetFocus()
             self.editBox:SetScript("OnKeyDown", function(_, key)
-                local isMac = IsMacClient()
+                local macDetected = IsMacClient()
                 if key == "ESCAPE" then
                     self:Hide()
-                elseif (isMac and IsMetaKeyDown() or IsControlKeyDown()) and key == "C" then
+                elseif (macDetected and IsMetaKeyDown() or IsControlKeyDown()) and key == "C" then
                     self:Hide()
                 end
             end)
         end,
     }
-    StaticPopup_Show("PopupLinkDialog", "", "", {url = url})
+    StaticPopup_Show("PopupLinkDialog", "", "", {url = generatedUrl})
 end
 
--- MODIFY CONTEXT MENU FOR UNIT TYPES
+-- Configure context menu for supported unit types to add targeting and player link actions
 
-local chatTypes = {
-    "SELF", "PLAYER", "PARTY", "RAID", "RAID_PLAYER", "ENEMY_PLAYER",
-    "FOCUS", "FRIEND", "GUILD", "GUILD_OFFLINE", "ARENAENEMY",
-    "BN_FRIEND", "CHAT_ROSTER", "COMMUNITIES_GUILD_MEMBER", "COMMUNITIES_WOW_MEMBER", "ENEMY_NPC", "ENEMY_UNIT", "NPC", "PET", "TARGET"
+local supportedUnitTypes = {
+    "SELF",
+    "PLAYER",
+    "PARTY",
+    "RAID",
+    "RAID_PLAYER",
+    "ENEMY_PLAYER",
+    "FOCUS",
+    "FRIEND",
+    "GUILD",
+    "GUILD_OFFLINE",
+    "ARENAENEMY",
+    "BN_FRIEND",
+    "CHAT_ROSTER",
+    "COMMUNITIES_GUILD_MEMBER",
+    "COMMUNITIES_WOW_MEMBER",
+    "ENEMY_NPC",
+    "ENEMY_UNIT",
+    "NPC",
+    "PET",
+    "TARGET"
 }
 
-for _, value in ipairs(chatTypes) do
-    Menu.ModifyMenu("MENU_UNIT_"..value, function(owner, rootDescription, contextData)
-        local server = contextData.server or GetNormalizedRealmName()
-        
+for _, unitType in ipairs(supportedUnitTypes) do
+    Menu.ModifyMenu("MENU_UNIT_"..unitType, function(owner, rootDescription, contextData)
+        local serverNameLocal = contextData.server or GetNormalizedRealmName()
+
         rootDescription:CreateDivider()
         rootDescription:CreateTitle("Targeting")
         rootDescription:CreateButton("Assist", function()
@@ -254,31 +267,31 @@ for _, value in ipairs(chatTypes) do
         rootDescription:CreateDivider()
         rootDescription:CreateTitle("Player Links")
         rootDescription:CreateButton("Armory Link", function()
-            popupLink("armory", contextData.name, server)
+            popupLink("armory", contextData.name, serverNameLocal)
         end)
     end)
 end
 
--- MODIFY CONTEXT MENU FOR CHAT PLAYER
+-- Configure context menu for chat players to add targeting and player link actions
 
 Menu.ModifyMenu("MENU_CHAT_PLAYER", function(owner, rootDescription, contextData)
-    local playerName = contextData.name
+    local playerNameLocal = contextData.name
 
     rootDescription:CreateDivider()
     rootDescription:CreateTitle("Targeting")
     rootDescription:CreateButton("Assist", function()
-        assistPlayer(playerName)
+        assistPlayer(playerNameLocal)
     end)
     rootDescription:CreateButton("Find", function()
-        triggerFindMacroWithName(playerName)
+        triggerFindMacroWithName(playerNameLocal)
     end)
     rootDescription:CreateButton("Find+", function()
-        triggerFindPlusMacroWithName(playerName)
+        triggerFindPlusMacroWithName(playerNameLocal)
     end)
 
     rootDescription:CreateDivider()
     rootDescription:CreateTitle("Player Links")
     rootDescription:CreateButton("Armory Link", function()
-        popupLink("armory", playerName, GetNormalizedRealmName())
+        popupLink("armory", playerNameLocal, GetNormalizedRealmName())
     end)
 end)

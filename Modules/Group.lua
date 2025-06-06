@@ -1,35 +1,35 @@
--- READY CHECK COMMAND
+-- Add readyCheck function to trigger ready check
 
-local function readyCheck()
+local function readyCheckCommand()
     DoReadyCheck()
 end
 
-SLASH_READYCHECK1 = "/rc"
-SlashCmdList["READYCHECK"] = readyCheck
+SLASH_READY_CHECK1 = "/rc"
+SlashCmdList["READY_CHECK"] = readyCheckCommand
 
--- ROLE CHECK COMMAND
+-- Add roleCheck function to trigger role poll
 
-local function roleCheck()
+local function roleCheckCommand()
     InitiateRolePoll()
 end
 
-SLASH_ROLECHECK1 = "/rc+"
-SlashCmdList["ROLECHECK"] = roleCheck
+SLASH_ROLE_CHECK1 = "/rc+"
+SlashCmdList["ROLE_CHECK"] = roleCheckCommand
 
--- QUIT GROUP COMMAND
+-- Add quitParty function to leave group if in group
 
-local function quitParty() 
+local function quitPartyCommand() 
     if IsInGroup() then 
         LeaveParty() 
     end 
 end
 
-SLASH_QUITPARTY1 = "/q"
-SlashCmdList["QUITPARTY"] = quitParty
+SLASH_QUIT_PARTY1 = "/q"
+SlashCmdList["QUIT_PARTY"] = quitPartyCommand
 
--- MARK PARTY MEMBERS BY ROLE
+-- Add markPartyMembers function to mark party by assigned role
 
-local function markParty()
+local function markPartyMembersCommand()
     if not IsInGroup() then
         print("You are not in a group.")
         return
@@ -48,5 +48,5 @@ local function markParty()
     end
 end
 
-SLASH_MARKPARTY1 = "/mp"
-SlashCmdList["MARKPARTY"] = markParty
+SLASH_MARK_PARTY1 = "/mp"
+SlashCmdList["MARK_PARTY"] = markPartyMembersCommand

@@ -1,16 +1,16 @@
--- ENABLE COMMAND INTRO MESSAGE
+-- Enable command intro message for user guidance
 
-local function commandsIntro()
+local function showCommandIntroMsg()
     print(YELLOW_LIGHT_LUA .. "/bentoshortcuts" .. "|r" .. " for available commands.")
 end
 
-local introEvents = CreateFrame("Frame")
-introEvents:RegisterEvent("PLAYER_LOGIN")
-introEvents:SetScript("OnEvent", commandsIntro)
+local loginEventFrame = CreateFrame("Frame")
+loginEventFrame:RegisterEvent("PLAYER_LOGIN")
+loginEventFrame:SetScript("OnEvent", showCommandIntroMsg)
 
--- SHOW COMMAND LIST IN TOOLTIP
+-- Show command list in tooltip for user reference
 
-local function showCommandList()
+local function showCommandListTooltip()
     local tooltip = _G["CommandListTooltip"] or CreateFrame("GameTooltip", "CommandListTooltip", UIParent, "GameTooltipTemplate")
     tooltip:ClearLines()
     tooltip:SetOwner(UIParent, "ANCHOR_NONE")
@@ -81,16 +81,18 @@ local function showCommandList()
 
     tooltip:Show()
 
-    local closeButton = CreateFrame("Button", nil, tooltip, "UIPanelCloseButton")
-    closeButton:SetPoint("TOPRIGHT", tooltip, "TOPRIGHT")
-    closeButton:SetScript("OnClick", function()
+    local closeBtn = CreateFrame("Button", nil, tooltip, "UIPanelCloseButton")
+    closeBtn:SetPoint("TOPRIGHT", tooltip, "TOPRIGHT")
+    closeBtn:SetScript("OnClick", function()
         tooltip:Hide()
     end)
 end
 
+-- Register slash command for showing command list tooltip
+
 SLASH_BENTOSHORTCUTS1 = "/bentoshortcuts"
 SlashCmdList["BENTOSHORTCUTS"] = function(msg, editBox)
     if msg == "" then
-        showCommandList()
+        showCommandListTooltip()
     end
 end

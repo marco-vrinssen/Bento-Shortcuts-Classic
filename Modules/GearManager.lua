@@ -1,20 +1,21 @@
+-- Initialize database if not present for BentoShortcutsClassicDB
+
 if not BentoShortcutsClassicDB then
     BentoShortcutsClassicDB = {}
 end
 
--- REGISTER SLASH COMMANDS
+-- Register slash commands for gear set management
 
 SLASH_GEARSET1  = "/gearset"
 SLASH_EQUIPSET1 = "/equipset"
 
-
--- IMPLEMENT STRING UTILITIES
+-- Implement string trim utility for input sanitization
 
 local function trim(inputString)
   return inputString and inputString:match("^%s*(.-)%s*$") or ""
 end
 
--- SETUP CONTAINER API COMPATIBILITY
+-- Setup container API compatibility for bag operations
 
 local GetNumSlots, GetLink, UseItem, PickupContainerItemFunc
 if GetContainerNumSlots then
@@ -31,10 +32,9 @@ else
   error("No container API found!")
 end
 
+-- Define slot ID to slot name mapping for gear slots
 
--- DEFINE SLOT MAPPINGS
-
-local SLOTID_TO_SLOTNAME = {
+local slotIdToNameMap = {
   [1] = "HeadSlot",
   [2] = "NeckSlot",
   [3] = "ShoulderSlot",
@@ -56,19 +56,19 @@ local SLOTID_TO_SLOTNAME = {
   [19] = "TabardSlot"
 }
 
--- IMPLEMENT ITEM UTILITIES
+-- Implement item name lookup utility by item ID
 
-local function GetItemNameByID(itemID)
-  local itemName = GetItemInfo(itemID)
+local function getItemNameById(itemId)
+  local itemName = GetItemInfo(itemId)
   if itemName then
     return itemName
   end
-  return ("ItemID:%d"):format(itemID)
+  return ("ItemID:%d"):format(itemId)
 end
 
--- IMPLEMENT GEAR SET SAVING
+-- Save current gear set to database under provided set name
 
-local function SaveGearSet(setName)
+local function saveGearSet(setName)
   if setName == "" then
     print("Usage: /gearset SetName")
     return
@@ -82,21 +82,21 @@ local function SaveGearSet(setName)
     BentoShortcutsClassicDB.GearSets[setName] = {}
   end
 
-  for slotID = 1, 19 do
-    local itemID = GetInventoryItemID("player", slotID)
-    if itemID then
-      BentoShortcutsClassicDB.GearSets[setName][slotID] = itemID
+  for slotId = 1, 19 do
+    local itemId = GetInventoryItemID("player", slotId)
+    if itemId then
+      BentoShortcutsClassicDB.GearSets[setName][slotId] = itemId
     else
-      BentoShortcutsClassicDB.GearSets[setName][slotID] = nil
+      BentoShortcutsClassicDB.GearSets[setName][slotId] = nil
     end
   end
 
   print(YELLOW_LIGHT_LUA .. "[Gear Set Manager]:|r " .. WHITE_LUA .. setName .. " Set Saved|r")
 end
 
--- IMPLEMENT GEAR SET EQUIPPING
+-- Equip gear set by set name, swapping items as needed
 
-local function EquipGearSet(setName)
+local function equipGearSet(setName)
   if setName == "" then
     print("Usage: /equipset SetName")
     return
@@ -117,26 +117,24 @@ local function EquipGearSet(setName)
     return
   end
 
-  local missingItems = {}
+  local missingItemList = {}
 
-  for slotID, wantedItemID in pairs(gearSet) do
-    local equippedItemID = GetInventoryItemID("player", slotID)
-    if equippedItemID ~= wantedItemID then
+  for slotId, wantedItemId in pairs(gearSet) do
+    local equippedItemId = GetInventoryItemID("player", slotId)
+    if equippedItemId ~= wantedItemId then
       local itemFound = false
       for bagIndex = 0, 4 do
         local bagSlotCount = GetNumSlots(bagIndex) or 0
         for bagSlot = 1, bagSlotCount do
           local itemLink = GetLink(bagIndex, bagSlot)
           if itemLink then
-            local bagItemID = tonumber(itemLink:match("item:(%d+):"))
-            if bagItemID == wantedItemID then
+            local bagItemId = tonumber(itemLink:match("item:(%d+):"))
+            if bagItemId == wantedItemId then
               if CursorHasItem() then
                 ClearCursor()
               end
-              
               PickupContainerItemFunc(bagIndex, bagSlot)
-              PickupInventoryItem(slotID)
-              
+              PickupInventoryItem(slotId)
               itemFound = true
               break
             end
@@ -145,16 +143,16 @@ local function EquipGearSet(setName)
         if itemFound then break end
       end
       if not itemFound then
-        table.insert(missingItems, GetItemNameByID(wantedItemID))
+        table.insert(missingItemList, getItemNameById(wantedItemId))
       end
     end
   end
 
-  if #missingItems > 0 then
+  if #missingItemList > 0 then
     print(
       YELLOW_LIGHT_LUA .. "[Gear Set Manager]:|r " ..
       WHITE_LUA .. setName .. " not equipped because " ..
-      table.concat(missingItems, ", ") .. " is missing|r"
+      table.concat(missingItemList, ", ") .. " is missing|r"
     )
   else
     print(
@@ -164,12 +162,12 @@ local function EquipGearSet(setName)
   end
 end
 
--- REGISTER COMMAND HANDLERS
+-- Register slash command handlers for gear set save and equip
 
 SlashCmdList["GEARSET"] = function(commandMessage)
-  SaveGearSet(trim(commandMessage))
+  saveGearSet(trim(commandMessage))
 end
 
 SlashCmdList["EQUIPSET"] = function(commandMessage)
-  EquipGearSet(trim(commandMessage))
+  equipGearSet(trim(commandMessage))
 end

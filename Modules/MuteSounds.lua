@@ -1,6 +1,6 @@
--- SYNCHRONIZE MUTED SOUND IDS WITH BENTOSHORTCUTSCLASSICDB
+-- Initialize defaultSoundIdList with sound ID comments for clarity
 
-local defaultMutedSoundIds = {
+local defaultSoundIdList = {
     555124, -- MechaStriderLoop
     567719, -- GunLoad01
     567720, -- GunLoad02
@@ -12,9 +12,16 @@ local defaultMutedSoundIds = {
     569429, -- PetScreech
 }
 
--- INITIALIZE SAVEDVARIABLES TABLES IF NEEDED
+-- Create defaultSoundIdLookup for efficient lookup
 
-local function ensureSavedVariables()
+local defaultSoundIdLookup = {}
+for _, soundId in ipairs(defaultSoundIdList) do
+    defaultSoundIdLookup[soundId] = true
+end
+
+-- Initialize persistent storage tables for sound management
+
+local function initializeSoundStorage()
     if type(BentoMutedSounds) ~= "table" then
         BentoMutedSounds = {}
     end
@@ -26,41 +33,64 @@ local function ensureSavedVariables()
     end
 end
 
--- SYNC BENTOMUTEDSOUNDS WITH DB
+-- Synchronize BentoMutedSounds cache with persistent database
 
-local function syncMutedSoundsTables()
-    ensureSavedVariables()
+local function syncMutedSoundCache()
+    initializeSoundStorage()
     wipe(BentoMutedSounds)
-    for i, soundId in ipairs(BentoShortcutsClassicDB.MutedSounds) do
-        BentoMutedSounds[i] = soundId
+    for index, soundId in ipairs(BentoShortcutsClassicDB.MutedSounds) do
+        BentoMutedSounds[index] = soundId
     end
 end
 
--- APPLY ALL MUTED SOUNDS FROM DB
+-- Apply muted sound configuration from database
 
-local function applySoundConfiguration()
-    syncMutedSoundsTables()
+local function applyMutedSoundConfig()
+    syncMutedSoundCache()
     for _, soundId in ipairs(BentoShortcutsClassicDB.MutedSounds) do
         MuteSoundFile(soundId)
     end
 end
 
--- ADD SOUND ID TO BOTH TABLES
+-- Validate soundId is a positive number
 
-local function addMutedSound(soundId)
-    ensureSavedVariables()
-    for _, id in ipairs(BentoShortcutsClassicDB.MutedSounds) do
-        if id == soundId then return end
+local function isSoundIdValid(soundId)
+    return type(soundId) == "number" and soundId > 0
+end
+
+-- Check if soundId is already muted
+
+local function isSoundIdMuted(soundId)
+    for _, mutedId in ipairs(BentoShortcutsClassicDB.MutedSounds) do
+        if mutedId == soundId then
+            return true
+        end
     end
+    return false
+end
+
+-- Register soundId for muting in storage
+
+local function addMutedSoundId(soundId)
+    if not isSoundIdValid(soundId) then
+        return false
+    end
+
+    initializeSoundStorage()
+    if isSoundIdMuted(soundId) then
+        return false
+    end
+
     table.insert(BentoShortcutsClassicDB.MutedSounds, soundId)
     table.insert(BentoMutedSounds, soundId)
     MuteSoundFile(soundId)
+    return true
 end
 
--- CLEAR ALL MUTED SOUNDS FROM BOTH TABLES
+-- Remove all muted sound IDs from storage
 
-local function clearMutedSounds()
-    ensureSavedVariables()
+local function clearMutedSoundIds()
+    initializeSoundStorage()
     for _, soundId in ipairs(BentoShortcutsClassicDB.MutedSounds) do
         UnmuteSoundFile(soundId)
     end
@@ -68,59 +98,73 @@ local function clearMutedSounds()
     wipe(BentoMutedSounds)
 end
 
--- RESTORE DEFAULT SOUNDS TO BOTH TABLES
+-- Reset muted sound IDs to default list
 
-local function restoreDefaultSounds()
-    clearMutedSounds()
-    for _, soundId in ipairs(defaultMutedSoundIds) do
-        addMutedSound(soundId)
+local function resetMutedSoundDefaults()
+    clearMutedSoundIds()
+    for _, soundId in ipairs(defaultSoundIdList) do
+        addMutedSoundId(soundId)
     end
 end
 
--- PRINT CURRENTLY MUTED SOUNDS FROM DB
+-- Display current muted sound IDs
 
-local function printMutedSounds()
-    ensureSavedVariables()
-    if #BentoShortcutsClassicDB.MutedSounds == 0 then
+local function printMutedSoundIds()
+    initializeSoundStorage()
+    local mutedCount = #BentoShortcutsClassicDB.MutedSounds
+
+    if mutedCount == 0 then
         print(YELLOW_LIGHT_LUA .. "[Sound Mute]:|r No sounds are currently muted.")
         return
     end
-    print(YELLOW_LIGHT_LUA .. "[Sound Mute]:|r Muted sound IDs:")
+
+    print(YELLOW_LIGHT_LUA .. "[Sound Mute]:|r Muted sound IDs (" .. mutedCount .. "):")
     for _, soundId in ipairs(BentoShortcutsClassicDB.MutedSounds) do
-        print("- " .. tostring(soundId))
+        local isDefault = defaultSoundIdLookup[soundId] and " (default)" or ""
+        print("- " .. tostring(soundId) .. isDefault)
     end
 end
 
--- SLASH COMMAND HANDLER
+-- Process /mutesound slash command
+
+local function handleMuteSoundSlashCmd(cmdArgs)
+    local trimmedArgs = cmdArgs and cmdArgs:match("^%s*(.-)%s*$") or ""
+    local helpMsg = YELLOW_LIGHT_LUA .. "[Sound Mute]:|r Usage: /mutesound [ID|clear|check|default]"
+
+    if trimmedArgs == "" then
+        print(helpMsg)
+        return
+    end
+
+    if trimmedArgs == "clear" then
+        clearMutedSoundIds()
+        print(YELLOW_LIGHT_LUA .. "[Sound Mute]:|r All muted sounds cleared.")
+
+    elseif trimmedArgs == "check" then
+        printMutedSoundIds()
+
+    elseif trimmedArgs == "default" then
+        resetMutedSoundDefaults()
+        print(YELLOW_LIGHT_LUA .. "[Sound Mute]:|r Default muted sounds restored.")
+
+    else
+        local soundId = tonumber(trimmedArgs)
+        if soundId and addMutedSoundId(soundId) then
+            print(YELLOW_LIGHT_LUA .. "[Sound Mute]:|r Muted sound ID: " .. soundId)
+        else
+            print(YELLOW_LIGHT_LUA .. "[Sound Mute]:|r Invalid sound ID or already muted.")
+            print(helpMsg)
+        end
+    end
+end
+
+-- Register /mutesound slash command
 
 SLASH_MUTESOUND1 = "/mutesound"
-SlashCmdList["MUTESOUND"] = function(msg)
-    local arg = msg and msg:match("^%s*(.-)%s*$") or ""
-    if arg == "" then
-        print(YELLOW_LIGHT_LUA .. "[Sound Mute]:|r /mutesound ID / clear / check / default")
-        return
-    end
-    if arg == "clear" then
-        clearMutedSounds()
-        print(YELLOW_LIGHT_LUA .. "[Sound Mute]:|r All muted sounds cleared.")
-        return
-    elseif arg == "check" then
-        printMutedSounds()
-        return
-    elseif arg == "default" then
-        restoreDefaultSounds()
-        print(YELLOW_LIGHT_LUA .. "[Sound Mute]:|r Default muted sounds restored.")
-        return
-    end
-    local soundId = tonumber(arg)
-    if soundId then
-        addMutedSound(soundId)
-        print(YELLOW_LIGHT_LUA .. "[Sound Mute]:|r Muted sound ID: " .. soundId)
-    else
-        print(YELLOW_LIGHT_LUA .. "[Sound Mute]:|r /mutesound ID / clear / check / default")
-    end
-end
+SlashCmdList["MUTESOUND"] = handleMuteSoundSlashCmd
 
-local configEvents = CreateFrame("Frame")
-configEvents:RegisterEvent("PLAYER_ENTERING_WORLD")
-configEvents:SetScript("OnEvent", applySoundConfiguration)
+-- Apply muted sound configuration on player login
+
+local muteSoundEventFrame = CreateFrame("Frame")
+muteSoundEventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
+muteSoundEventFrame:SetScript("OnEvent", applyMutedSoundConfig)

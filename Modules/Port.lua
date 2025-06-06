@@ -1,16 +1,17 @@
--- CREATE /port COMMAND
+-- Create port command handler to find teleport providers
 
-local function portCommand(msg)
-    local zone = msg
-    local maxLevel = GetMaxPlayerLevel()
+local function handlePortCommand(targetZone)
+    local playerMaxLevel = GetMaxPlayerLevel()
     
-    if zone ~= "" then
-        C_FriendList.SendWho("z-" .. zone .. " c-warlock 24-" .. maxLevel)
+    if targetZone ~= "" then
+        C_FriendList.SendWho("z-" .. targetZone .. " c-warlock 24-" .. playerMaxLevel)
     else
-        zone = GetRealZoneText()
-        C_FriendList.SendWho("z-" .. zone .. " c-mage 40-" .. maxLevel)
+        local currentZone = GetRealZoneText()
+        C_FriendList.SendWho("z-" .. currentZone .. " c-mage 40-" .. playerMaxLevel)
     end
 end
 
+-- Register slash command for port functionality
+
 SLASH_PORT1 = "/port"
-SlashCmdList["PORT"] = portCommand
+SlashCmdList["PORT"] = handlePortCommand

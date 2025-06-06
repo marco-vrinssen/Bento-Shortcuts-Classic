@@ -1,34 +1,35 @@
--- FUNCTION TO SELL GREY (JUNK) ITEMS
+-- Update sellJunkItems function to use descriptive naming and reformat comments
 
-local function sellGreyItems()
-  local soldAnyJunk = false
-  for bag = 0, 4 do
-      for slot = 1, C_Container.GetContainerNumSlots(bag) do
-          local itemLink = C_Container.GetContainerItemLink(bag, slot)
-          if itemLink then
-              local _, _, itemRarity, _, _, _, _, _, _, _, _ = GetItemInfo(itemLink)
-              local itemCount = select(2, C_Container.GetContainerItemInfo(bag, slot)) or 0
-              if itemRarity == 0 then
-                  C_Container.UseContainerItem(bag, slot)
-                  soldAnyJunk = true
-              end
-          end
+-- Register sellJunkItems function to sell junk items when merchant window opens
+local function sellJunkItems()
+  local soldJunk = false
+  for bagIndex = 0, 4 do
+    for slotIndex = 1, C_Container.GetContainerNumSlots(bagIndex) do
+      local itemLink = C_Container.GetContainerItemLink(bagIndex, slotIndex)
+      if itemLink then
+        local _, _, itemRarity = GetItemInfo(itemLink)
+        local itemCount = select(2, C_Container.GetContainerItemInfo(bagIndex, slotIndex)) or 0
+        if itemRarity == 0 then
+          C_Container.UseContainerItem(bagIndex, slotIndex)
+          soldJunk = true
+        end
       end
+    end
   end
-  if soldAnyJunk then
+  if soldJunk then
     print(YELLOW_LIGHT_LUA .. "[Merchant]:|r Junk Items sold.")
   end
 end
 
--- REGISTER AUTO SELL EVENTS
+-- Register autoSellFrame to handle merchant show event for selling junk
+local autoSellFrame = CreateFrame("Frame")
+autoSellFrame:RegisterEvent("MERCHANT_SHOW")
+autoSellFrame:SetScript("OnEvent", sellJunkItems)
 
-local autoSellEvents = CreateFrame("Frame")
-autoSellEvents:RegisterEvent("MERCHANT_SHOW")
-autoSellEvents:SetScript("OnEvent", sellGreyItems)
+-- Update repairAllItems function to use descriptive naming and reformat comments
 
--- FUNCTION TO AUTO REPAIR ITEMS
-
-local function repairItems()
+-- Register repairAllItems function to auto repair when merchant window opens
+local function repairAllItems()
   if CanMerchantRepair() then
     local repairCost, canRepair = GetRepairAllCost()
     if canRepair and repairCost > 0 then
@@ -38,8 +39,7 @@ local function repairItems()
   end
 end
 
--- REGISTER AUTO REPAIR EVENTS
-
-local autoRepairEvents = CreateFrame("Frame")
-autoRepairEvents:RegisterEvent("MERCHANT_SHOW")
-autoRepairEvents:SetScript("OnEvent", repairItems)
+-- Register autoRepairFrame to handle merchant show event for repairing items
+local autoRepairFrame = CreateFrame("Frame")
+autoRepairFrame:RegisterEvent("MERCHANT_SHOW")
+autoRepairFrame:SetScript("OnEvent", repairAllItems)

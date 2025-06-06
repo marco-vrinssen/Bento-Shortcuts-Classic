@@ -1,27 +1,24 @@
--- Extract whisper parameters from command string to enable flexible messaging
+-- Extract whisper parameters from command string for flexible messaging
 
-local function extractWhisperParams(commandString)
-    local playerLimit, excludedClass, messageContent
-    
-    playerLimit, excludedClass, messageContent = commandString:match("^(%d+)%s*-%s*(%w+)%s+(.+)$")
+local function extractWhisperParams(cmdString)
+    local playerLimit, excludedClass, msgContent
+    playerLimit, excludedClass, msgContent = cmdString:match("^(%d+)%s*-%s*(%w+)%s+(.+)$")
     if not playerLimit then
-        playerLimit, messageContent = commandString:match("^(%d+)%s+(.+)$")
+        playerLimit, msgContent = cmdString:match("^(%d+)%s+(.+)$")
         if not playerLimit then
-            excludedClass, messageContent = commandString:match("^%-(%w+)%s+(.+)$")
+            excludedClass, msgContent = cmdString:match("^%-(%w+)%s+(.+)$")
             if not excludedClass then
-                messageContent = commandString
+                msgContent = cmdString
             end
         end
     end
-    
-    return playerLimit, excludedClass, messageContent
+    return playerLimit, excludedClass, msgContent
 end
 
--- Broadcast messages to who results with optional filtering
+-- Broadcast message to who results with optional filtering
 
-local function broadcastToWho(commandString)
-    local playerLimit, excludedClass, messageContent = extractWhisperParams(commandString)
-    
+local function broadcastWhoList(cmdString)
+    local playerLimit, excludedClass, msgContent = extractWhisperParams(cmdString)
     local whoResultCount = C_FriendList.GetNumWhoResults()
     if playerLimit then
         playerLimit = tonumber(playerLimit)
@@ -31,21 +28,20 @@ local function broadcastToWho(commandString)
     if excludedClass then
         excludedClass = excludedClass:lower()
     end
-
-    if messageContent and messageContent ~= "" and whoResultCount and whoResultCount > 0 then
-        local sentMessageCount = 0
+    if msgContent and msgContent ~= "" and whoResultCount and whoResultCount > 0 then
+        local sentMsgCount = 0
         for i = 1, whoResultCount do
-            if sentMessageCount >= playerLimit then break end
+            if sentMsgCount >= playerLimit then break end
             local playerInfo = C_FriendList.GetWhoInfo(i)
             if playerInfo and playerInfo.fullName then
                 if excludedClass then
                     if playerInfo.classStr:lower() ~= excludedClass then
-                        SendChatMessage(messageContent, "WHISPER", nil, playerInfo.fullName)
-                        sentMessageCount = sentMessageCount + 1
+                        SendChatMessage(msgContent, "WHISPER", nil, playerInfo.fullName)
+                        sentMsgCount = sentMsgCount + 1
                     end
                 else
-                    SendChatMessage(messageContent, "WHISPER", nil, playerInfo.fullName)
-                    sentMessageCount = sentMessageCount + 1
+                    SendChatMessage(msgContent, "WHISPER", nil, playerInfo.fullName)
+                    sentMsgCount = sentMsgCount + 1
                 end
             end
         end
@@ -53,11 +49,11 @@ local function broadcastToWho(commandString)
 end
 
 SLASH_MULTIWHISPER1 = "/w+"
-SlashCmdList["MULTIWHISPER"] = broadcastToWho
+SlashCmdList["MULTIWHISPER"] = broadcastWhoList
 
 -- Initialize spam database to prevent duplicate messages
 
-local function initSpamDatabase()
+local function initSpamDb()
     if not BentoShortcutsClassicDB then
         BentoShortcutsClassicDB = {}
     end
@@ -66,13 +62,11 @@ local function initSpamDatabase()
     end
 end
 
--- Broadcast messages while tracking sent players to prevent spam
+-- Broadcast message while tracking sent players to prevent spam
 
-local function broadcastSkipSent(commandString)
-    initSpamDatabase()
-
-    local playerLimit, excludedClass, messageContent = extractWhisperParams(commandString)
-    
+local function broadcastSkipSent(cmdString)
+    initSpamDb()
+    local playerLimit, excludedClass, msgContent = extractWhisperParams(cmdString)
     local whoResultCount = C_FriendList.GetNumWhoResults()
     if playerLimit then
         playerLimit = tonumber(playerLimit)
@@ -82,27 +76,26 @@ local function broadcastSkipSent(commandString)
     if excludedClass then
         excludedClass = excludedClass:lower()
     end
-
-    if messageContent and messageContent ~= "" and whoResultCount and whoResultCount > 0 then
-        local sentMessageCount = 0
+    if msgContent and msgContent ~= "" and whoResultCount and whoResultCount > 0 then
+        local sentMsgCount = 0
         for i = 1, whoResultCount do
-            if sentMessageCount >= playerLimit then break end
+            if sentMsgCount >= playerLimit then break end
             local playerInfo = C_FriendList.GetWhoInfo(i)
             if playerInfo and playerInfo.fullName then
                 local playerKey = playerInfo.fullName
                 if excludedClass then
                     if playerInfo.classStr:lower() ~= excludedClass then
                         if not BentoShortcutsClassicDB.MultiWhisperIgnore[playerKey] then
-                            SendChatMessage(messageContent, "WHISPER", nil, playerInfo.fullName)
+                            SendChatMessage(msgContent, "WHISPER", nil, playerInfo.fullName)
                             BentoShortcutsClassicDB.MultiWhisperIgnore[playerKey] = true
-                            sentMessageCount = sentMessageCount + 1
+                            sentMsgCount = sentMsgCount + 1
                         end
                     end
                 else
                     if not BentoShortcutsClassicDB.MultiWhisperIgnore[playerKey] then
-                        SendChatMessage(messageContent, "WHISPER", nil, playerInfo.fullName)
+                        SendChatMessage(msgContent, "WHISPER", nil, playerInfo.fullName)
                         BentoShortcutsClassicDB.MultiWhisperIgnore[playerKey] = true
-                        sentMessageCount = sentMessageCount + 1
+                        sentMsgCount = sentMsgCount + 1
                     end
                 end
             end
@@ -115,7 +108,7 @@ SlashCmdList["MULTIWHISPER_SKIP"] = broadcastSkipSent
 
 -- Reset spam tracking database for fresh message campaigns
 
-local function resetSpamDatabase()
+local function resetSpamDb()
     if BentoShortcutsClassicDB and BentoShortcutsClassicDB.MultiWhisperIgnore then
         BentoShortcutsClassicDB.MultiWhisperIgnore = {}
         print("MultiWhisper ignore list cleared.")
@@ -125,4 +118,4 @@ local function resetSpamDatabase()
 end
 
 SLASH_CLEARPLAYERLIST1 = "/clearplayerlist"
-SlashCmdList["CLEARPLAYERLIST"] = resetSpamDatabase
+SlashCmdList["CLEARPLAYERLIST"] = resetSpamDb

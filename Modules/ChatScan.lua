@@ -1,60 +1,62 @@
--- INITIALIZE KEYWORD STORAGE
+-- Initialize keywordFilters for storing active filters
 
-local activeKeywordFilters = {}
+local keywordFilters = {}
 
--- NOTIFICATION ON KEYWORD MATCH
+-- Define notifyKeywordMatch to alert on keyword match
 
-local function notifyKeywordMatch(matchedMessage, matchedSender)
+local function notifyKeywordMatch(matchedMsg, matchedSender)
     local senderLink = "|Hplayer:" .. matchedSender .. "|h" .. YELLOW_LIGHT_LUA .. "[" .. matchedSender .. "]:|r|h"
-    print(senderLink .. " " .. matchedMessage)
+    print(senderLink .. " " .. matchedMsg)
     PlaySound(3175, "Master", true)
 end
 
--- KEYWORD FILTERING LOGIC
+-- Define doesMessageMatchKeyword to check for keyword presence
 
-local function doesMessageMatchAnyKeywordFilter(chatMessage)
-    local lowerMessage = strlower(chatMessage)
-    for i = 1, #activeKeywordFilters do
-        if strfind(lowerMessage, strlower(activeKeywordFilters[i]), 1, true) then
+local function doesMessageMatchKeyword(chatMsg)
+    local lowerMsg = strlower(chatMsg)
+    for i = 1, #keywordFilters do
+        if strfind(lowerMsg, strlower(keywordFilters[i]), 1, true) then
             return true
         end
     end
     return false
 end
 
--- EVENT HANDLER FOR CHAT MESSAGE SCANNING
+-- Define handleChatMsgEvent to process chat messages
 
-local function handleChatMessageEvent(_, _, chatMessage, senderName, _, channelName, ...)
-    if #activeKeywordFilters > 0 and strmatch(channelName, "%d+") then
-        local channelNumber = tonumber(strmatch(channelName, "%d+"))
-        if channelNumber and channelNumber >= 1 and channelNumber <= 20 and doesMessageMatchAnyKeywordFilter(chatMessage) then
-            notifyKeywordMatch(chatMessage, senderName)
+local function handleChatMsgEvent(_, _, chatMsg, senderName, _, channelName, ...)
+    if #keywordFilters > 0 and strmatch(channelName, "%d+") then
+        local channelNum = tonumber(strmatch(channelName, "%d+"))
+        if channelNum and channelNum >= 1 and channelNum <= 20 and doesMessageMatchKeyword(chatMsg) then
+            notifyKeywordMatch(chatMsg, senderName)
         end
     end
 end
 
--- SETUP CHAT EVENT FRAME
+-- Initialize chatScanFrame for event handling
 
-local chatScanEventFrame = CreateFrame("Frame")
-chatScanEventFrame:SetScript("OnEvent", handleChatMessageEvent)
+local chatScanFrame = CreateFrame("Frame")
+chatScanFrame:SetScript("OnEvent", handleChatMsgEvent)
 
--- SLASH COMMAND HANDLER FOR KEYWORD SCANNING
+-- Define handleScanCmd to manage slash command input
 
-local function handleScanSlashCommand(commandInput)
-    local trimmedInput = commandInput:gsub("^%s*(.-)%s*$", "%1")
+local function handleScanCmd(cmdInput)
+    local trimmedInput = cmdInput:gsub("^%s*(.-)%s*$", "%1")
     if trimmedInput == "" or trimmedInput == "stop" or trimmedInput == "clear" then
-        wipe(activeKeywordFilters)
+        wipe(keywordFilters)
         print(YELLOW_LIGHT_LUA .. "[Chat Scan]:|r Stopped and cleared.")
-        chatScanEventFrame:UnregisterEvent("CHAT_MSG_CHANNEL")
+        chatScanFrame:UnregisterEvent("CHAT_MSG_CHANNEL")
     else
-        if not chatScanEventFrame:IsEventRegistered("CHAT_MSG_CHANNEL") then
-            chatScanEventFrame:RegisterEvent("CHAT_MSG_CHANNEL")
+        if not chatScanFrame:IsEventRegistered("CHAT_MSG_CHANNEL") then
+            chatScanFrame:RegisterEvent("CHAT_MSG_CHANNEL")
         end
-        table.insert(activeKeywordFilters, trimmedInput)
-        local keywordString = table.concat(activeKeywordFilters, " / ")
-        print(YELLOW_LIGHT_LUA .. "[Chat Scan]:|r " .. keywordString)
+        table.insert(keywordFilters, trimmedInput)
+        local keywordStr = table.concat(keywordFilters, " / ")
+        print(YELLOW_LIGHT_LUA .. "[Chat Scan]:|r " .. keywordStr)
     end
 end
+
+-- Register /scan slash command for chat scanning
 
 SLASH_SCAN1 = "/scan"
-SlashCmdList["SCAN"] = handleScanSlashCommand
+SlashCmdList["SCAN"] = handleScanCmd

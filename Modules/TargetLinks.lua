@@ -132,11 +132,15 @@ end
 
 -- Create assistPlayer to generate an assist macro for a target
 
-local function assistPlayer(targetName)
-    if not targetName then
+local function assistPlayer(targetInput)
+    local targetName
+    
+    if targetInput and targetInput ~= "" then
+        targetName = targetInput
+    else
         targetName = UnitName("target")
         if not targetName then
-            print("Please provide a NAME after the command ")
+            print("Please provide a NAME after the command or select a target.")
             return false
         end
     end
@@ -147,13 +151,31 @@ local function assistPlayer(targetName)
     local macroIndex = GetMacroIndexByName(macroName)
     if macroIndex > 0 then
         EditMacro(macroIndex, macroName, "Ability_DualWield", macroBody)
+        print(YELLOW_LIGHT_LUA .. "ASSIST macro updated to" .. "|r" .. " " .. targetName .. ".")
     else
         CreateMacro(macroName, "Ability_DualWield", macroBody, nil)
+        print(YELLOW_LIGHT_LUA .. "ASSIST macro created for" .. "|r" .. " " .. targetName .. ".")
     end
-
-    print(YELLOW_LIGHT_LUA .. "ASSIST macro updated to" .. "|r" .. " " .. targetName .. ".")
+    
     return true
 end
+
+SLASH_ASSISTMACRO1 = "/assist"
+SlashCmdList["ASSISTMACRO"] = assistPlayer
+
+-- Create triggerAssistMacroWithName to call assistPlayer with a player name
+
+local function triggerAssistMacroWithName(playerName)
+    assistPlayer(playerName)
+end
+
+
+
+
+
+
+
+
 
 -- Create fixServerName to normalize server names for URLs
 
@@ -255,7 +277,7 @@ for _, unitType in ipairs(supportedUnitTypes) do
         rootDescription:CreateDivider()
         rootDescription:CreateTitle("Targeting")
         rootDescription:CreateButton("Assist", function()
-            assistPlayer(contextData.name)
+            triggerAssistMacroWithName(contextData.name)
         end)
         rootDescription:CreateButton("Find", function()
             triggerFindMacroWithName(contextData.name)
@@ -280,7 +302,7 @@ Menu.ModifyMenu("MENU_CHAT_PLAYER", function(owner, rootDescription, contextData
     rootDescription:CreateDivider()
     rootDescription:CreateTitle("Targeting")
     rootDescription:CreateButton("Assist", function()
-        assistPlayer(playerNameLocal)
+        triggerAssistMacroWithName(playerNameLocal)
     end)
     rootDescription:CreateButton("Find", function()
         triggerFindMacroWithName(playerNameLocal)

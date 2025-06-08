@@ -1,7 +1,7 @@
 -- Initialize debounce variables to prevent disconnects
 
 local delayTimestamp = 0
-local debounceInterval = 0.02
+local debounceInterval = 0.01
 
 -- Process auto loot slots to enable secure looting
 

@@ -1,6 +1,10 @@
--- Initialize keywordFilters for storing active filters
+-- Initialize searchExpression for boolean search functionality
 
-local keywordFilters = {}
+local searchExpression = {}
+
+-- Initialize chatScanFrame for event handling
+
+local chatScanFrame = CreateFrame("Frame")
 
 -- Define notifyKeywordMatch to alert on keyword match
 
@@ -10,53 +14,99 @@ local function notifyKeywordMatch(matchedMsg, matchedSender)
     PlaySound(3175, "Master", true)
 end
 
--- Define doesMessageMatchKeyword to check for keyword presence
+-- Define evaluateSearchExpression to check message against boolean criteria
 
-local function doesMessageMatchKeyword(chatMsg)
-    local lowerMsg = strlower(chatMsg)
-    for i = 1, #keywordFilters do
-        if strfind(lowerMsg, strlower(keywordFilters[i]), 1, true) then
-            return true
+local function evaluateSearchExpression(chatMsg)
+    local messageText = strlower(chatMsg)
+    
+    local function containsKeyword(keyword)
+        return strfind(messageText, strlower(keyword), 1, true)
+    end
+    
+    if not searchExpression.operator then
+        return containsKeyword(searchExpression.operands[1])
+    elseif searchExpression.operator == "AND" then
+        return containsKeyword(searchExpression.operands[1]) and containsKeyword(searchExpression.operands[2])
+    elseif searchExpression.operator == "OR" then
+        return containsKeyword(searchExpression.operands[1]) or containsKeyword(searchExpression.operands[2])
+    elseif searchExpression.operator == "NOT" then
+        if #searchExpression.operands == 2 then
+            return containsKeyword(searchExpression.operands[1]) and not containsKeyword(searchExpression.operands[2])
+        else
+            return not containsKeyword(searchExpression.operands[1])
         end
     end
+    
     return false
 end
 
 -- Define handleChatMsgEvent to process chat messages
 
 local function handleChatMsgEvent(_, _, chatMsg, senderName, _, channelName, ...)
-    if #keywordFilters > 0 and strmatch(channelName, "%d+") then
+    if searchExpression.operands and #searchExpression.operands > 0 and strmatch(channelName, "%d+") then
         local channelNum = tonumber(strmatch(channelName, "%d+"))
-        if channelNum and channelNum >= 1 and channelNum <= 20 and doesMessageMatchKeyword(chatMsg) then
+        if channelNum and channelNum >= 1 and channelNum <= 20 and evaluateSearchExpression(chatMsg) then
             notifyKeywordMatch(chatMsg, senderName)
         end
     end
 end
 
--- Initialize chatScanFrame for event handling
-
-local chatScanFrame = CreateFrame("Frame")
 chatScanFrame:SetScript("OnEvent", handleChatMsgEvent)
 
--- Define handleScanCmd to manage slash command input
+-- Define parseBooleanExpression to parse boolean search input
 
-local function handleScanCmd(cmdInput)
-    local trimmedInput = cmdInput:gsub("^%s*(.-)%s*$", "%1")
-    if trimmedInput == "" or trimmedInput == "stop" or trimmedInput == "clear" then
-        wipe(keywordFilters)
-        print(YELLOW_LIGHT_LUA .. "[Chat Scan]:|r Stopped and cleared.")
+local function parseBooleanExpression(inputCmd)
+    local tokens = {}
+    for token in string.gmatch(inputCmd, "%S+") do 
+        tokens[#tokens + 1] = token 
+    end
+    
+    if #tokens == 0 then
+        return { operator = nil, operands = {} }
+    elseif #tokens == 1 then
+        return { operator = nil, operands = { tokens[1] } }
+    end
+    
+    -- Handle complex expressions like "x OR y NOT z"
+    local operands = {}
+    local mainOperator = nil
+    local i = 1
+    
+    while i <= #tokens do
+        local token = string.upper(tokens[i])
+        if token == "AND" or token == "OR" or token == "NOT" then
+            if not mainOperator then
+                mainOperator = token
+            end
+            i = i + 1
+        else
+            operands[#operands + 1] = tokens[i]
+            i = i + 1
+        end
+    end
+    
+    return { operator = mainOperator, operands = operands }
+end
+
+-- Define handleScanCommand to manage scan command input
+
+local function handleScanCommand(cmdInput)
+    local trimmedCmd = cmdInput:match("^%s*(.-)%s*$")
+    
+    if trimmedCmd == "" then
+        searchExpression = {}
         chatScanFrame:UnregisterEvent("CHAT_MSG_CHANNEL")
+        print(YELLOW_LIGHT_LUA .. "[Chat Scan]:|r Disabled.")
     else
+        searchExpression = parseBooleanExpression(trimmedCmd)
         if not chatScanFrame:IsEventRegistered("CHAT_MSG_CHANNEL") then
             chatScanFrame:RegisterEvent("CHAT_MSG_CHANNEL")
         end
-        table.insert(keywordFilters, trimmedInput)
-        local keywordStr = table.concat(keywordFilters, " / ")
-        print(YELLOW_LIGHT_LUA .. "[Chat Scan]:|r " .. keywordStr)
+        print(YELLOW_LIGHT_LUA .. "[Chat Scan]:|r " .. trimmedCmd)
     end
 end
 
 -- Register /scan slash command for chat scanning
 
 SLASH_SCAN1 = "/scan"
-SlashCmdList["SCAN"] = handleScanCmd
+SlashCmdList["SCAN"] = handleScanCommand

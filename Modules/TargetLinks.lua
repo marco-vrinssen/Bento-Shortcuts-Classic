@@ -169,14 +169,6 @@ local function triggerAssistMacroWithName(playerName)
     assistPlayer(playerName)
 end
 
-
-
-
-
-
-
-
-
 -- Create fixServerName to normalize server names for URLs
 
 local function fixServerName(serverName)

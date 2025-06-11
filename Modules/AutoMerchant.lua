@@ -48,18 +48,12 @@ end
 local function handleMerchantVisit()
   merchantState.junkSold = sellJunkItems()
   merchantState.itemsRepaired = repairPlayerItems()
-  
-  C_Timer.After(0, function()
-    if sellJunkItems() then
-      merchantState.junkSold = true
-    end
 
-    C_Timer.After(0, function()
-      if not merchantState.confirmationsShown then
-        displayConfirmations()
-        merchantState.confirmationsShown = true
-      end
-    end)
+  C_Timer.After(0, function()
+    if not merchantState.confirmationsShown then
+      displayConfirmations()
+      merchantState.confirmationsShown = true
+    end
   end)
 end
 

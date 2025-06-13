@@ -14,38 +14,6 @@ local function notifyKeywordMatch(matchedMsg, matchedSender)
     PlaySound(3175, "Master", true)
 end
 
--- Find the chat frame named "Scan" or return nil
-
-local function getScanChatFrame()
-    
-    -- Search for a chat frame/tab named "Scan" and return it if found
-    
-    for i = 1, NUM_CHAT_WINDOWS do
-        local frameName = GetChatWindowInfo(i)
-        if frameName and frameName:lower() == "scan" then
-            return _G["ChatFrame" .. i]
-        end
-    end
-    return nil
-end
-
--- Send keyword match message to the appropriate chat frame
-
-local function showKeywordMatch(matchedMsg, matchedSender)
-    
-    -- Output the keyword match to the "Scan" chat frame if it exists and is valid, otherwise use the default
-    
-    local senderLink = "|Hplayer:" .. matchedSender .. "|h" .. YELLOW_LIGHT_LUA .. "[" .. matchedSender .. "]:|r|h"
-    local outputMsg = senderLink .. " " .. matchedMsg
-    local scanFrame = getScanChatFrame()
-    if scanFrame and scanFrame:IsVisible() and scanFrame.AddMessage then
-        scanFrame:AddMessage(outputMsg)
-    else
-        DEFAULT_CHAT_FRAME:AddMessage(outputMsg)
-    end
-    PlaySound(3175, "Master", true)
-end
-
 -- Define evaluateSearchExpression to check message against boolean criteria
 
 local function evaluateSearchExpression(chatMsg)
@@ -78,7 +46,7 @@ local function handleChatMsgEvent(_, _, chatMsg, senderName, _, channelName, ...
     if searchExpression.operands and #searchExpression.operands > 0 and strmatch(channelName, "%d+") then
         local channelNum = tonumber(strmatch(channelName, "%d+"))
         if channelNum and channelNum >= 1 and channelNum <= 20 and evaluateSearchExpression(chatMsg) then
-            showKeywordMatch(chatMsg, senderName)
+            notifyKeywordMatch(chatMsg, senderName)
         end
     end
 end

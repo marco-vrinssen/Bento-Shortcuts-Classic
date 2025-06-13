@@ -8,12 +8,11 @@
 
 Modules/Tokens.lua
 
-Modules/ArmoryLinks.lua
 Modules/AutoMerchant.lua
 Modules/Broadcast.lua
 Modules/ChatScan.lua
 Modules/ConfirmDialogs.lua
-Modules/ContextMenus.lua
+Modules/ContextMenu.lua
 Modules/FastLoot.lua
 Modules/GearManager.lua
 Modules/Group.lua
@@ -23,6 +22,5 @@ Modules/MultiReply.lua
 Modules/MultiWhisper.lua
 Modules/MuteSounds.lua
 Modules/Port.lua
-Modules/TargetLinks.lua
 Modules/TrackingSwitcher.lua
 Modules/Utility.lua

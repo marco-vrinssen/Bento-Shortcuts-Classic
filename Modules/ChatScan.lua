@@ -6,11 +6,44 @@ local searchExpression = {}
 
 local chatScanFrame = CreateFrame("Frame")
 
+-- Replace raid symbol tags with icon textures in message
+
+local function replaceRaidSymbols(chatMsg)
+    local raidIcons = {
+        star = 1, circle = 2, diamond = 3, triangle = 4, moon = 5, square = 6, cross = 7, skull = 8
+    }
+    return chatMsg:gsub("{(.-)}", function(symbol)
+        local iconIndex = raidIcons[strlower(symbol)]
+        if iconIndex then
+            return "|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_" .. iconIndex .. ":0|t"
+        end
+        return "{" .. symbol .. "}"
+    end)
+end
+
+-- Find the chat frame named "Scan" if it exists
+
+local function getScanChatFrame()
+    for i = 1, NUM_CHAT_WINDOWS do
+        local name = GetChatWindowInfo(i)
+        if name == "Scan" then
+            return _G["ChatFrame" .. i]
+        end
+    end
+    return nil
+end
+
 -- Define notifyKeywordMatch to alert on keyword match
 
 local function notifyKeywordMatch(matchedMsg, matchedSender)
     local senderLink = "|Hplayer:" .. matchedSender .. "|h" .. YELLOW_LIGHT_LUA .. "[" .. matchedSender .. "]:|r|h"
-    print(senderLink .. " " .. matchedMsg)
+    local renderedMsg = replaceRaidSymbols(matchedMsg)
+    local scanFrame = getScanChatFrame()
+    if scanFrame then
+        scanFrame:AddMessage(senderLink .. " " .. renderedMsg)
+    else
+        print(senderLink .. " " .. renderedMsg)
+    end
     PlaySound(3175, "Master", true)
 end
 

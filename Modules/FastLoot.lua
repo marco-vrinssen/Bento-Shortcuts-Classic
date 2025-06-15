@@ -1,39 +1,39 @@
--- Initialize debounce variables to prevent disconnects
+-- Prevent disconnects by debouncing loot actions
 
-local delayTimestamp = 0
-local debounceInterval = 0.01
+local lootDelayTime = 0
+local lootDebounceTime = 0.005
 
--- Process auto loot slots to enable secure looting
+-- Securely loot all available slots if auto loot is enabled
 
-local function processAutoLoot()
-    if GetTime() - delayTimestamp >= debounceInterval then
-        delayTimestamp = GetTime()
+local function lootAllSlots()
+    if GetTime() - lootDelayTime >= lootDebounceTime then
+        lootDelayTime = GetTime()
         if GetCVarBool("autoLootDefault") ~= IsModifiedClick("AUTOLOOTTOGGLE") then
-            local itemCount = GetNumLootItems()
-            for slotIndex = itemCount, 1, -1 do
-                LootSlot(slotIndex)
+            local lootItemCount = GetNumLootItems()
+            for lootSlotIndex = lootItemCount, 1, -1 do
+                LootSlot(lootSlotIndex)
             end
         end
     end
 end
 
--- Close loot window to handle empty containers
+-- Close the loot window if there are no items left
 
-local function closeLootWindow()
+local function closeEmptyLootWindow()
     if GetNumLootItems() == 0 then
         CloseLoot()
     end
 end
 
--- Register event frame for loot detection
+-- Register frame to handle loot events
 
-local eventFrame = CreateFrame("Frame")
-eventFrame:RegisterEvent("LOOT_READY")
-eventFrame:RegisterEvent("LOOT_OPENED")
-eventFrame:SetScript("OnEvent", function(self, event)
+local lootEventFrame = CreateFrame("Frame")
+lootEventFrame:RegisterEvent("LOOT_READY")
+lootEventFrame:RegisterEvent("LOOT_OPENED")
+lootEventFrame:SetScript("OnEvent", function(_, event)
     if event == "LOOT_READY" then
-        processAutoLoot()
+        lootAllSlots()
     elseif event == "LOOT_OPENED" then
-        closeLootWindow()
+        closeEmptyLootWindow()
     end
 end)

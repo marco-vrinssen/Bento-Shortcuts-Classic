@@ -37,8 +37,8 @@ local function sendWhoWhisper(commandString)
     end
 end
 
-SLASH_MULTIWHISPER1 = "/w+"
-SlashCmdList["MULTIWHISPER"] = sendWhoWhisper
+SLASH_WHISPERWHO1 = "/ww"
+SlashCmdList["WHISPERWHO"] = sendWhoWhisper
 
 -- Initialize ignore list for spam protection
 
@@ -76,19 +76,19 @@ local function sendWhoWhisperSkip(commandString)
     end
 end
 
-SLASH_MULTIWHISPER_SKIP1 = "/w+-"
-SlashCmdList["MULTIWHISPER_SKIP"] = sendWhoWhisperSkip
+SLASH_WHISPERWHO_SKIP1 = "/ww+"
+SlashCmdList["WHISPERWHO_SKIP"] = sendWhoWhisperSkip
 
 -- Reset ignore list for new message campaigns
 
 local function resetIgnoreList()
     if BentoShortcutsClassicDB and BentoShortcutsClassicDB.MultiWhisperIgnore then
         BentoShortcutsClassicDB.MultiWhisperIgnore = {}
-        print("MultiWhisper ignore list cleared.")
+        print(YELLOW_LIGHT_LUA .. "[Whisper Shortcut]: " .. WHITE_LUA .. "MultiWhisper ignore list cleared.")
     else
-        print("MultiWhisper ignore list is already empty.")
+        print(YELLOW_LIGHT_LUA .. "[Whisper Shortcut]: " .. WHITE_LUA .. "MultiWhisper ignore list is already empty.")
     end
 end
 
-SLASH_CLEARPLAYERLIST1 = "/clearplayerlist"
-SlashCmdList["CLEARPLAYERLIST"] = resetIgnoreList
+SLASH_CLEARSKIPLIST1 = "/clearskiplist"
+SlashCmdList["CLEARSKIPLIST"] = resetIgnoreList

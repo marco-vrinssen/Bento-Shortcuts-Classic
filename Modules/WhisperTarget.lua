@@ -13,14 +13,14 @@ end
 
 local function sendTargetWhisper(messageText)
     if not messageText or messageText == "" then
-        print("Usage: /wt MESSAGE")
+        print(YELLOW_LIGHT_LUA .. "[Whisper Shortcut]: " .. WHITE_LUA .. "Usage: /wt MESSAGE")
         return
     end
     if UnitExists("target") and UnitIsPlayer("target") then
         local targetName = UnitName("target")
         SendChatMessage(messageText, "WHISPER", nil, targetName)
     else
-        print("You need a valid player target to whisper.")
+        print(YELLOW_LIGHT_LUA .. "[Whisper Shortcut]: " .. WHITE_LUA .. "No valid player target selected")
     end
 end
 
@@ -28,7 +28,7 @@ end
 
 local function sendTargetWhisperProtected(messageText)
     if not messageText or messageText == "" then
-        print("Usage: /wt- MESSAGE")
+        print(YELLOW_LIGHT_LUA .. "[Whisper Shortcut]: " .. WHITE_LUA .. "Usage: /wt+ MESSAGE")
         return
     end
     if UnitExists("target") and UnitIsPlayer("target") then
@@ -38,17 +38,17 @@ local function sendTargetWhisperProtected(messageText)
             SendChatMessage(messageText, "WHISPER", nil, targetName)
             BentoShortcutsClassicDB.MultiWhisperIgnore[targetName] = true
         else
-            print(YELLOW_LIGHT_LUA .. "[Target Whisper]:|r Player skipped.")
+            print(YELLOW_LIGHT_LUA .. "[Whisper Shortcut]: " .. WHITE_LUA .. "Player " .. targetName .. " already contacted")
         end
     else
-        print("You need a valid player target to whisper.")
+        print(YELLOW_LIGHT_LUA .. "[Whisper Shortcut]: " .. WHITE_LUA .. "No valid player target selected")
     end
 end
 
 -- Register slash commands for target whisper
 
-SLASH_TARGETWHISPER1 = "/wt"
-SlashCmdList["TARGETWHISPER"] = sendTargetWhisper
+SLASH_WHISPERTARGET1 = "/wt"
+SlashCmdList["WHISPERTARGET"] = sendTargetWhisper
 
-SLASH_TARGETWHISPERPROTECTED1 = "/wt-"
-SlashCmdList["TARGETWHISPERPROTECTED"] = sendTargetWhisperProtected
+SLASH_WHISPERTARGET_SKIP1 = "/wt+"
+SlashCmdList["WHISPERTARGET_SKIP"] = sendTargetWhisperProtected

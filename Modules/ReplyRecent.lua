@@ -16,7 +16,7 @@ local function sendToLastWhisperers(inputText)
         targetCount = tonumber(targetCount)
     end
     if #recentWhisperList == 0 then
-        print("No players have whispered you yet.")
+        print(YELLOW_LIGHT_LUA .. "[Whisper Shortcut]: " .. WHITE_LUA .. "No players have whispered you yet.")
         return
     end
     if targetCount and messageText and messageText ~= "" then
@@ -31,18 +31,18 @@ local function sendToLastWhisperers(inputText)
             end
         end
     else
-        print("Usage: /r+ MESSAGE or /r+ N MESSAGE")
+        print(YELLOW_LIGHT_LUA .. "[Whisper Shortcut]: " .. WHITE_LUA .. "Usage: /rr MESSAGE or /rr N MESSAGE")
     end
 end
 
 -- Register slash command for multi-reply
 
-SLASH_MULTIREPLY1 = "/r+"
-SLASH_MULTIREPLY2 = "/r+ reset"
-SlashCmdList["MULTIREPLY"] = function(inputText)
+SLASH_REPLYRECENT1 = "/rr"
+SLASH_REPLYRECENT_RESET1 = "/rr reset"
+SlashCmdList["REPLYRECENT"] = function(inputText)
     if inputText == "reset" then
         alreadyWhisperedSet = {}
-        print("Reset whispered players list. You can now whisper all recent players again.")
+        print(YELLOW_LIGHT_LUA .. "[Whisper Shortcut]: " .. WHITE_LUA .. "Reset whispered players list. You can now whisper all recent players again.")
     else
         sendToLastWhisperers(inputText)
     end

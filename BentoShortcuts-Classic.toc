@@ -17,7 +17,6 @@ Modules/FastLoot.lua
 Modules/GearManager.lua
 Modules/Group.lua
 Modules/Intro.lua
-Modules/MacroTargeting.lua
 Modules/MuteSounds.lua
 Modules/Port.lua
 Modules/ReplyRecent.lua

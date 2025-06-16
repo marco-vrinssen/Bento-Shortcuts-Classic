@@ -21,29 +21,12 @@ local function replaceRaidSymbols(chatMsg)
     end)
 end
 
--- Find the chat frame named "Scan" if it exists
-
-local function getScanChatFrame()
-    for i = 1, NUM_CHAT_WINDOWS do
-        local name = GetChatWindowInfo(i)
-        if name == "Scan" then
-            return _G["ChatFrame" .. i]
-        end
-    end
-    return nil
-end
-
 -- Define notifyKeywordMatch to alert on keyword match
 
 local function notifyKeywordMatch(matchedMsg, matchedSender)
     local senderLink = "|Hplayer:" .. matchedSender .. "|h" .. YELLOW_LIGHT_LUA .. "[" .. matchedSender .. "]:|r|h"
     local renderedMsg = replaceRaidSymbols(matchedMsg)
-    local scanFrame = getScanChatFrame()
-    if scanFrame then
-        scanFrame:AddMessage(senderLink .. " " .. renderedMsg)
-    else
-        print(senderLink .. " " .. renderedMsg)
-    end
+    print(senderLink .. " " .. renderedMsg)
     PlaySound(3175, "Master", true)
 end
 
@@ -139,7 +122,7 @@ local function handleScanCommand(cmdInput)
     end
 end
 
--- Register /scan slash command for chat scanning
+-- Register /cs slash command for chat scanning
 
-SLASH_SCAN1 = "/scan"
-SlashCmdList["SCAN"] = handleScanCommand
+SLASH_CHATSCAN1 = "/cs"
+SlashCmdList["CHATSCAN"] = handleScanCommand

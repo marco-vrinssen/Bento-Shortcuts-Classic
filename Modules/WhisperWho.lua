@@ -2,17 +2,27 @@
 
 local function getWhisperParams(commandString)
     local playerLimit, skipClass, messageText
-    playerLimit, skipClass, messageText = commandString:match("^(%d+)%s*-%s*(%w+)%s+(.+)$")
-    if not playerLimit then
-        playerLimit, messageText = commandString:match("^(%d+)%s+(.+)$")
-        if not playerLimit then
-            skipClass, messageText = commandString:match("^%-(%w+)%s+(.+)$")
-            if not skipClass then
-                messageText = commandString
-            end
-        end
+    
+    -- Parse "N -CLASS message" format
+    playerLimit, skipClass, messageText = commandString:match("^(%d+)%s+%-(%w+)%s+(.+)$")
+    if playerLimit then
+        return playerLimit, skipClass, messageText
     end
-    return playerLimit, skipClass, messageText
+    
+    -- Parse "N message" format
+    playerLimit, messageText = commandString:match("^(%d+)%s+(.+)$")
+    if playerLimit then
+        return playerLimit, nil, messageText
+    end
+    
+    -- Parse "-CLASS message" format
+    skipClass, messageText = commandString:match("^%-(%w+)%s+(.+)$")
+    if skipClass then
+        return nil, skipClass, messageText
+    end
+    
+    -- Default: just message
+    return nil, nil, commandString
 end
 
 -- Send whisper to who results with optional filtering

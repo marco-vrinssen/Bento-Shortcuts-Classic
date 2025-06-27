@@ -6,17 +6,19 @@ Type `/bentoshortcuts` in-game to see all commands.
 
 ## Chat & Communication
 
-- `/scan KEYWORD` : Monitor chat channels for keyword
-- `/scan stop` : Stop keyword scanning  
-- `/scan clear` : Clear keyword scanning
-- `/w+ MESSAGE` : Whisper all players in /who list
-- `/w+ N MESSAGE` : Whisper first N players only
-- `/w+ -CLASS MESSAGE` : Exclude specific class from whispers
-- `/w+- MESSAGE` : Whisper with persistent ignore list
-- `/clearplayerlist` : Clear whisper ignore list
-- `/r+ MESSAGE` : Reply to recent whisper senders
-- `/r+ N MESSAGE` : Reply to last N whisper senders
-- `/r+ reset` : Reset whispered players list
+- `/cs KEYWORD` : Monitor chat channels for keyword
+- `/cs stop` : Stop keyword scanning  
+- `/cs clear` : Clear keyword scanning
+- `/ww MESSAGE` : Whisper all players in /who list
+- `/ww N MESSAGE` : Whisper first N players only
+- `/ww -CLASS MESSAGE` : Exclude specific class from whispers
+- `/ww+ MESSAGE` : Whisper with persistent ignore list
+- `/clearskiplist` : Clear whisper ignore list
+- `/rr MESSAGE` : Reply to recent whisper senders
+- `/rr N MESSAGE` : Reply to last N whisper senders
+- `/rr reset` : Reset whispered players list
+- `/wt MESSAGE` : Whisper current target
+- `/wt+ MESSAGE` : Whisper target with ignore tracking
 - `/lfg MESSAGE` : Broadcast to World and LookingForGroup channels
 
 ## Gear Management
@@ -31,6 +33,8 @@ Type `/bentoshortcuts` in-game to see all commands.
 - `/find` : Create find macro for current target
 - `/find+ NAME` : Add player to existing find macro
 - `/find+` : Add current target to find macro
+- `/alsofind NAME` : Alternative command to add to find macro
+- `/assist NAME` : Create assist macro for target
 - Generates targeting macros with Classic Armory links
 
 ## Travel & Portals

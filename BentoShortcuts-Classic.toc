@@ -1,7 +1,7 @@
 ## Interface: 11500
 ## Title: Bento Shortcuts
 ## Notes: Basic efficiency-enhancing functions that improve quality of life.
-## Version: 1.0
+## Version: 1.0.0
 ## Author: MIYANKO
 
 ## SavedVariables: BentoShortcutsClassicDB
